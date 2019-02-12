@@ -36,6 +36,5 @@ class ProgramCourse(TimeStampedModel):
 
     class Meta(object):
         """ Meta class for this Django model """
-        unique_together = (('course_id', 'program'),)
         verbose_name = _('Ссылка на курс')
         verbose_name_plural = _('Ссылки на курс')
