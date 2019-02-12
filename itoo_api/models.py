@@ -28,11 +28,14 @@ class Program(TimeStampedModel):
     def __str__(self):
         return self.name
 
-
+@python_2_unicode_compatible
 class ProgramCourse(TimeStampedModel):
     course_id = models.CharField(max_length=255, db_index=True, verbose_name='ID Курса')
     program = models.ForeignKey(Program, db_index=True)
     active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.course_id
 
     class Meta(object):
         """ Meta class for this Django model """
