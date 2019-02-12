@@ -13,14 +13,14 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'name', 'short_name', 'description', 'logo')
+        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
     """ Serializes the Organization object."""
     class Meta(object):  # pylint: disable=missing-docstring
         model = Organization
-        fields = ('id', 'name', 'short_name', 'description', 'logo')
+        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
 
 
 def serialize_program(program):
