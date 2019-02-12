@@ -9,15 +9,15 @@ import re
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
+from __future__ import unicode_literals
 
 
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
-    name = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
-    short_name = models.CharField('Короткое название', blank=False, null=False, max_length=64, default="")
-    description = models.TextField('Описание')
+    name = models.CharField(u'Название', blank=False, null=False, max_length=1024, default="")
+    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="")
+    description = models.TextField(u'Описание')
     logo = models.ImageField(        
         upload_to='program_logos',
         help_text=_('Please add only .PNG files for logo images. This logo will be used on certificates.'),
@@ -30,7 +30,7 @@ class Program(TimeStampedModel):
 
 @python_2_unicode_compatible
 class ProgramCourse(TimeStampedModel):
-    course_id = models.CharField(max_length=255, db_index=True, verbose_name='ID Курса')
+    course_id = models.CharField(max_length=255, db_index=True, verbose_name=u'ID Курса')
     program = models.ForeignKey(Program, db_index=True)
     active = models.BooleanField(default=True)
 
@@ -39,5 +39,5 @@ class ProgramCourse(TimeStampedModel):
 
     class Meta(object):
         """ Meta class for this Django model """
-        verbose_name = _('Ссылка на курс')
-        verbose_name_plural = _('Ссылки на курс')
+        verbose_name = u'Ссылка на курс'
+        verbose_name_plural = u'Ссылки на курс'
