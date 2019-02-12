@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Database ORM models managed by this Django app
 Please do not integrate directly with these models!!!  This app currently
