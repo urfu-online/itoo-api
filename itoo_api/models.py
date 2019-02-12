@@ -20,7 +20,7 @@ class Program(TimeStampedModel):
     description = models.TextField(u'Описание')
     logo = models.ImageField(        
         upload_to='program_logos',
-        help_text=_('Please add only .PNG files for logo images. This logo will be used on certificates.'),
+        help_text='Please add only .PNG files for logo images. This logo will be used on certificates.',
         null=True, blank=True, max_length=255
         )
     active = models.BooleanField(default=True)
