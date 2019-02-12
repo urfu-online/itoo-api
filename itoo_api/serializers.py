@@ -5,6 +5,7 @@ python containers (mainly arrays and dicts).
 from rest_framework import serializers
 
 from itoo_api import models
+from organizations import models
 
 
 # pylint: disable=too-few-public-methods
@@ -13,6 +14,13 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta(object):  # pylint: disable=missing-docstring
         model = models.Program
         fields = ('id', 'name', 'short_name', 'description', 'logo')
+
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    """ Serializes the Organization object."""
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = models.Organization
+        fields = '__all__'
 
 
 def serialize_program(program):
@@ -34,4 +42,3 @@ def serialize_programs(programs):
     Converts list of objects to list of dicts
     """
     return [serialize_program(program) for program in programs]
-
