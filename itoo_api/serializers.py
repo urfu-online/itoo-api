@@ -12,7 +12,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     class Meta(object):  # pylint: disable=missing-docstring
         model = models.Program
-        fields = '__all__'
+        fields = ('id', 'name', 'short_name', 'description', 'logo')
 
 
 def serialize_program(program):
