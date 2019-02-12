@@ -24,6 +24,9 @@ class Program(TimeStampedModel):
         )
     active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class ProgramCourse(TimeStampedModel):
     course_id = models.CharField(max_length=255, db_index=True, verbose_name='ID Курса')
