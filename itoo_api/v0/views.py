@@ -1,6 +1,6 @@
 # pylint: disable=too-many-ancestors
 """
-Views for organizations end points.
+Views for itoo_api end points.
 """
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
 from rest_framework import viewsets
@@ -8,8 +8,8 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_oauth.authentication import OAuth2Authentication
 
-from organizations.models import Program
-from organizations.serializers import ProgramSerializer
+from itoo_api.models import Program
+from itoo_api.serializers import ProgramSerializer
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
