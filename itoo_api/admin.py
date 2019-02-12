@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from itoo_api.models import Program
+from itoo_api.models import Program, ProgramCourse
 
 
 class ProgramCourseInline(admin.TabularInline):
