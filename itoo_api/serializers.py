@@ -4,7 +4,7 @@ python containers (mainly arrays and dicts).
 """
 from rest_framework import serializers
 
-from itoo_api.models import Program
+from itoo_api.models import Program, ProgramCourse
 from organizations.models import Organization
 
 
@@ -14,6 +14,13 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
         fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
+
+
+class ProgramCourseSerializer(serializers.ModelSerializer):
+    """ Serializes the Program object."""
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = ProgramCourse
+        fields = ('course_id', 'program', 'active')
 
 
 class OrganizationSerializer(serializers.ModelSerializer):

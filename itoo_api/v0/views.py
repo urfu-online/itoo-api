@@ -4,9 +4,9 @@ Views for itoo_api end points.
 """
 from rest_framework import viewsets
 
-from itoo_api.models import Program
+from itoo_api.models import Program, ProgramCourse
 from organizations.models import Organization
-from itoo_api.serializers import ProgramSerializer, OrganizationSerializer
+from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
@@ -15,6 +15,15 @@ class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Program.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = ProgramSerializer
+    lookup_field = 'short_name'
+
+
+class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
+    """Program view to fetch list programs data or single program
+    using program short name.
+    """
+    queryset = ProgramCourse.objects.filter(active=True)  # pylint: disable=no-member
+    serializer_class = ProgramCourseSerializer
     lookup_field = 'short_name'
 
 
