@@ -30,7 +30,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
         fields = ('course', 'program', 'active')
 
     def get_course(self, obj):
-        course_key = get_course_by_id(CourseKey.from_string(obj.course_id))
+        course_key = CourseKey.from_string(obj.course_id)
         course = CourseOverview.get_from_id(course_key)
         return CourseSerializer(course).data
 
