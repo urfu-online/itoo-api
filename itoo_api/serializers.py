@@ -3,7 +3,7 @@ Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
 from courseware.courses import get_course_by_id
-from course_api.serializers import _CourseApiMediaCollectionSerializer
+from course_api.serializers import ImageSerializer
 from enrollment.serializers import CourseSerializer, ModeSerializer
 from course_modes.models import CourseMode
 from opaque_keys.edx.keys import CourseKey
@@ -21,7 +21,7 @@ class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-meth
     course_id = serializers.CharField(source="id")
     course_name = serializers.CharField(source="display_name_with_default")
     name = serializers.CharField(source='display_name_with_default_escaped')
-    media = _CourseApiMediaCollectionSerializer(source='*')
+    image = ImageSerializer(source='image_urls')
     enrollment_start = serializers.DateTimeField(format=None)
     enrollment_end = serializers.DateTimeField(format=None)
     course_start = serializers.DateTimeField(source="start", format=None)
