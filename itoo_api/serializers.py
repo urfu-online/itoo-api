@@ -21,7 +21,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
-    course = CourseSerializer()
+    course = serializers.SerializerMethodField()
 
     def get_course(self, obj):
         course = get_course_by_id(obj.course.id)
@@ -29,7 +29,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
-        fields = ('course', 'course_id', 'program', 'active')
+        fields = ('course', 'program', 'active')
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
