@@ -2,14 +2,31 @@
 Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
-from courseware.courses import get_course_by_id
-from enrollment.serializers import CourseSerializer
 from opaque_keys.edx.keys import CourseKey
+from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from organizations.models import Organization
 from rest_framework import serializers
-from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 
 from itoo_api.models import Program, ProgramCourse
+
+
+class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-method
+    """
+    Serialize a course descriptor and related information.
+    """
+
+    course_id = serializers.CharField(source="id")
+    course_name = serializers.CharField(source="display_name_with_default")
+    enrollment_start = serializers.DateTimeField(format=None)
+    enrollment_end = serializers.DateTimeField(format=None)
+    course_start = serializers.DateTimeField(source="start", format=None)
+    course_end = serializers.DateTimeField(source="end", format=None)
+    invite_only = serializers.BooleanField(source="invitation_only")
+    course_modes = serializers.SerializerMethodField()
+
+    def __init__(self, *args, **kwargs):
+        self.include_expired = kwargs.pop("include_expired", False)
+        super(CourseSerializer, self).__init__(*args, **kwargs)
 
 
 # pylint: disable=too-few-public-methods
