@@ -2,15 +2,18 @@
 Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
+from course_api.serializers import CourseSerializer
+from courseware.courses import get_course_by_id
+from organizations.models import Organization
 from rest_framework import serializers
 
 from itoo_api.models import Program, ProgramCourse
-from organizations.models import Organization
 
 
 # pylint: disable=too-few-public-methods
 class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
+
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
         fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
@@ -18,13 +21,20 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
+    course = CourseSerializer()
+
+    def get_course(self, obj):
+        course = get_course_by_id(obj.course.id)
+        return course
+
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
-        fields = ('course_id', 'program', 'active')
+        fields = ('course', 'course_id', 'program', 'active')
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
     """ Serializes the Organization object."""
+
     class Meta(object):  # pylint: disable=missing-docstring
         model = Organization
         fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
@@ -39,7 +49,7 @@ def serialize_program(program):
         'name': program.name,
         'short_name': program.short_name,
         'description': program.description,
-        'logo': program.logo
+        'logo': program.logo,
     }
 
 

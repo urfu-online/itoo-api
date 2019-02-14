@@ -2,10 +2,10 @@
 """
 Views for itoo_api end points.
 """
+from organizations.models import Organization
 from rest_framework import viewsets
 
 from itoo_api.models import Program, ProgramCourse
-from organizations.models import Organization
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer
 
 
@@ -34,4 +34,3 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Organization.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationSerializer
     lookup_field = 'short_name'
-
