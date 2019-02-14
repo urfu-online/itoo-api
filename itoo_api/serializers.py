@@ -9,8 +9,47 @@ from course_modes.models import CourseMode
 from opaque_keys.edx.keys import CourseKey
 from organizations.models import Organization
 from rest_framework import serializers
+from openedx.core.lib.api.fields import AbsoluteURLField
 
 from itoo_api.models import Program, ProgramCourse
+
+
+class _MediaSerializer(serializers.Serializer):  # pylint: disable=abstract-method
+    """
+    Nested serializer to represent a media object.
+    """
+
+    def __init__(self, uri_attribute, *args, **kwargs):
+        super(_MediaSerializer, self).__init__(*args, **kwargs)
+        self.uri_attribute = uri_attribute
+
+    uri = serializers.SerializerMethodField(source='*')
+
+    def get_uri(self, course_overview):
+        """
+        Get the representation for the media resource's URI
+        """
+        return getattr(course_overview, self.uri_attribute)
+
+
+class ImageSerializer(serializers.Serializer):  # pylint: disable=abstract-method
+    """
+    Collection of URLs pointing to images of various sizes.
+    The URLs will be absolute URLs with the host set to the host of the current request. If the values to be
+    serialized are already absolute URLs, they will be unchanged.
+    """
+    raw = AbsoluteURLField()
+    small = AbsoluteURLField()
+    large = AbsoluteURLField()
+
+
+class _CourseApiMediaCollectionSerializer(serializers.Serializer):  # pylint: disable=abstract-method
+    """
+    Nested serializer to represent a collection of media objects
+    """
+    course_image = _MediaSerializer(source='*', uri_attribute='course_image_url')
+    course_video = _MediaSerializer(source='*', uri_attribute='course_video_url')
+    image = ImageSerializer(source='image_urls')
 
 
 class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-method
@@ -21,7 +60,7 @@ class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-meth
     course_id = serializers.CharField(source="id")
     course_name = serializers.CharField(source="display_name_with_default")
     name = serializers.CharField(source='display_name_with_default_escaped')
-    image = ImageSerializer(source='*')
+    media = _CourseApiMediaCollectionSerializer(source='*')
     enrollment_start = serializers.DateTimeField(format=None)
     enrollment_end = serializers.DateTimeField(format=None)
     course_start = serializers.DateTimeField(source="start", format=None)
