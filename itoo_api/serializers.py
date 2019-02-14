@@ -16,20 +16,8 @@ class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract
     """
     class Meta:
         model = CourseOverview
-        fields = ('start_display', )
-
-    # course_id = serializers.CharField(source="id")
-    # course_name = serializers.CharField(source="display_name_with_default")
-    # enrollment_start = serializers.DateTimeField(format=None)
-    # enrollment_end = serializers.DateTimeField(format=None)
-    # course_start = serializers.DateTimeField(source="start", format=None)
-    # course_end = serializers.DateTimeField(source="end", format=None)
-    # invite_only = serializers.BooleanField(source="invitation_only")
-    #
-    # def __init__(self, *args, **kwargs):
-    #     self.include_expired = kwargs.pop("include_expired", False)
-    #     super(CourseSerializer, self).__init__(*args, **kwargs)
-
+        fields = ('display_name','course_image_url','start_display')
+        
 
 # pylint: disable=too-few-public-methods
 class ProgramSerializer(serializers.ModelSerializer):
