@@ -27,7 +27,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
         fields = ('course', 'program', 'active')
 
     def get_course(self, obj):
-        course = get_course_by_id(obj.course.id)
+        course = get_course_by_id(obj.course_id)
         return course
 
 
