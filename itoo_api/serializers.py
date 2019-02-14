@@ -17,7 +17,7 @@ class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-meth
     Compare this with CourseDetailSerializer.
     """
 
-    effort = serializers.CharField()
+
     end = serializers.DateTimeField()
     enrollment_start = serializers.DateTimeField()
     enrollment_end = serializers.DateTimeField()
