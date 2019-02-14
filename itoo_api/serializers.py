@@ -3,6 +3,7 @@ Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
 from courseware.courses import get_course_by_id
+from opaque_keys.edx.keys import CourseKey
 from organizations.models import Organization
 from rest_framework import serializers
 
@@ -27,7 +28,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
         fields = ('course', 'program', 'active')
 
     def get_course(self, obj):
-        course = get_course_by_id(obj.course_id)
+        course = get_course_by_id(CourseKey.from_string(str(obj.course_id)))
         return course
 
 
