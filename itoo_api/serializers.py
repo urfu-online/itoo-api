@@ -2,7 +2,6 @@
 Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
-from course_api.serializers import CourseSerializer
 from courseware.courses import get_course_by_id
 from organizations.models import Organization
 from rest_framework import serializers
@@ -23,13 +22,13 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     course = serializers.SerializerMethodField()
 
-    def get_course(self, obj):
-        course = get_course_by_id(obj.course.id)
-        return course
-
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
         fields = ('course', 'program', 'active')
+
+    def get_course(self, obj):
+        course = get_course_by_id(obj.course.id)
+        return course
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
