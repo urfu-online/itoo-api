@@ -8,7 +8,7 @@ from itoo_api.v0.views import ProgramViewSet, OrganizationViewSet, ProgramCourse
 
 router = routers.SimpleRouter()
 router.register(r'programs', ProgramViewSet)
-router.register(r'programs/courses', ProgramCourseViewSet)
+router.register(r'link_courses', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationViewSet)
 
 app_name = 'v0'
