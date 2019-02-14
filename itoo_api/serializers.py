@@ -3,7 +3,7 @@ Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
 from courseware.courses import get_course_by_id
-from course_api.serializers import CourseSerializer
+from enrollment.serializers import CourseSerializer
 from opaque_keys.edx.keys import CourseKey
 from organizations.models import Organization
 from rest_framework import serializers
