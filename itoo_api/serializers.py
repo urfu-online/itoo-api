@@ -10,22 +10,25 @@ from rest_framework import serializers
 from itoo_api.models import Program, ProgramCourse
 
 
-class CourseSerializer(serializers.Serializer):  # pylint: disable=abstract-method
+class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract-method
     """
     Serialize a course descriptor and related information.
     """
+    class Meta:
+        model = CourseOverview
+        fields = ('start_display', )
 
-    course_id = serializers.CharField(source="id")
-    course_name = serializers.CharField(source="display_name_with_default")
-    enrollment_start = serializers.DateTimeField(format=None)
-    enrollment_end = serializers.DateTimeField(format=None)
-    course_start = serializers.DateTimeField(source="start", format=None)
-    course_end = serializers.DateTimeField(source="end", format=None)
-    invite_only = serializers.BooleanField(source="invitation_only")
-
-    def __init__(self, *args, **kwargs):
-        self.include_expired = kwargs.pop("include_expired", False)
-        super(CourseSerializer, self).__init__(*args, **kwargs)
+    # course_id = serializers.CharField(source="id")
+    # course_name = serializers.CharField(source="display_name_with_default")
+    # enrollment_start = serializers.DateTimeField(format=None)
+    # enrollment_end = serializers.DateTimeField(format=None)
+    # course_start = serializers.DateTimeField(source="start", format=None)
+    # course_end = serializers.DateTimeField(source="end", format=None)
+    # invite_only = serializers.BooleanField(source="invitation_only")
+    #
+    # def __init__(self, *args, **kwargs):
+    #     self.include_expired = kwargs.pop("include_expired", False)
+    #     super(CourseSerializer, self).__init__(*args, **kwargs)
 
 
 # pylint: disable=too-few-public-methods
