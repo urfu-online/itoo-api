@@ -16,7 +16,7 @@ class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract
     """
     class Meta:
         model = CourseOverview
-        fields = ('display_name','course_image_url','start_display','catalog_visibility')
+        fields = ('id','display_name','course_image_url','start_display','catalog_visibility')
 
 
 # pylint: disable=too-few-public-methods
@@ -34,7 +34,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
-        fields = ('course', 'program', 'active','course_id')
+        fields = ('course', 'program', 'active')
 
     def get_course(self, obj):
         course_key = CourseKey.from_string(obj.course_id)

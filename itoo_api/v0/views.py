@@ -24,7 +24,7 @@ class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = ProgramCourse.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = ProgramCourseSerializer
-    lookup_field = 'short_name'
+    lookup_field = 'id'
 
 
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
