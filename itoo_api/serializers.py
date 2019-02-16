@@ -34,7 +34,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
-        fields = ('course', 'program', 'active')
+        fields = ('course', 'program', 'active','course_id')
 
     def get_course(self, obj):
         course_key = CourseKey.from_string(obj.course_id)
