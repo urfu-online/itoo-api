@@ -15,7 +15,7 @@ from xmodule.modulestore.django import modulestore
 from xmodule.error_module import ErrorDescriptor
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from student.views import send_enrollment_email
+# from student.views import send_enrollment_email
 
 from itoo_api.models import Program, ProgramCourse
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, CourseEnrollmentSerializer, UserEnrollmentSerializer
@@ -139,10 +139,11 @@ class EnrollmentViewSet(ServerAPIViewSet):
             return RESTResponse({'detail': e.message or u"Enrollment failed ({})".format(e.__class__.__name__)},
                             status=status.HTTP_400_BAD_REQUEST)
         else:
-            if settings.FEATURES.get('SEND_ENROLLMENT_EMAIL') and not skip_enrollment_email:
-                # course is already checked for existence
-                course = CourseOverview.get_from_id(course_id)
-                send_enrollment_email(user, course, use_https_for_links=request.is_secure())
+            logger.info("SEND_ENROLLMENT_EMAIL")
+            # if settings.FEATURES.get('SEND_ENROLLMENT_EMAIL') and not skip_enrollment_email:
+            #     # course is already checked for existence
+            #     course = CourseOverview.get_from_id(course_id)
+            #     send_enrollment_email(user, course, use_https_for_links=request.is_secure())
         serializer = CourseEnrollmentSerializer(enrollment)
         return RESTResponse(serializer.data)
 
