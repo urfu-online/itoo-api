@@ -10,7 +10,7 @@ router = routers.SimpleRouter()
 router.register(r'programs', ProgramViewSet)
 router.register(r'link_courses', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationViewSet)
-router.register(r'enrollment', EnrollmentViewSet)
+router.register(r'enrollment', EnrollmentViewSet, base_name='enrollment')
 
 app_name = 'v0'
 urlpatterns = router.urls
