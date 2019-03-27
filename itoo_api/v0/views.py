@@ -181,7 +181,7 @@ class EnrollmentViewSet(ServerAPIViewSet):
         except User.DoesNotExist:
             raise NotFound(detail=u"No user with uid '{}' found".format(username))
 
-    @detail_route(methods=['post'])
+    @detail_route(methods=['post', 'get'])
     def is_enroll(self, request, *args, **kwargs):
         user = self._get_user(*args, **kwargs)
         course_id = self._get_course_id(**kwargs)
