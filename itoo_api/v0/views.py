@@ -2,27 +2,28 @@
 """
 Views for itoo_api end points.
 """
-from django.contrib.auth.models import User, AnonymousUser
+import logging
+
+from course_modes.models import CourseMode
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
+from opaque_keys import InvalidKeyError
+from opaque_keys.edx.keys import CourseKey
+from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from organizations.models import Organization
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import detail_route
 from rest_framework.exceptions import NotFound
-from opaque_keys.edx.keys import CourseKey
 from rest_framework.response import Response as RESTResponse
-from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from opaque_keys import InvalidKeyError
-from xmodule.modulestore.django import modulestore
+from student.models import CourseEnrollment, CourseEnrollmentException, AlreadyEnrolledError, NonExistentCourseError, CourseEnrollmentAllowed
 from xmodule.error_module import ErrorDescriptor
-from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
-# from student.views import send_enrollment_email
+from xmodule.modulestore.django import modulestore
 
 from itoo_api.models import Program, ProgramCourse
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, CourseEnrollmentSerializer, UserEnrollmentSerializer
-from student.models import CourseEnrollment, CourseEnrollmentException, AlreadyEnrolledError, NonExistentCourseError, CourseEnrollmentAllowed
-from course_modes.models import CourseMode
 
-import logging
+# from student.views import send_enrollment_email
 logger = logging.getLogger(__name__)
 
 
@@ -66,8 +67,8 @@ class ApiKeyHeaderPermission(permissions.BasePermission):
         # copied with some modifications from user_api
         api_key = getattr(settings, "EDX_API_KEY", '')
         return (
-            (settings.DEBUG and not api_key) or
-            (api_key and request.META.get("HTTP_X_EDX_API_KEY") == api_key)
+                (settings.DEBUG and not api_key) or
+                (api_key and request.META.get("HTTP_X_EDX_API_KEY") == api_key)
         )
 
 
@@ -122,7 +123,7 @@ class EnrollmentViewSet(ServerAPIViewSet):
 
         if mode not in self.ALLOWED_COURSE_MODES:
             return RESTResponse({'detail': u'Invalid course mode: {}'.format(mode)},
-                            status=status.HTTP_400_BAD_REQUEST)
+                                status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # create new enrollment
@@ -137,7 +138,7 @@ class EnrollmentViewSet(ServerAPIViewSet):
             raise NotFound(detail=u"No course '{}' found".format(course_id))
         except CourseEnrollmentException as e:
             return RESTResponse({'detail': e.message or u"Enrollment failed ({})".format(e.__class__.__name__)},
-                            status=status.HTTP_400_BAD_REQUEST)
+                                status=status.HTTP_400_BAD_REQUEST)
         else:
             logger.info("SEND_ENROLLMENT_EMAIL")
             # if settings.FEATURES.get('SEND_ENROLLMENT_EMAIL') and not skip_enrollment_email:
@@ -163,7 +164,7 @@ class EnrollmentViewSet(ServerAPIViewSet):
                 raise NotFound(detail=u"No course '{}' found".format(course_id))
             else:
                 return RESTResponse({'detail': u"User is not enrolled in this course"},
-                                status=status.HTTP_400_BAD_REQUEST)
+                                    status=status.HTTP_400_BAD_REQUEST)
 
         CourseEnrollment.unenroll(user, course_key)
         return RESTResponse(status=status.HTTP_204_NO_CONTENT)
@@ -179,3 +180,15 @@ class EnrollmentViewSet(ServerAPIViewSet):
             return User.objects.get(username=username)
         except User.DoesNotExist:
             raise NotFound(detail=u"No user with uid '{}' found".format(username))
+
+    @detail_route(methods=['post'])
+    def is_enroll(self, request, *args, **kwargs):
+        user = self._get_user(*args, **kwargs)
+        course_id = self._get_course_id(**kwargs)
+
+        enrollment = CourseEnrollment.objects.get(user=user, course_id=course_id)
+
+        if enrollment:
+            return RESTResponse({'is_enrolled': True})
+
+        return RESTResponse({'is_enrolled': False})
