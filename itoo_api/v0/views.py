@@ -27,6 +27,7 @@ from openedx.core.lib.api.authentication import (
     OAuth2AuthenticationAllowInactiveUser,
     SessionAuthenticationAllowInactiveUser
 )
+from util.disable_rate_limit import can_disable_rate_limit
 
 from student.models import CourseEnrollment
 from xmodule.error_module import ErrorDescriptor
