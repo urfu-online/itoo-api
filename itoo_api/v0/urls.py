@@ -11,7 +11,10 @@ router = routers.SimpleRouter()
 router.register(r'programs', ProgramViewSet)
 router.register(r'link_courses', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationViewSet)
-router.register(r'enrollment/{course_key}'.format(course_key=settings.COURSE_ID_PATTERN), EnrollmentViewSet, base_name='enrollment')
+router.register(r'enrollment/{username},{course_key}'.format(
+        username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN
+    ), 
+    EnrollmentViewSet, base_name='enrollment')
 
 app_name = 'v0'
 urlpatterns = router.urls
