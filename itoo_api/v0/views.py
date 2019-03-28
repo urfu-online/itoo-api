@@ -95,7 +95,7 @@ class EnrollmentUserThrottle(UserRateThrottle, ApiKeyPermissionMixIn):
 
 
 @can_disable_rate_limit
-class EnrollmentView(APIView, ApiKeyPermissionMixIn):
+class EnrollmentViewSet(APIView, ApiKeyPermissionMixIn):
     authentication_classes = (JwtAuthentication, OAuth2AuthenticationAllowInactiveUser,
                               SessionAuthenticationAllowInactiveUser,)
     permission_classes = ApiKeyHeaderPermissionIsAuthenticated,
