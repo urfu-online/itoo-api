@@ -14,7 +14,7 @@ from model_utils.models import TimeStampedModel
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
     name = models.CharField(u'Название', blank=False, null=False, max_length=1024, default="")
-    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="")
+    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="", unique=True)
     description = models.TextField(u'Описание')
     logo = models.ImageField(
         upload_to='program_logos',
