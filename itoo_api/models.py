@@ -38,8 +38,8 @@ class ProgramCourse(TimeStampedModel):
 
     class Meta(object):
         """ Meta class for this Django model """
-        verbose_name = u'Ссылка на курс'
-        verbose_name_plural = u'Ссылки на курс'
+        verbose_name = u'Ссылка на курс(Программа)'
+        verbose_name_plural = u'Ссылки на курс(Программы)'
 
 
 @python_2_unicode_compatible
@@ -69,5 +69,5 @@ class OrganizationCourse(TimeStampedModel):
 
     class Meta(object):
         """ Meta class for this Django model """
-        verbose_name = u'Ссылка на курс'
-        verbose_name_plural = u'Ссылки на курс'
+        verbose_name = u'Ссылка на курс(Организация)'
+        verbose_name_plural = u'Ссылки на курс(Организации)'
