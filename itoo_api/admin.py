@@ -31,7 +31,7 @@ class OrganizationCustomInline(admin.TabularInline):
 
 
 @admin.register(OrganizationCustom)
-class ProgramAdmin(admin.ModelAdmin):
+class OrganizationCustomAdmin(admin.ModelAdmin):
     list_display = ('name', 'short_name', 'logo', 'active',)
     list_filter = ('active',)
     ordering = ('name', 'short_name',)
