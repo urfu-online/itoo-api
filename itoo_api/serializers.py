@@ -47,7 +47,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
 
 class OrganizationCustomSerializer(serializers.ModelSerializer):
-    """ Serializes the Program object."""
+    """ Serializes the OrganizationCustom object."""
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
@@ -55,7 +55,7 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 
 
 class OrganizationCourseSerializer(serializers.ModelSerializer):
-    """ Serializes the Program object."""
+    """ Serializes the OrganizationCustom object."""
     course = serializers.SerializerMethodField()
     org_short_name = serializers.CharField(source='org.short_name')
 

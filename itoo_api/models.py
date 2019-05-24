@@ -18,13 +18,18 @@ class Program(TimeStampedModel):
     description = models.TextField(u'Описание')
     logo = models.ImageField(
         upload_to='program_logos',
-        help_text='Please add only .PNG files for logo images. This logo will be used on certificates.',
+        help_text='Please add only .PNG files for logo images. This logo will be used on Program logo.',
         null=True, blank=True, max_length=255
     )
     active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = u'Программа'
+        verbose_name_plural = u'Программы'
 
 
 @python_2_unicode_compatible
@@ -49,13 +54,18 @@ class OrganizationCustom(TimeStampedModel):
     description = models.TextField(u'Описание')
     logo = models.ImageField(
         upload_to='org_logos',
-        help_text='Please add only .PNG files for logo images. This logo will be used on certificates.',
+        help_text='Please add only .PNG files for logo images. This logo will be used on Organization logo.',
         null=True, blank=True, max_length=255
     )
     active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = u'Организация'
+        verbose_name_plural = u'Организации'
 
 
 @python_2_unicode_compatible
