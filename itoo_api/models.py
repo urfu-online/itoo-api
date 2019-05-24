@@ -40,3 +40,34 @@ class ProgramCourse(TimeStampedModel):
         """ Meta class for this Django model """
         verbose_name = u'Ссылка на курс'
         verbose_name_plural = u'Ссылки на курс'
+
+
+@python_2_unicode_compatible
+class OrganizationCustom(TimeStampedModel):
+    name = models.CharField(u'Название', blank=False, null=False, max_length=1024, default="")
+    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="", unique=True)
+    description = models.TextField(u'Описание')
+    logo = models.ImageField(
+        upload_to='org_logos',
+        help_text='Please add only .PNG files for logo images. This logo will be used on certificates.',
+        null=True, blank=True, max_length=255
+    )
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
+class OrganizationCourse(TimeStampedModel):
+    course_id = models.CharField(max_length=255, db_index=True, verbose_name=u'ID Курса')
+    org = models.ForeignKey(OrganizationCustom, db_index=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.course_id
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = u'Ссылка на курс'
+        verbose_name_plural = u'Ссылки на курс'

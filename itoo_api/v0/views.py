@@ -33,8 +33,8 @@ from student.models import CourseEnrollment
 from xmodule.error_module import ErrorDescriptor
 from xmodule.modulestore.django import modulestore
 
-from itoo_api.models import Program, ProgramCourse
-from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, CourseEnrollmentSerializer, UserEnrollmentSerializer
+from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
+from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer
 
 # from student.views import send_enrollment_email
 logger = logging.getLogger(__name__)
@@ -58,6 +58,24 @@ class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'course_id'
 
 
+class OrganizationCustomViewSet(viewsets.ReadOnlyModelViewSet):
+    """Program view to fetch list programs data or single program
+    using program short name.
+    """
+    queryset = OrganizationCustom.objects.filter(active=True)  # pylint: disable=no-member
+    serializer_class = OrganizationCustomSerializer
+    lookup_field = 'short_name'
+
+
+class OrganizationCourseViewSet(viewsets.ReadOnlyModelViewSet):
+    """Program view to fetch list programs data or single program
+    using program short name.
+    """
+    queryset = OrganizationCourse.objects.filter(active=True)  # pylint: disable=no-member
+    serializer_class = OrganizationCourseSerializer
+    lookup_field = 'course_id'
+
+
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
@@ -65,6 +83,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Organization.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationSerializer
     lookup_field = 'short_name'
+
 
 class ApiKeyPermissionMixIn(object):
     """

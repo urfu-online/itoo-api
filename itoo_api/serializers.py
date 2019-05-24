@@ -10,7 +10,7 @@ from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
-from itoo_api.models import Program, ProgramCourse
+from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
 
 
 class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract-method
@@ -39,6 +39,29 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
         fields = ('course', 'program_short_name', 'active','course_id')
+
+    def get_course(self, obj):
+        course_key = CourseKey.from_string(obj.course_id)
+        course = CourseOverview.get_from_id(course_key)
+        return CourseSerializer(course).data
+
+
+class OrganizationCustomSerializer(serializers.ModelSerializer):
+    """ Serializes the Program object."""
+
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = OrganizationCustom
+        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
+
+
+class OrganizationCourseSerializer(serializers.ModelSerializer):
+    """ Serializes the Program object."""
+    course = serializers.SerializerMethodField()
+    org_short_name = serializers.CharField(source='org.short_name')
+
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = OrganizationCourse
+        fields = ('course', 'org_short_name', 'active','course_id')
 
     def get_course(self, obj):
         course_key = CourseKey.from_string(obj.course_id)
