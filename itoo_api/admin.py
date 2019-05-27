@@ -15,7 +15,7 @@ class ProgramAdmin(admin.ModelAdmin):
     list_filter = ('active',)
     ordering = ('name', 'short_name',)
     readonly_fields = ('created',)
-    search_fields = ('name', 'short_name',)
+    search_fields = ('name', 'short_name', 'slug')
     inlines = [ProgramCourseInline]
 
 
@@ -36,7 +36,7 @@ class OrganizationCustomAdmin(admin.ModelAdmin):
     list_filter = ('active',)
     ordering = ('name', 'short_name',)
     readonly_fields = ('created',)
-    search_fields = ('name', 'short_name',)
+    search_fields = ('name', 'short_name', 'slug')
     inlines = [OrganizationCourseInline]
 
 

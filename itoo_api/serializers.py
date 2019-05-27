@@ -28,17 +28,17 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
+        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     course = serializers.SerializerMethodField()
-    program_short_name = serializers.CharField(source='program.short_name')
+    program_slug = serializers.CharField(source='program.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = ProgramCourse
-        fields = ('course', 'program_short_name', 'active','course_id')
+        fields = ('course', 'program_slug', 'active','course_id')
 
     def get_course(self, obj):
         course_key = CourseKey.from_string(obj.course_id)
@@ -51,17 +51,17 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
-        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
+        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'active')
 
 
 class OrganizationCourseSerializer(serializers.ModelSerializer):
     """ Serializes the OrganizationCustom object."""
     course = serializers.SerializerMethodField()
-    org_short_name = serializers.CharField(source='org.short_name')
+    org_slug = serializers.CharField(source='org.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCourse
-        fields = ('course', 'org_short_name', 'active','course_id')
+        fields = ('course', 'org_slug', 'active','course_id')
 
     def get_course(self, obj):
         course_key = CourseKey.from_string(obj.course_id)

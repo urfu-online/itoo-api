@@ -14,7 +14,8 @@ from model_utils.models import TimeStampedModel
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
     name = models.CharField(u'Название', blank=False, null=False, max_length=1024, default="")
-    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="", unique=True)
+    short_name = models.CharField(u'Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
+    slug = models.CharField(u'Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
     description = models.TextField(u'Описание')
     logo = models.ImageField(
         upload_to='program_logos',
@@ -50,7 +51,8 @@ class ProgramCourse(TimeStampedModel):
 @python_2_unicode_compatible
 class OrganizationCustom(TimeStampedModel):
     name = models.CharField(u'Название', blank=False, null=False, max_length=1024, default="")
-    short_name = models.CharField(u'Короткое название', blank=False, null=False, max_length=64, default="", unique=True)
+    short_name = models.CharField(u'Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
+    slug = models.CharField(u'Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
     description = models.TextField(u'Описание')
     logo = models.ImageField(
         upload_to='org_logos',

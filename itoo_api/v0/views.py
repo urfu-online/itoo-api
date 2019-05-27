@@ -46,7 +46,7 @@ class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Program.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = ProgramSerializer
-    lookup_field = 'short_name'
+    lookup_field = 'slug'
 
 
 class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
@@ -64,7 +64,7 @@ class OrganizationCustomViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = OrganizationCustom.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationCustomSerializer
-    lookup_field = 'short_name'
+    lookup_field = 'slug'
 
 
 class OrganizationCourseViewSet(viewsets.ReadOnlyModelViewSet):
