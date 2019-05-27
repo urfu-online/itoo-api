@@ -26,8 +26,8 @@ class ProgramCourseAdmin(admin.ModelAdmin):
     search_fields = ('course_id', 'program__name', 'program__short_name',)
 
 
-class OrganizationCustomInline(admin.TabularInline):
-    model = OrganizationCustom
+class OrganizationCourseInline(admin.TabularInline):
+    model = OrganizationCourse
 
 
 @admin.register(OrganizationCustom)
@@ -37,7 +37,7 @@ class OrganizationCustomAdmin(admin.ModelAdmin):
     ordering = ('name', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('name', 'short_name',)
-    inlines = [OrganizationCustomInline]
+    inlines = [OrganizationCourseInline]
 
 
 @admin.register(OrganizationCourse)
