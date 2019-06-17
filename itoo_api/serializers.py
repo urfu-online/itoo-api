@@ -28,7 +28,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'active')
+        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
-        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'active')
+        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class OrganizationCourseSerializer(serializers.ModelSerializer):

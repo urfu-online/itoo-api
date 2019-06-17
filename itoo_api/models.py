@@ -22,6 +22,11 @@ class Program(TimeStampedModel):
         help_text='Please add only .PNG files for logo images. This logo will be used on Program logo.',
         null=True, blank=True, max_length=255
     )
+    image_background = models.ImageField(
+        upload_to='program_logos',
+        help_text='Please add only .PNG files for background images. This image will be used on Program background image.',
+        null=True, blank=True
+    )
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -58,6 +63,11 @@ class OrganizationCustom(TimeStampedModel):
         upload_to='org_logos',
         help_text='Please add only .PNG files for logo images. This logo will be used on Organization logo.',
         null=True, blank=True, max_length=255
+    )
+    image_background = models.ImageField(
+        upload_to='org_background',
+        help_text='Please add only .PNG files for background images. This image will be used on Organization background image.',
+        null=True, blank=True
     )
     active = models.BooleanField(default=True)
 
