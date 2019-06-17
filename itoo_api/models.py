@@ -23,7 +23,7 @@ class Program(TimeStampedModel):
         null=True, blank=True, max_length=255
     )
     image_background = models.ImageField(
-        upload_to='program_logos',
+        upload_to='program_background',
         help_text='Please add only .PNG files for background images. This image will be used on Program background image.',
         null=True, blank=True
     )
