@@ -1,7 +1,7 @@
 """
 URLS for itoo_api end points.
 """
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name (?P<slug>\w+)/$
 from rest_framework import routers
 from django.conf import settings
 
