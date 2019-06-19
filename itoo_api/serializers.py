@@ -56,7 +56,7 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 
 class OrganizationCourseSerializer(serializers.ModelSerializer):
     """ Serializes the OrganizationCustom object."""
-    course = serializers.SerializerMethodField()
+    courses = serializers.SerializerMethodField()
     # org_slug = serializers.CharField(source='org.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
