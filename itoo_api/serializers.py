@@ -37,12 +37,12 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
     program_slug = serializers.CharField(source='program.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
-        model = ProgramCourse
+        model = Program
         fields = ('courses', 'program_slug', 'active','course_id')
 
     def get_courses(self, obj):
-        course_key = CourseKey.from_string(obj.course_id)
-        courses = CourseOverview.get_from_id(course_key)
+        course_keys = [CourseKey.from_string(course_key) for course_key in obj.get_courses()]
+        courses = [CourseOverview.get_from_id(course_key) for course_key in course_keys]
         return CourseSerializer(courses, many=True).data
 
 
