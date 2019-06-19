@@ -53,8 +53,7 @@ class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
-    queryset = ProgramCourse.objects.all()  # pylint: disable=no-member
-    queryset = queryset.filter(active=True)
+    queryset = ProgramCourse.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = ProgramCourseSerializer
     lookup_field = 'program_id'
 

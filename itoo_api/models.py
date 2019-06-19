@@ -32,6 +32,9 @@ class Program(TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def get_courses(self):
+        return self.program_course_set.all()
+
     class Meta(object):
         """ Meta class for this Django model """
         verbose_name = u'Программа'
