@@ -33,7 +33,7 @@ class Program(TimeStampedModel):
         return self.name
 
     def get_courses(self):
-        return self.program_course_set.all()
+        return self.programcourse_set.all()
 
     class Meta(object):
         """ Meta class for this Django model """
