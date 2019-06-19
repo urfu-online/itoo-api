@@ -33,7 +33,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
-    courses = serializers.CourseSerializer(many=True)
+    courses = serializers.CourseSerializer()
     program_slug = serializers.CharField(source='program.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
