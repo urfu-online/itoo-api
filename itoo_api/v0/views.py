@@ -56,7 +56,7 @@ class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProgramCourse.objects.all()  # pylint: disable=no-member
     queryset = queryset.filter(active=True)
     serializer_class = ProgramCourseSerializer
-    lookup_field = 'modified'
+    lookup_field = 'program_id'
 
     # def get_queryset(self):
     #     queryset = ProgramCourse.objects.filter(active=True)
