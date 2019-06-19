@@ -89,7 +89,7 @@ class OrganizationCourseViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = OrganizationCourse.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationCourseSerializer
-    lookup_field = 'course_id'
+    lookup_field = 'slug'
 
 
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):

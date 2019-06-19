@@ -38,7 +38,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('name', 'courses', 'slug', 'active')
+        fields = ('name', 'slug', 'active', 'courses')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
@@ -57,16 +57,16 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 class OrganizationCourseSerializer(serializers.ModelSerializer):
     """ Serializes the OrganizationCustom object."""
     course = serializers.SerializerMethodField()
-    org_slug = serializers.CharField(source='org.slug')
+    # org_slug = serializers.CharField(source='org.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
-        model = OrganizationCourse
-        fields = ('course', 'org_slug', 'active','course_id')
+        model = OrganizationCustom
+        fields = ('name', 'slug', 'active','courses')
 
-    def get_course(self, obj):
-        course_key = CourseKey.from_string(obj.course_id)
-        course = CourseOverview.get_from_id(course_key)
-        return CourseSerializer(course).data
+    def get_courses(self, obj):
+        course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
+        courses = [CourseOverview.get_from_id(course_key) for course_key in course_keys]
+        return CourseSerializer(courses, many=True).data
 
 
 class CourseEnrollmentSerializer(serializers.ModelSerializer):
