@@ -77,6 +77,9 @@ class OrganizationCustom(TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def get_courses(self):
+        return self.organizationcourse_set.all()
+
     class Meta(object):
         """ Meta class for this Django model """
         verbose_name = u'Организация'
@@ -91,9 +94,6 @@ class OrganizationCourse(TimeStampedModel):
 
     def __str__(self):
         return self.course_id
-
-    def get_courses(self):
-        return self.organizationcourse_set.all()
 
     class Meta(object):
         """ Meta class for this Django model """
