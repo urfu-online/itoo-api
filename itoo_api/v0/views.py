@@ -87,7 +87,7 @@ class OrganizationCourseViewSet(viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
-    queryset = OrganizationCourse.objects.filter(active=True)  # pylint: disable=no-member
+    queryset = OrganizationCustom.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationCourseSerializer
     lookup_field = 'slug'
 
