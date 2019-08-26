@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
+from courseware.courses import get_course_by_id
 from organizations.models import Organization
 from rest_framework import viewsets, status, permissions
 from django.utils.decorators import method_decorator
@@ -34,7 +35,8 @@ from xmodule.error_module import ErrorDescriptor
 from xmodule.modulestore.django import modulestore
 
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
-from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer
+from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
+    CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer
 
 # from student.views import send_enrollment_email
 logger = logging.getLogger(__name__)
@@ -70,9 +72,9 @@ class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
 #     serializer_class = ProgramCourseSerializer
 #     lookup_field = 'program_id'
 
-    # def get_queryset(self):
-    #     queryset = ProgramCourse.objects.filter(active=True)
-    #     return queryset
+# def get_queryset(self):
+#     queryset = ProgramCourse.objects.filter(active=True)
+#     return queryset
 
 class OrganizationCustomViewSet(viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
@@ -127,8 +129,6 @@ class EnrollmentUserThrottle(UserRateThrottle, ApiKeyPermissionMixIn):
         return self.has_api_key_permissions(request) or super(EnrollmentUserThrottle, self).allow_request(request, view)
 
 
-
-
 @can_disable_rate_limit
 class EnrollmentViewSet(APIView, ApiKeyPermissionMixIn):
     authentication_classes = (JwtAuthentication, OAuth2AuthenticationAllowInactiveUser,
@@ -153,3 +153,10 @@ class EnrollmentViewSet(APIView, ApiKeyPermissionMixIn):
             return RESTResponse({'is_enrolled': True})
 
         return RESTResponse({'is_enrolled': False})
+
+
+class PaidCoursesViewSet(APIView):
+
+    def get(self, request, course_id=None):
+        course = get_course_by_id(course_id)
+        return RESTResponse({"course": str(course)})
