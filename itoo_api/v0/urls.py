@@ -5,6 +5,8 @@ URLS for itoo_api end points.
 from rest_framework import routers
 from django.conf import settings
 
+from course_modes.models import CourseMode
+
 from itoo_api.v0.views import ProgramViewSet, OrganizationViewSet, ProgramCourseViewSet, EnrollmentViewSet, \
     OrganizationCustomViewSet, OrganizationCourseViewSet, PaidCoursesViewSet
 
@@ -18,7 +20,7 @@ router.register(r'enrollment/{username},{course_key}$'.format(
 ),
     EnrollmentViewSet, base_name='enrollment')
 
-router.register(r'paid_courses/{course_key}', PaidCoursesViewSet)
+router.register(r'paid_courses/{course_key}', PaidCoursesViewSet, base_name=CourseMode)
 
 app_name = 'v0'
 urlpatterns = router.urls
