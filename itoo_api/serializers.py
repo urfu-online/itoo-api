@@ -2,6 +2,7 @@
 Data layer serialization operations.  Converts querysets to simple
 python containers (mainly arrays and dicts).
 """
+import logging
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from course_modes.models import CourseMode
@@ -12,6 +13,9 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
 class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=abstract-method
@@ -143,6 +147,8 @@ class CourseModeSerializer(serializers.ModelSerializer):
     #     return ModeSerializer(course_modes, many=True).data
 
     def get_course_modes(self, obj):
+        logger.warrning(obj.id)
+        logger.warrning("!!!!!!!!!!!!!!!!!!!!!!1111111")
         course_modes = CourseMode.modes_for_course(
             obj.id,
             only_selectable=False
