@@ -4,6 +4,7 @@ python containers (mainly arrays and dicts).
 """
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
+from course_modes.models import CourseMode
 from organizations.models import Organization
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -119,3 +120,10 @@ def serialize_programs(programs):
     Converts list of objects to list of dicts
     """
     return [serialize_program(program) for program in programs]
+
+
+class CourseModeSerializer(serializers.ModelSerializer):
+    """ Serializes the Organization object."""
+
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = CourseMode

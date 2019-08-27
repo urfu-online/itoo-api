@@ -159,10 +159,6 @@ class EnrollmentViewSet(APIView, ApiKeyPermissionMixIn):
 class PaidCoursesViewSet(APIView):
 
     def get(self, request, course_id=None):
-        course = get_course_by_id(course_id)
-        logger.warning('!!!!!!!!!!!')
-        logger.warning(course_id)
-        logger.warning(course)
-        logger.warning(request)
-        logger.warning('!!!!!!!!!!!')
+        course_key = CourseKey.from_string(course_id)
+        course = get_course_by_id(course_key)
         return RESTResponse({"course": str(course)})
