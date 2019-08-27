@@ -16,7 +16,7 @@ from organizations.models import Organization
 from rest_framework import viewsets, status, permissions
 from django.utils.decorators import method_decorator
 from rest_framework.exceptions import NotFound
-from rest_framework.response import Response as RESTResponse
+from rest_framework.response import Response as RESTResponse, Response
 from enrollment.serializers import CourseSerializer
 from enrollment import api
 from rest_framework.decorators import api_view
@@ -174,11 +174,10 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
-@api_view
-def AddEnrollmentViewSet(self, request):
-    user_id = self.request.query_params.get('user_id')
-    course_id = self.request.query_params.get('course_id')
-    mode = self.request.query_params.get('mode')
+@api_view()
+def add_enroll(self, request, course_id=None, user_id=None):
+    username = user_id or request.user.username
+    mode = "verified"
     logger.warning(user_id)
-    api.add_enrollment(user_id, course_id, mode)
-    return RESTResponse({"course": "fdfdfd"})
+    api.add_enrollment(username, course_id, mode)
+    return Response({"message": "Hello, world!"})
