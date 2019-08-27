@@ -37,7 +37,7 @@ from xmodule.modulestore.django import modulestore
 
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
-    CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer
+    CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer, CourseModeSerializer
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
@@ -165,11 +165,11 @@ class PaidCoursesViewSet(APIView):
         return RESTResponse({"course": str(course)})
 
 
-class PaidCoursesViewSet2(viewsets.GenericViewSet):
+class PaidCoursesViewSet2(viewsets.ReadOnlyModelViewSet):
 
     queryset = CourseOverview.objects.all # pylint: disable=no-member
-    serializer_class = CourseSerializer
-    lookup_field = 'course_id'
+    serializer_class = CourseModeSerializer
+    lookup_field = 'id'
 
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
