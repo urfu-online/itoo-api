@@ -178,7 +178,7 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
 def AddEnrollmentViewSet(self, request):
     user_id = self.request.query_params.get('user_id')
     course_id = self.request.query_params.get('course_id')
-    mode = self.request.query_params.get('mode')
+    mode = "verified"
     logger.warning(user_id)
     api.add_enrollment(user_id, course_id, mode)
     return Response({"message": "Hello, world!"})
