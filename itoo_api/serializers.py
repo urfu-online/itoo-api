@@ -132,7 +132,7 @@ class CourseModeSerializer(serializers.ModelSerializer):
     course_name = serializers.CharField(source="display_name_with_default")
 
     class Meta:
-        model = CourseOverview
+        model = CourseMode
         fields = ('course_id','course_name','course_modes')
 
     def get_courses(self, obj):
