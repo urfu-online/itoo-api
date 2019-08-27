@@ -138,7 +138,8 @@ class CourseModeSerializer(serializers.ModelSerializer):
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
         # courses = [CourseOverview.get_from_id(course_key) for course_key in course_keys]
-        course_modes = [CourseMode.modes_for_course(course_key, only_selectable=False) for course_key in course_keys]
+        # qs = CourseMode.objects.filter(mode_slug="verified")
+        course_modes = [CourseMode.modes_for_course(course_key, only_selectable=False) for course_key in course_keys].filter(mode_slug="verified")
         return ModeSerializer(course_modes, many=True).data
 
     def get_course_modes(self, obj):
