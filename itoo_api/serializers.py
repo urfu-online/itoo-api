@@ -141,8 +141,15 @@ class CourseModeSerializer(serializers.ModelSerializer):
         course_modes = [CourseMode.modes_for_course(course_key, only_selectable=False) for course_key in course_keys]
         return ModeSerializer(course_modes, many=True).data
 
-    # def get_course_modes(self, obj):
-
+    def get_course_modes(self, obj):
+        course_modes = CourseMode.modes_for_course(
+            obj.id,
+            only_selectable=False
+        )
+        return [
+            ModeSerializer(mode).data
+            for mode in course_modes
+        ]
 
 
 class StringListField(serializers.CharField):
