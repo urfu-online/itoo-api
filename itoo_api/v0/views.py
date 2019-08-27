@@ -174,7 +174,7 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
-@api_view
+@api_view()
 def AddEnrollmentViewSet(self, request):
     user_id = self.request.query_params.get('user_id')
     course_id = self.request.query_params.get('course_id')
