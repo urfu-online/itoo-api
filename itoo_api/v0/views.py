@@ -169,7 +169,7 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = CourseOverview.objects.all() # pylint: disable=no-member
     serializer_class = CourseModeSerializer
-    lookup_field = 'course_id'
+    lookup_field = 'id'
 
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
