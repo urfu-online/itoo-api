@@ -13,6 +13,7 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
+from enrollment import api
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -147,7 +148,7 @@ class CourseModeSerializer(serializers.ModelSerializer):
     #     return ModeSerializer(course_modes, many=True).data
 
     def get_course_modes(self, obj):
-        logger.warning(obj.id)
+        logger.warning(api.get_course_enrollment_details(obj.id))
         logger.warning("!!!!!!!!!!!!!!!!!!!!!!1111111")
         course_modes = CourseMode.modes_for_course(
             obj.id,
