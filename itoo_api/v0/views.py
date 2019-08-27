@@ -179,5 +179,4 @@ class AddEnrollmentViewSet(APIView):
         user_id = self.request.query_params.get('user_id')
         course_id = self.request.query_params.get('course_id')
         mode = self.request.query_params.get('mode')
-        add_enroll = api.add_enrollment(user_id, course_id, mode)
-        return RESTResponse({"test_user": str(add_enroll)})
+        api.add_enrollment(user_id, course_id, mode)
