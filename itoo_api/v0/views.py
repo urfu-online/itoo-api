@@ -17,6 +17,7 @@ from rest_framework import viewsets, status, permissions
 from django.utils.decorators import method_decorator
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response as RESTResponse
+from enrollment.serializers import CourseSerializer
 
 from edx_rest_framework_extensions.authentication import JwtAuthentication
 from rest_framework.throttling import UserRateThrottle
@@ -162,3 +163,15 @@ class PaidCoursesViewSet(APIView):
         course_key = CourseKey.from_string(course_id)
         course = get_course_by_id(course_key)
         return RESTResponse({"course": str(course)})
+
+
+class PaidCoursesViewSet2(viewsets.GenericViewSet):
+
+    queryset = CourseOverview.objects.all # pylint: disable=no-member
+    serializer_class = CourseSerializer
+    lookup_field = 'course_id'
+
+    # def get(self, request, course_id=None):
+    #     course_key = CourseKey.from_string(course_id)
+    #     course = get_course_by_id(course_key)
+    #     return RESTResponse({"course": str(course)})

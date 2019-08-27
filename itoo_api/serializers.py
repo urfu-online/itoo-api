@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
 
 
-class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract-method
+class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=abstract-method
     """
     Serialize a course descriptor and related information.
     """
@@ -44,7 +44,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
         courses = [CourseOverview.get_from_id(course_key) for course_key in course_keys]
-        return CourseSerializer(courses, many=True).data
+        return CourseSerializerCatalog(courses, many=True).data
 
 
 class OrganizationCustomSerializer(serializers.ModelSerializer):
@@ -123,7 +123,7 @@ def serialize_programs(programs):
 
 
 class CourseModeSerializer(serializers.ModelSerializer):
-    """ Serializes the Organization object."""
+    """ Serializes the CourseMode object."""
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = CourseMode
