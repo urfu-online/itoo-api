@@ -128,12 +128,12 @@ class CourseModeSerializer(serializers.ModelSerializer):
     # courses = serializers.SerializerMethodField()
     course_modes = serializers.SerializerMethodField()
     # program_slug = serializers.CharField(source='program.slug')
-    # course_id = serializers.CharField(source="id")
-    # course_name = serializers.CharField(source="display_name_with_default")
+    course_id = serializers.CharField(source="id")
+    course_name = serializers.CharField(source="display_name_with_default")
 
     class Meta:
-        model = CourseMode
-        fields = ('course','course_modes')
+        model = CourseOverview
+        fields = ('id','display_name_with_default','course_modes')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]

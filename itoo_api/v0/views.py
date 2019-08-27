@@ -167,7 +167,7 @@ class PaidCoursesViewSet(APIView):
 
 class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
 
-    queryset = CourseMode.objects.all() # pylint: disable=no-member
+    queryset = CourseOverview.objects.all() # pylint: disable=no-member
     serializer_class = CourseModeSerializer
     lookup_field = 'id'
 
