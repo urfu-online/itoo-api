@@ -18,6 +18,7 @@ from django.utils.decorators import method_decorator
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response as RESTResponse
 from enrollment.serializers import CourseSerializer
+from enrollment import api
 
 from edx_rest_framework_extensions.authentication import JwtAuthentication
 from rest_framework.throttling import UserRateThrottle
@@ -171,7 +172,12 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CourseModeSerializer
     lookup_field = 'id'
 
-    # def get(self, request, course_id=None):
-    #     course_key = CourseKey.from_string(course_id)
-    #     course = get_course_by_id(course_key)
-    #     return RESTResponse({"course": str(course)})
+
+class AddEnrollmentViewSet(APIView):
+
+    def get(self, request):
+        user_id = self.request.query_params.get('user_id')
+        course_id = self.request.query_params.get('course_id')
+        mode = self.request.query_params.get('mode')
+        add_enroll = api.add_enrollment(user_id, course_id, mode)
+        return RESTResponse({"test_user": str(add_enroll)})

@@ -148,8 +148,6 @@ class CourseModeSerializer(serializers.ModelSerializer):
     #     return ModeSerializer(course_modes, many=True).data
 
     def get_course_modes(self, obj):
-        logger.warning(api.get_course_enrollment_details(obj.id))
-        logger.warning("!!!!!!!!!!!!!!!!!!!!!!1111111")
         course_modes = CourseMode.modes_for_course(
             obj.id,
             only_selectable=False
