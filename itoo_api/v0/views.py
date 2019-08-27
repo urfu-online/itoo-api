@@ -165,7 +165,7 @@ class PaidCoursesViewSet(APIView):
         return RESTResponse({"course": str(course)})
 
 
-class PaidCoursesViewSet2(viewsets.ReadOnlyModelViewSet):
+class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = CourseOverview.objects.all # pylint: disable=no-member
     serializer_class = CourseModeSerializer
