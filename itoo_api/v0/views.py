@@ -175,10 +175,9 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 @api_view()
-def add_enroll(self, request):
-    user_id = self.request.query_params.get('user_id')
-    course_id = self.request.query_params.get('course_id')
+def add_enroll(self, request, course_id=None, user_id=None):
+    username = user_id or request.user.username
     mode = "verified"
     logger.warning(user_id)
-    api.add_enrollment(user_id, course_id, mode)
+    api.add_enrollment(username, course_id, mode)
     return Response({"message": "Hello, world!"})
