@@ -16,7 +16,7 @@ from organizations.models import Organization
 from rest_framework import viewsets, status, permissions
 from django.utils.decorators import method_decorator
 from rest_framework.exceptions import NotFound
-from rest_framework.response import Response as RESTResponse
+from rest_framework.response import Response as RESTResponse, Response
 from enrollment.serializers import CourseSerializer
 from enrollment import api
 from rest_framework.decorators import api_view
@@ -181,4 +181,4 @@ def AddEnrollmentViewSet(self, request):
     mode = self.request.query_params.get('mode')
     logger.warning(user_id)
     api.add_enrollment(user_id, course_id, mode)
-    return RESTResponse({"course": "fdfdfd"})
+    return Response({"message": "Hello, world!"})
