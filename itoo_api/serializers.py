@@ -133,7 +133,7 @@ class CourseModeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseOverview
-        fields = ('course_id','course_name')
+        fields = ('course_id','course_name','course_modes')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
