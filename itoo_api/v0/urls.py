@@ -16,7 +16,7 @@ router.register(r'link_courses_program', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationCustomViewSet)
 router.register(r'link_courses_org', OrganizationCourseViewSet)
 router.register(r'paid_course_cus', PaidCoursesCusViewSet)
-router.register(r'add_enroll/(?P<user_id>\d+)/(?P<course_id>\d+)/(?P<mode>\d+)/?$', AddEnrollmentViewSet, base_name='add_enroll')
+router.register(r'add_enroll/(?P<user_id>\d+)&(?P<course_id>\d+)&(?P<mode>\d+)/?$', AddEnrollmentViewSet, base_name='add_enroll')
 router.register(r'enrollment/{username},{course_key}$'.format(
     username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN
 ),

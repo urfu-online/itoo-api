@@ -19,6 +19,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response as RESTResponse
 from enrollment.serializers import CourseSerializer
 from enrollment import api
+from rest_framework.decorators import api_view
 
 from edx_rest_framework_extensions.authentication import JwtAuthentication
 from rest_framework.throttling import UserRateThrottle
@@ -173,11 +174,11 @@ class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
-class AddEnrollmentViewSet(APIView):
-
-    def get(self, request):
-        user_id = self.request.query_params.get('user_id')
-        course_id = self.request.query_params.get('course_id')
-        mode = self.request.query_params.get('mode')
-        logger.warning(user_id)
-        api.add_enrollment(user_id, course_id, mode)
+@api_view
+def AddEnrollmentViewSet(self, request):
+    user_id = self.request.query_params.get('user_id')
+    course_id = self.request.query_params.get('course_id')
+    mode = self.request.query_params.get('mode')
+    logger.warning(user_id)
+    api.add_enrollment(user_id, course_id, mode)
+    return RESTResponse({"course": "fdfdfd"})
