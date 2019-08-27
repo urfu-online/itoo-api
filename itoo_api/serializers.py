@@ -135,11 +135,14 @@ class CourseModeSerializer(serializers.ModelSerializer):
         model = CourseOverview
         fields = ('course_id','course_name','course_modes')
 
-    def get_course_modes(self, obj):
-        course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_course()]
+    def get_courses(self, obj):
+        course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
         # courses = [CourseOverview.get_from_id(course_key) for course_key in course_keys]
-        course_modes = [CourseMode.modes_for_course(course_key, include_expired=self.include_expired, only_selectable=False) for course_key in course_keys]
+        course_modes = [CourseMode.modes_for_course(course_key, only_selectable=False) for course_key in course_keys]
         return ModeSerializer(course_modes, many=True).data
+
+    # def get_course_modes(self, obj):
+
 
 
 class StringListField(serializers.CharField):
