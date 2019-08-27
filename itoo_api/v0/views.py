@@ -39,6 +39,7 @@ from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, Prog
     CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer
 
 # from student.views import send_enrollment_email
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
@@ -159,4 +160,9 @@ class PaidCoursesViewSet(APIView):
 
     def get(self, request, course_id=None):
         course = get_course_by_id(course_id)
+        logger.warning('!!!!!!!!!!!')
+        logger.warning(course_id)
+        logger.warning(course)
+        logger.warning(request)
+        logger.warning('!!!!!!!!!!!')
         return RESTResponse({"course": str(course)})

@@ -19,7 +19,7 @@ class CourseSerializer(serializers.ModelSerializer):  # pylint: disable=abstract
     """
     class Meta:
         model = CourseOverview
-        fields = ('id','display_name','course_image_url','start_display','catalog_visibility')
+        fields = ('id','display_name','course_image_url','start_display','catalog_visibility') # description field ????
 
 
 # pylint: disable=too-few-public-methods
