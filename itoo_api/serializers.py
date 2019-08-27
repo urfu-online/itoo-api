@@ -147,8 +147,8 @@ class CourseModeSerializer(serializers.ModelSerializer):
     #     return ModeSerializer(course_modes, many=True).data
 
     def get_course_modes(self, obj):
-        logger.warrning(obj.id)
-        logger.warrning("!!!!!!!!!!!!!!!!!!!!!!1111111")
+        logger.warning(obj.id)
+        logger.warning("!!!!!!!!!!!!!!!!!!!!!!1111111")
         course_modes = CourseMode.modes_for_course(
             obj.id,
             only_selectable=False
