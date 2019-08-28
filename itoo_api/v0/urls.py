@@ -7,7 +7,7 @@ from django.conf import settings
 
 from course_modes.models import CourseMode
 
-from itoo_api.v0.views import ProgramViewSet, OrganizationViewSet, ProgramCourseViewSet, EnrollmentViewSet, \
+from itoo_api.v0.views import ProgramViewSet, ProgramCourseViewSet, \
     OrganizationCustomViewSet, OrganizationCourseViewSet, PaidCoursesViewSet, PaidCoursesCusViewSet, add_enroll
 
 router = routers.SimpleRouter()
@@ -19,10 +19,6 @@ router.register(r'paid_course_cus', PaidCoursesCusViewSet)
 # router.register(r'add_enroll/(?P<user_id>\d+)&(?P<course_id>\d+)&(?P<mode>\d+)/?$', AddEnrollmentViewSet, base_name='add_enroll')
 router.register(r'add_enroll/{username},{course_key}$'.format(
     username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN), add_enroll, base_name='add_enroll')
-router.register(r'enrollment/{username},{course_key}$'.format(
-    username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN
-),
-    EnrollmentViewSet, base_name='enrollment')
 
 router.register(r'paid_courses/{course_key}', PaidCoursesViewSet, base_name=CourseMode)
 

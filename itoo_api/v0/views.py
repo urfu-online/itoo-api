@@ -14,32 +14,14 @@ from openedx.core.djangoapps.content.course_overviews.models import CourseOvervi
 from courseware.courses import get_course_by_id
 from organizations.models import Organization
 from rest_framework import viewsets, status, permissions
-from django.utils.decorators import method_decorator
-from rest_framework.exceptions import NotFound
 from rest_framework.response import Response as RESTResponse, Response
-from enrollment.serializers import CourseSerializer
 from enrollment import api
 from rest_framework.decorators import api_view
-
-from edx_rest_framework_extensions.authentication import JwtAuthentication
-from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
-from openedx.core.djangoapps.cors_csrf.authentication import SessionAuthenticationCrossDomainCsrf
-from openedx.core.lib.api.permissions import ApiKeyHeaderPermission, ApiKeyHeaderPermissionIsAuthenticated
-from openedx.core.djangoapps.cors_csrf.decorators import ensure_csrf_cookie_cross_domain
-from openedx.core.lib.api.authentication import (
-    OAuth2AuthenticationAllowInactiveUser,
-    SessionAuthenticationAllowInactiveUser
-)
-from util.disable_rate_limit import can_disable_rate_limit
 
-from student.models import CourseEnrollment
-from xmodule.error_module import ErrorDescriptor
-from xmodule.modulestore.django import modulestore
-
-from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
+from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
-    CourseEnrollmentSerializer, UserEnrollmentSerializer, OrganizationCustomSerializer, OrganizationCourseSerializer, CourseModeSerializer
+    OrganizationCustomSerializer, OrganizationCourseSerializer, CourseModeSerializer
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
@@ -106,58 +88,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrganizationSerializer
     lookup_field = 'short_name'
 
-
-class ApiKeyPermissionMixIn(object):
-    """
-    This mixin is used to provide a convenience function for doing individual permission checks
-    for the presence of API keys.
-    """
-
-    def has_api_key_permissions(self, request):
-        """
-        Checks to see if the request was made by a server with an API key.
-        Args:
-            request (Request): the request being made into the view
-        Return:
-            True if the request has been made with a valid API key
-            False otherwise
-        """
-        return ApiKeyHeaderPermission().has_permission(request, self)
-
-
-class EnrollmentUserThrottle(UserRateThrottle, ApiKeyPermissionMixIn):
-    """Limit the number of requests users can make to the enrollment API."""
-    rate = '40/minute'
-
-    def allow_request(self, request, view):
-        return self.has_api_key_permissions(request) or super(EnrollmentUserThrottle, self).allow_request(request, view)
-
-
-@can_disable_rate_limit
-class EnrollmentViewSet(APIView, ApiKeyPermissionMixIn):
-    authentication_classes = (JwtAuthentication, OAuth2AuthenticationAllowInactiveUser,
-                              SessionAuthenticationAllowInactiveUser,)
-    permission_classes = ApiKeyHeaderPermissionIsAuthenticated,
-    throttle_classes = EnrollmentUserThrottle,
-
-    @method_decorator(ensure_csrf_cookie_cross_domain)
-    def get(self, request, course_id=None, username=None):
-        username = username or request.user.username
-
-        # TODO Implement proper permissions
-        if request.user.username != username and not self.has_api_key_permissions(request) \
-                and not request.user.is_superuser:
-            # Return a 404 instead of a 403 (Unauthorized). If one user is looking up
-            # other users, do not let them deduce the existence of an enrollment.
-            return RESTResponse(status=status.HTTP_404_NOT_FOUND)
-
-        enrollment = CourseEnrollment.objects.get(user=username, course_id=course_id)
-
-        if enrollment:
-            return RESTResponse({'is_enrolled': True})
-
-        return RESTResponse({'is_enrolled': False})
-
+# acquiring
 
 class PaidCoursesViewSet(APIView):
 

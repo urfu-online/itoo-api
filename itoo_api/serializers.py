@@ -12,7 +12,7 @@ from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
-from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse
+from itoo_api.models import Program, OrganizationCustom
 from enrollment import api
 
 logging.basicConfig()
