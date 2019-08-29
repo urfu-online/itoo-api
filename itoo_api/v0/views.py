@@ -97,6 +97,13 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 class PaidCoursesRoleViewSet(APIView):
     serializer_class = TestdataSerializer
 
+    def get(self, request, course_id=None, user_id=None):
+        username = user_id or request.user.username
+        mode = "verified"
+        logger.warning(user_id)
+        api.add_enrollment(username, course_id, mode)
+        return RESTResponse({"message": "Hello, world!"})
+
     def post(self, request, *args, **kwargs):
         """
         POST /api/itoo_api/v0/paid_courses/
