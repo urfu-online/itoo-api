@@ -94,7 +94,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 
 # acquiring
 
-class PaidCoursesViewSet(APIView):
+class PaidCoursesRoleViewSet(APIView):
 
     def post(self, request):
         """
