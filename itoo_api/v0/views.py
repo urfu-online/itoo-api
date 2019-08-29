@@ -25,7 +25,7 @@ from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError
 
 from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
-    OrganizationCustomSerializer, OrganizationCourseSerializer, CourseModeSerializer
+    OrganizationCustomSerializer, OrganizationCourseSerializer, CourseModeSerializer, TestdataSerializer
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
@@ -95,8 +95,9 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 # acquiring
 
 class PaidCoursesRoleViewSet(APIView):
+    serializer_class = TestdataSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         """
         POST /api/itoo_api/v0/paid_courses/
         {
@@ -106,9 +107,13 @@ class PaidCoursesRoleViewSet(APIView):
         }
 
         """
-        username = request.data.get('user')
-        course_id = request.data.get('course_id')
-        mode = request.data.get('mode')
+        serializer = TestdataSerializer(data=request.DATA)
+        serializer.is_valid()
+        data = serializer.validated_data
+
+        username = data.get('user')
+        course_id = data.get('course_id')
+        mode = data.get('mode')
 
         if not course_id:
             return Response(
@@ -136,7 +141,7 @@ class PaidCoursesRoleViewSet(APIView):
                 }
             )
         try:
-            is_active = request.data.get('is_active')
+            is_active = data.get('is_active')
             # Check if the requested activation status is None or a Boolean
             if is_active is not None and not isinstance(is_active, bool):
                 return Response(
