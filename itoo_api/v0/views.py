@@ -19,6 +19,7 @@ from enrollment import api
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
+from django.shortcuts import render
 
 from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
@@ -94,6 +95,12 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 class PaidCoursesViewSet(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'templates/paid_test.html'
+
+    def get(self, request):
+        return render(
+            request,
+            'templates/paid_test.html'
+        )
 
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
