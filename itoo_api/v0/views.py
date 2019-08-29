@@ -18,6 +18,7 @@ from rest_framework.response import Response as RESTResponse, Response
 from enrollment import api
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.renderers import TemplateHTMLRenderer
 
 from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
@@ -91,11 +92,13 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 # acquiring
 
 class PaidCoursesViewSet(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'templates/paid_test.html'
 
-    def get(self, request, course_id=None):
-        course_key = CourseKey.from_string(course_id)
-        course = get_course_by_id(course_key)
-        return RESTResponse({"course": str(course)})
+    # def get(self, request, course_id=None):
+    #     course_key = CourseKey.from_string(course_id)
+    #     course = get_course_by_id(course_key)
+    #     return RESTResponse({"course": str(course)})
 
 
 class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):

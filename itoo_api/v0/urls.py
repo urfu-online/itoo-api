@@ -20,7 +20,7 @@ router.register(r'paid_course_cus', PaidCoursesCusViewSet)
 router.register(r'add_enroll/{username},{course_key}$'.format(
     username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN), add_enroll, base_name='add_enroll')
 
-router.register(r'paid_courses/{course_key}', PaidCoursesViewSet, base_name=CourseMode)
+router.register(r'paid_courses', PaidCoursesViewSet, base_name=CourseMode)
 
 app_name = 'v0'
 urlpatterns = router.urls
