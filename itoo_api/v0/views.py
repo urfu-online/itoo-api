@@ -18,7 +18,6 @@ from rest_framework.response import Response as RESTResponse, Response
 from enrollment import api
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
-from django.views import View
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
@@ -95,7 +94,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 
 # acquiring
 
-class PaidCoursesRoleViewSet(View):
+class PaidCoursesRoleViewSet(APIView):
 
     def post(self, request):
         """
