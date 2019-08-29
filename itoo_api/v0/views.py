@@ -95,8 +95,6 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 # acquiring
 
 class PaidCoursesViewSet(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'templates/paid_test.html'
 
     def post(self, request):
         """
