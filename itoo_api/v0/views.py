@@ -98,8 +98,8 @@ class PaidCoursesRoleViewSet(APIView):
     serializer_class = TestdataSerializer
 
     def get(self, request, username=None, course_key=None):
-        username = username or request.user.username
-        course_key = course_key
+        username = request.GET.get('username')
+        course_key = request.GET.get('course_key')
         mode = "verified"
         logger.warning(username)
         logger.warning(course_key)
