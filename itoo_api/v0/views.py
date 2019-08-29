@@ -100,6 +100,7 @@ class PaidCoursesRoleViewSet(APIView):
     def get(self, request, username=None, course_key=None):
         username = request.GET.get('username')
         course_key = request.GET.get('course_key')
+        course_key = CourseKey.from_string(course_key)
         mode = "verified"
         logger.warning(username)
         logger.warning(course_key)
