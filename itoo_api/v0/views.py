@@ -99,8 +99,10 @@ class PaidCoursesRoleViewSet(APIView):
 
     def get(self, request, username=None, course_key=None):
         username = username or request.user.username
+        course_key = course_key
         mode = "verified"
         logger.warning(username)
+        logger.warning(course_key)
         api.add_enrollment(username, course_key, mode)
         return RESTResponse({"message": "Hello, world!"})
 
@@ -134,7 +136,7 @@ class PaidCoursesRoleViewSet(APIView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={
-                    "message": u"No course '{course_id}' found for enrollment".format(course_id=course_key)
+                    "message": u"No course '{course_key}' found for enrollment".format(course_key=course_key)
                 }
             )
         try:
