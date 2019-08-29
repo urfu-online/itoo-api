@@ -20,6 +20,8 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
+from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
 
 from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
@@ -96,11 +98,88 @@ class PaidCoursesViewSet(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'templates/paid_test.html'
 
-    def get(self, request):
-        return render(
-            request,
-            'templates/paid_test.html'
-        )
+    def post(self, request):
+        """
+        POST /api/itoo_api/v0/paid_courses/
+        {
+            "user": "Bob"
+            "mode": "verified",
+            "course_id": "edX/DemoX/Demo_Course",
+        }
+
+        """
+        username = request.data.get('user')
+        course_id = request.data.get('course_id')
+        mode = request.data.get('mode')
+
+        if not course_id:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"message": u"Course ID must be specified to create a new enrollment."}
+            )
+
+        try:
+            course_id = CourseKey.from_string(course_id)
+        except InvalidKeyError:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={
+                    "message": u"No course '{course_id}' found for enrollment".format(course_id=course_id)
+                }
+            )
+        try:
+            # Lookup the user, instead of using request.user, since request.user may not match the username POSTed.
+            user = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return Response(
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+                data={
+                    'message': u'The user {} does not exist.'.format(username)
+                }
+            )
+        try:
+            is_active = request.data.get('is_active')
+            # Check if the requested activation status is None or a Boolean
+            if is_active is not None and not isinstance(is_active, bool):
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        'message': (u"'{value}' is an invalid enrollment activation status.").format(value=is_active)
+                    }
+                )
+        except : pass
+
+        enrollment = api.get_enrollment(username, unicode(course_id))
+        mode_changed = enrollment and mode is not None and enrollment['mode'] != mode
+        active_changed = enrollment and is_active is not None and enrollment['is_active'] != is_active
+
+        if (mode_changed or active_changed):
+            if mode_changed and active_changed and not is_active:
+                # if the requester wanted to deactivate but specified the wrong mode, fail
+                # the request (on the assumption that the requester had outdated information
+                # about the currently active enrollment).
+                msg = u"Enrollment mode mismatch: active mode={}, requested mode={}. Won't deactivate.".format(
+                    enrollment["mode"], mode
+                )
+                logger.warning(msg)
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": msg})
+
+            response = api.update_enrollment(
+                username,
+                unicode(course_id),
+                mode=mode,
+                is_active=is_active
+            )
+        else:
+            # Will reactivate inactive enrollments.
+            response = api.add_enrollment(
+                username,
+                unicode(course_id),
+                mode=mode,
+                is_active=is_active
+            )
+        return Response(response)
+
 
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
