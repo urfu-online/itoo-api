@@ -119,22 +119,22 @@ class PaidCoursesRoleViewSet(APIView):
         data = serializer.validated_data
 
         username = data.get('user')
-        course_id = data.get('course_id')
+        course_key = data.get('course_key')
         mode = data.get('mode')
 
-        if not course_id:
+        if not course_key:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={"message": u"Course ID must be specified to create a new enrollment."}
             )
 
         try:
-            course_id = CourseKey.from_string(course_id)
+            course_key = CourseKey.from_string(course_key)
         except InvalidKeyError:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={
-                    "message": u"No course '{course_id}' found for enrollment".format(course_id=course_id)
+                    "message": u"No course '{course_id}' found for enrollment".format(course_id=course_key)
                 }
             )
         try:
@@ -159,7 +159,7 @@ class PaidCoursesRoleViewSet(APIView):
                 )
         except : pass
 
-        enrollment = api.get_enrollment(username, unicode(course_id))
+        enrollment = api.get_enrollment(username, unicode(course_key))
         mode_changed = enrollment and mode is not None and enrollment['mode'] != mode
         active_changed = enrollment and is_active is not None and enrollment['is_active'] != is_active
 
@@ -176,7 +176,7 @@ class PaidCoursesRoleViewSet(APIView):
 
             response = api.update_enrollment(
                 username,
-                unicode(course_id),
+                unicode(course_key),
                 mode=mode,
                 is_active=is_active
             )
@@ -184,7 +184,7 @@ class PaidCoursesRoleViewSet(APIView):
             # Will reactivate inactive enrollments.
             response = api.add_enrollment(
                 username,
-                unicode(course_id),
+                unicode(course_key),
                 mode=mode,
                 is_active=is_active
             )

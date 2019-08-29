@@ -193,5 +193,5 @@ class ModeSerializer(serializers.Serializer):
 
 class TestdataSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
-    course_id = serializers.CharField(max_length=2048)
+    course_key = serializers.CharField(max_length=2048)
     mode = serializers.CharField(max_length=255)
