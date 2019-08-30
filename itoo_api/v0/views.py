@@ -103,8 +103,9 @@ class CourseModesChange(APIView):
         'sku': None,
     """
 
-    def get(self, request, course_id_get):
+    def get(self, request):
         launch_params = {
+            "course_id": request.GET.get('course_id', None),
             "mode_slug": request.GET.get('mode_slug', u'audit'),
             "mode_display_name": request.GET.get('mode_display_name', u'Default display name'),
             "min_price": request.GET.get('min_price', 0),
@@ -112,11 +113,17 @@ class CourseModesChange(APIView):
             "currency": request.GET.get('currency', u'usd'),
             "sku": request.GET.get('sku', None)
         }
+        mode_slug = launch_params['mode_slug']
+        mode_display_name = launch_params['mode_display_name']
+        min_price = launch_params['min_price']
+        suggested_prices = launch_params['suggested_prices']
+        sku = launch_params['sku']
 
-        logger.warning(course_id_get)
-        course_key = CourseKey.from_string(course_id_get)
+        course_key_get = launch_params['course_id']
+        logger.warning(course_key_get)
+        course_key = CourseKey.from_string(course_key_get)
         logger.warning(course_key)
-        CourseMode.objects.get_or_create(course_id=course_id_get, **launch_params)
+        CourseMode.objects.get_or_create(course_id=course_key, mode_slug=mode_slug, mode_display_name=mode_display_name, min_price=min_price, suggested_prices=suggested_prices, sku=sku)
 
         return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
