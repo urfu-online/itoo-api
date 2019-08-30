@@ -10,5 +10,5 @@ app_name = 'acquiring'
 urlpatterns = [
     url(r'paid_courses_role/', PaidCoursesRoleViewSet.as_view(), name='paid_courses_role'),
     url(r'course_mode_change/',CourseModesChange.as_view(), name='course_mode_change'),
-    router.urls
+    url(r'^', include(router.urls)),
 ]
