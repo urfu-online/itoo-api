@@ -117,8 +117,8 @@ class CourseModesChange(APIView):
 
 
         course_id = launch_params['course_id']
-        course_id = CourseKey.from_string(course_id)
-        CourseMode.objects.get_or_create(course_id=course_id, **launch_params)
+        course_key = CourseKey.from_string(course_id)
+        CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
 
         return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
