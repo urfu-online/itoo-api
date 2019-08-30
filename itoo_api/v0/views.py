@@ -103,9 +103,8 @@ class CourseModesChange(APIView):
         'sku': None,
     """
 
-    def get(self, request):
+    def get(self, request, course_id_get=None):
         launch_params = {
-            "course_id": request.GET.get('course_id', None),
             "mode_slug": request.GET.get('mode_slug', u'audit'),
             "mode_display_name": request.GET.get('mode_display_name', u'Default display name'),
             "min_price": request.GET.get('min_price', 0),
@@ -114,9 +113,8 @@ class CourseModesChange(APIView):
             "sku": request.GET.get('sku', None)
         }
 
-        course_key_get = launch_params['course_id']
-        logger.warning(course_key_get)
-        course_key = CourseKey.from_string(course_key_get)
+        logger.warning(course_id_get)
+        course_key = CourseKey.from_string(course_id_get)
         logger.warning(course_key)
         CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
 
