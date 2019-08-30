@@ -105,7 +105,7 @@ class CourseModesChange(APIView):
 
     def get(self, request):
         launch_params = {
-            "course_key": request.GET.get('course_key', None),
+            "course_id": request.GET.get('course_id', None),
             "mode_slug": request.GET.get('mode_slug', u'audit'),
             "mode_display_name": request.GET.get('mode_display_name', u'Default display name'),
             "min_price": request.GET.get('min_price', 0),
@@ -116,9 +116,9 @@ class CourseModesChange(APIView):
 
 
 
-        course_id = launch_params['course_key']
-        course_key = CourseKey.from_string(course_id)
-        CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
+        course_id = launch_params['course_id']
+        course_id = CourseKey.from_string(course_id)
+        CourseMode.objects.get_or_create(course_id=course_id, **launch_params)
 
         return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
