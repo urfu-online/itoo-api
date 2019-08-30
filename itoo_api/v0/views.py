@@ -114,15 +114,15 @@ class CourseModesChange(APIView):
             "sku": request.GET.get('sku', None)
         }
 
-
-
-        course_id = launch_params['course_id']
-        course_key = CourseKey.from_string(course_id)
+        course_key_get = launch_params['course_id']
+        logger.warning(course_key_get)
+        course_key = CourseKey.from_string(course_key_get)
+        logger.warning(course_key)
         CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
 
         return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
-            course=course_id
+            course=course_key
         ))
 
 class PaidCoursesRoleViewSet(APIView):
