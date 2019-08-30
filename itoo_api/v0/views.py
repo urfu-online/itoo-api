@@ -116,7 +116,7 @@ class CourseModesChange(APIView):
 
 
 
-        course_id = [launch_params[x] for x in "course_key"]
+        course_id = launch_params['course_key']
         course_key = CourseKey.from_string(course_id)
         CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
 
