@@ -103,7 +103,7 @@ class CourseModesChange(APIView):
         'sku': None,
     """
 
-    def get(self, request, course_id_get=None):
+    def get(self, request, course_id_get):
         launch_params = {
             "mode_slug": request.GET.get('mode_slug', u'audit'),
             "mode_display_name": request.GET.get('mode_display_name', u'Default display name'),
