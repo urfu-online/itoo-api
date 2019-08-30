@@ -22,6 +22,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
+from rest_framework.permissions import IsAuthenticated
 
 from itoo_api.models import Program, OrganizationCustom
 from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
@@ -238,6 +239,7 @@ class PaidCoursesRoleViewSet(APIView):
 
 
 class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
 
     queryset = CourseOverview.objects.all() # pylint: disable=no-member
     serializer_class = CourseModeSerializer
