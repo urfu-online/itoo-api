@@ -93,6 +93,37 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'short_name'
 
 # acquiring
+class CourseModesChange(APIView):
+    """
+        'mode_slug': u'honor',
+        'mode_display_name': u'Honor Code Certificate',
+        'min_price': 0,
+        'suggested_prices': u'',
+        'currency': u'usd',
+        'sku': None,
+    """
+
+    def get(self, request):
+        launch_params = {
+            "course_key": request.GET.get('course_key', None),
+            "mode_slug": request.GET.get('mode_slug', u'audit'),
+            "mode_display_name": request.GET.get('mode_display_name', u'Default display name'),
+            "min_price": request.GET.get('min_price', 0),
+            "suggested_prices": request.GET.get('suggested_prices', u''),
+            "currency": request.GET.get('currency', u'usd'),
+            "sku": request.GET.get('sku', None)
+        }
+
+
+
+        course_id = [launch_params[x] for x in "course_key"]
+        course_key = CourseKey.from_string(course_id)
+        CourseMode.objects.get_or_create(course_id=course_key, **launch_params)
+
+        return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
+            mode_slug=launch_params['mode_slug'],
+            course=course_id
+        ))
 
 class PaidCoursesRoleViewSet(APIView):
     serializer_class = TestdataSerializer
