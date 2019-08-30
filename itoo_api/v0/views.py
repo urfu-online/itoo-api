@@ -140,7 +140,7 @@ class PaidCoursesRoleViewSet(APIView):
         mode = "verified"
         logger.warning(username)
         logger.warning(course_key)
-        api.add_enrollment(username, course_key, mode)
+        api.update_enrollment(username, course_key, mode)
         return RESTResponse({"message": "Hello, world!"})
 
     def post(self, request, *args, **kwargs):
