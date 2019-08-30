@@ -133,15 +133,16 @@ class CourseModesChange(APIView):
 class PaidCoursesRoleViewSet(APIView):
     serializer_class = TestdataSerializer
 
-    def get(self, request, username=None, course_key=None):
+    def get(self, request):
         username = request.GET.get('username')
         course_key = request.GET.get('course_key')
-        # course_key = CourseKey.from_string(course_key)
-        mode = "verified"
-        logger.warning(username)
-        logger.warning(course_key)
+        mode = request.GET.get('mode')
         api.update_enrollment(username, course_key, mode)
-        return RESTResponse({"message": "Hello, world!"})
+        return RESTResponse("Mode '{mode}' on course '{course}' for user {username}.".format(
+            mode=mode,
+            course=course_key,
+            username=username
+        ))
 
     def post(self, request, *args, **kwargs):
         """
