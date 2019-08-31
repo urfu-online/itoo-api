@@ -27,15 +27,14 @@ from enrollment import api
 # from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
 
 # serializers
-from itoo_api.acquiring.serializers import CourseModeSerializer, TestdataSerializer
+from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-
-
 # acquiring
+
 class CourseModesChange(APIView):
     """
         'mode_slug': u'honor',
@@ -73,8 +72,8 @@ class CourseModesChange(APIView):
             course=course_key
         ))
 
-class PaidCoursesRoleViewSet(APIView):
-    serializer_class = TestdataSerializer
+class ChangeModeStateUserViewSet(APIView):
+    serializer_class = ChangeModeStateUserSerializer
 
     def get(self, request):
         username = request.GET.get('username')
@@ -97,7 +96,7 @@ class PaidCoursesRoleViewSet(APIView):
         }
 
         """
-        serializer = TestdataSerializer(data=request.DATA)
+        serializer = ChangeModeStateUserSerializer(data=request.DATA)
         serializer.is_valid()
         data = serializer.validated_data
 
@@ -180,7 +179,7 @@ class PaidCoursesRoleViewSet(APIView):
     #     return RESTResponse({"course": str(course)})
 
 
-class PaidCoursesCusViewSet(viewsets.ReadOnlyModelViewSet):
+class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticated,IsAdminUser,)
 
     queryset = CourseOverview.objects.all() # pylint: disable=no-member

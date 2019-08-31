@@ -77,7 +77,7 @@ class ModeSerializer(serializers.Serializer):
     bulk_sku = serializers.CharField()
 
 
-class TestdataSerializer(serializers.Serializer):
+class ChangeModeStateUserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
     course_key = serializers.CharField(max_length=2048)
     mode = serializers.CharField(max_length=255)
