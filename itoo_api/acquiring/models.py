@@ -47,7 +47,7 @@ class PayUrfuData(TimeStampedModel):
     pub_date = models.DateTimeField('Дата запроса')
 
     def __str__(self):
-        return self.name
+        return self.pub_date
 
     class Meta(object):
         """ Meta class for this Django model """

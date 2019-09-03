@@ -197,6 +197,7 @@ class PayUrfuDataViewSet(APIView):
     def post(self, request):
         s_obj1 = json.loads(request.body)
         # s_obj = serializers.serialize("json", [s_obj1])
+        logger.warning(s_obj1)
         obj2 = PayUrfuData.objects.create(obj=s_obj1)
         obj2.save()
         return RESTResponse({"Success"})
