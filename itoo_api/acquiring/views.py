@@ -202,8 +202,7 @@ class PayUrfuDataViewSet(APIView):
         return RESTResponse({"Success"})
 
     def get(self, request):
-        qd = json.dumps(request.GET, ensure_ascii=False)
-        logger.warning(qd)
+        qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         obj = PayUrfuData.objects.create(data=qd)
         obj.save()
         return RESTResponse({"Success"})
