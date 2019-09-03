@@ -190,6 +190,7 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 from django.core import serializers
+from django.utils import timezone
 
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )

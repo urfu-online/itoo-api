@@ -103,7 +103,7 @@ class OrganizationCourse(TimeStampedModel):
 
 class PayUrfuData(TimeStampedModel):
     data = models.TextField('Данные')
-    pub_date = models.DateTimeField('Дата запроса')
+    pub_date = models.DateTimeField('Дата запроса', auto_now_add=True)
 
     # def __str__(self):
     #     return self.pub_date
