@@ -197,7 +197,6 @@ class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        logger.warning(request.data )
         if not request.data:
             try:
                 qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
@@ -207,6 +206,7 @@ class PayUrfuDataViewSet(APIView):
             except:
                 return RESTResponse({"Failed"})
         else:
+            logger.warning(request.GET)
             obj = PayUrfuData.objects.create(data=request.body)
             obj.save()
             return RESTResponse({"Success"})
