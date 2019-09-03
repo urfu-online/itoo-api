@@ -99,3 +99,16 @@ class OrganizationCourse(TimeStampedModel):
         """ Meta class for this Django model """
         verbose_name = 'Ссылка на курс(Организация)'
         verbose_name_plural = 'Ссылки на курс(Организации)'
+
+
+class PayUrfuData(TimeStampedModel):
+    data = models.TextField('Данные')
+    pub_date = models.DateTimeField('Дата запроса')
+
+    # def __str__(self):
+    #     return self.pub_date
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = 'Данные от PAY URFU'
+        verbose_name_plural = 'Данные от PAY URFU'

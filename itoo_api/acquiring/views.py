@@ -22,7 +22,7 @@ from opaque_keys.edx.keys import CourseKey
 # models
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from itoo_api.acquiring.models import PayUrfuData
+from itoo_api.models import PayUrfuData
 
 # enroll api
 from enrollment import api
