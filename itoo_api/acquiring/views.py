@@ -1,4 +1,5 @@
 import logging
+import json
 
 # rest
 from rest_framework.response import Response as RESTResponse, Response
@@ -21,6 +22,7 @@ from opaque_keys.edx.keys import CourseKey
 # models
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
+from itoo_api.acquiring.models import PayUrfuData
 
 # enroll api
 from enrollment import api
@@ -185,3 +187,13 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CourseOverview.objects.all() # pylint: disable=no-member
     serializer_class = CourseModeSerializer
     lookup_field = 'id'
+
+class PayUrfuDataViewSet(APIView):
+
+    def get_data(self, request):
+        if request.method == 'POST':
+            PayUrfuData.data = json.loads(request.body)
+            PayUrfuData.data.save()
+            return RESTResponse({"Success"})
+        else:
+            return RESTResponse({"Success": request.GET})
