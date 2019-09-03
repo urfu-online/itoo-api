@@ -49,4 +49,5 @@ class OrganizationCourseAdmin(admin.ModelAdmin):
 
 @admin.register(PayUrfuData)
 class PayUrfuDataAdmin(admin.ModelAdmin):
+    list_display = ('pub_date',)
     date_hierarchy = 'pub_date'
