@@ -198,7 +198,7 @@ class PayUrfuDataViewSet(APIView):
 
     def post(self, request):
         logger.warning(request.data )
-        if request.body == {} or request.body == '-':
+        if not request.data:
             try:
                 qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
                 obj = PayUrfuData.objects.create(data=qd)
