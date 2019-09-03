@@ -46,9 +46,6 @@ class PayUrfuData(TimeStampedModel):
     data = models.TextField('Данные')
     pub_date = models.DateTimeField('Дата запроса')
 
-    def __unicode__(self):
-        return unicode(self.pub_date)
-
     class Meta(object):
         """ Meta class for this Django model """
         verbose_name = 'Данные от PAY URFU'
