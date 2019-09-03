@@ -3,7 +3,7 @@ import json
 
 # rest
 from rest_framework.response import Response as RESTResponse, Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
 # from rest_framework.renderers import TemplateHTMLRenderer
@@ -188,8 +188,10 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CourseModeSerializer
     lookup_field = 'id'
 
-class PayUrfuDataViewSet(APIView):
 
+
+class PayUrfuDataViewSet(APIView):
+    permission_classes = (AllowAny, )
     def post(self, request):
         PayUrfuData.data = json.loads(request.body)
         PayUrfuData.data.save()
