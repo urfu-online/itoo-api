@@ -191,6 +191,7 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
 
 from django.core import serializers
 from django.utils import timezone
+from django.utils import six
 
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
@@ -201,7 +202,8 @@ class PayUrfuDataViewSet(APIView):
         return RESTResponse({"Success"})
 
     def get(self, request):
-        qd = repr(request.GET)
+        qd = str(request.GET)
+        qd.encoding = 'utf-8'
         logger.warning(qd)
         obj = PayUrfuData.objects.create(data=qd)
         obj.save()
