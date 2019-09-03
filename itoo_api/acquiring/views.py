@@ -203,7 +203,7 @@ class PayUrfuDataViewSet(APIView):
 
     def get(self, request):
         qd = str(request.GET)
-        qd.encoding = 'utf-8'
+        qd = qd.encode('utf-8')
         logger.warning(qd)
         obj = PayUrfuData.objects.create(data=qd)
         obj.save()
