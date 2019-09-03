@@ -206,10 +206,17 @@ class PayUrfuDataViewSet(APIView):
             except:
                 return RESTResponse({"Failed"})
         else:
-            logger.warning(request.GET)
-            obj = PayUrfuData.objects.create(data=request.body)
-            obj.save()
-            return RESTResponse({"Success"})
+            if not request.GET:
+                try:
+                    qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
+                    obj = PayUrfuData.objects.create(data='{0}{1}'.format(qd, request.body))
+                    obj.save()
+                except:
+                    return RESTResponse({"Failed"})
+            else:
+                obj = PayUrfuData.objects.create(data=request.body)
+                obj.save()
+                return RESTResponse({"Success"})
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
