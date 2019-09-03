@@ -196,12 +196,11 @@ class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        s_obj1 = request.body
-        # s_obj = serializers.serialize("json", [s_obj1])
-        logger.warning(s_obj1)
-        obj2 = PayUrfuData.objects.create(data=s_obj1)
-        obj2.save()
+        obj = PayUrfuData.objects.create(data=request.body)
+        obj.save()
         return RESTResponse({"Success"})
 
     def get(self, request):
-        return RESTResponse({"Success": request.GET})
+        obj = PayUrfuData.objects.create(data=request.GET)
+        obj.save()
+        return RESTResponse({"Success"})
