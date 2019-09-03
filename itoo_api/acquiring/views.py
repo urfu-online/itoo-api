@@ -197,7 +197,7 @@ class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        logger.warning(request.body )
+        logger.warning(request.data )
         if request.body == {} or request.body == '-':
             try:
                 qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
