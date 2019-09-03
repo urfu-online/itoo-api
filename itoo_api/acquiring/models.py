@@ -43,7 +43,7 @@ class JSONField(models.TextField):
 
 @python_2_unicode_compatible
 class PayUrfuData(TimeStampedModel):
-    data = JSONField('Данные', null=True, blank=True)
+    data = models.TextField('Данные')
     pub_date = models.DateTimeField('Дата запроса')
 
     def __str__(self):

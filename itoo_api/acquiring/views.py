@@ -192,6 +192,7 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
 
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
+
     def post(self, request):
         PayUrfuData.data = json.loads(request.body)
         PayUrfuData.data.save()
