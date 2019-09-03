@@ -190,10 +190,10 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
 
 class PayUrfuDataViewSet(APIView):
 
-    def get_data(self, request):
-        if request.method == 'POST':
-            PayUrfuData.data = json.loads(request.body)
-            PayUrfuData.data.save()
-            return RESTResponse({"Success"})
-        else:
-            return RESTResponse({"Success": request.GET})
+    def post(self, request):
+        PayUrfuData.data = json.loads(request.body)
+        PayUrfuData.data.save()
+        return RESTResponse({"Success"})
+
+    def get(self, request):
+        return RESTResponse({"Success": request.GET})
