@@ -189,13 +189,15 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
+from django.core import serializers
 
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        PayUrfuData.data = json.loads(request.body)
-        PayUrfuData.data.save()
+        s_obj = serializers.serialize("json", [request.body])
+        obj2 = PayUrfuData.objects.create(obj=s_obj)
+        obj2.save()
         return RESTResponse({"Success"})
 
     def get(self, request):
