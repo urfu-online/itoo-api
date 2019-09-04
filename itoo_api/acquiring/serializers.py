@@ -24,7 +24,7 @@ class CourseModeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseOverview
-        fields = ('course_id','course_name','course_modes')
+        fields = ('course_id','course_name','course_image_url','catalog_visibility','start_display','course_modes')
 
     # def get_courses(self, obj):
     #     course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
