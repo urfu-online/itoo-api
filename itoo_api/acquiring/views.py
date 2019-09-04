@@ -46,6 +46,7 @@ class CourseModesChange(APIView):
         'currency': u'usd',
         'sku': None,
     """
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         launch_params = {
@@ -75,6 +76,8 @@ class CourseModesChange(APIView):
         ))
 
 class ChangeModeStateUserViewSet(APIView):
+    permission_classes = (AllowAny,)
+
     serializer_class = ChangeModeStateUserSerializer
 
     def get(self, request):
@@ -182,7 +185,8 @@ class ChangeModeStateUserViewSet(APIView):
 
 
 class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = (IsAuthenticated,IsAdminUser,)
+    # permission_classes = (IsAuthenticated,IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     queryset = CourseOverview.objects.all() # pylint: disable=no-member
     serializer_class = CourseModeSerializer
