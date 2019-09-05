@@ -10,7 +10,7 @@ from ..utils import generate_new_filename
 
 
 @python_2_unicode_compatible
-class Offer(models.model):
+class Offer(models.Model):
     content = models.TextField(verbose_name="Текст оферты")
 
 
