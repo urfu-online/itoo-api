@@ -208,7 +208,7 @@ class PayUrfuDataViewSet(APIView):
                 obj.save()
                 return RESTResponse({"Success"})
             except:
-                return RESTResponse({"Failed": "POST.get query params"})
+                return RESTResponse({{"Failed": "POST.get query params"}, [{"Your Data request.body": {request.body}}, {"Your Data request.data": {request.data}} ]})
         else:
             # if not request.GET:
             #     try:
@@ -222,11 +222,12 @@ class PayUrfuDataViewSet(APIView):
             try:
                 logger.warning(request.body)
                 logger.warning(request.data)
+                # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
                 obj = PayUrfuData.objects.create(data=request.body)
                 obj.save()
                 return RESTResponse({"Success"})
             except:
-                return RESTResponse({"Failed": "POST request body"})
+                return RESTResponse({{"Failed": "POST.get query params"}, [{"Your Data request.body": {request.body}}, {"Your Data request.data": {request.data}}, {'query data' : {request.GET}} ]})
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
