@@ -220,6 +220,8 @@ class PayUrfuDataViewSet(APIView):
             #         return RESTResponse({"Failed"})
             # else:
             try:
+                logger.warning(request.body)
+                logger.warning(request.data)
                 obj = PayUrfuData.objects.create(data=request.body)
                 obj.save()
                 return RESTResponse({"Success"})
