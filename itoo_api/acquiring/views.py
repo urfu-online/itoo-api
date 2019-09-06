@@ -201,6 +201,8 @@ class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
+        logger.warning(request.body)
+        logger.warning(request.data)
         if not request.data:
             try:
                 qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
@@ -227,7 +229,10 @@ class PayUrfuDataViewSet(APIView):
                 obj.save()
                 return RESTResponse({"Success"})
             except:
-                return RESTResponse({{"Failed": "POST.get query params"}, [{"Your Data request.body": {request.body}}, {"Your Data request.data": {request.data}}, {'query data' : {request.GET}} ]})
+                logger.warning(request.body)
+                logger.warning(request.data)
+                logger.warning(request.GET)
+                return RESTResponse({"Failed": "POST.get query params"})
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
