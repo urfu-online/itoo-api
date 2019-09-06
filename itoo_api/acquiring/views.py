@@ -201,15 +201,15 @@ class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny, )
 
     def post(self, request):
-        if not request.data:
-            try:
-                qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
-                obj = PayUrfuData.objects.create(data=qd)
-                obj.save()
-                return RESTResponse({"Success"})
-            except:
-                return RESTResponse({"Failed": "POST.get query params"})
-        else:
+        # if not request.data:
+        #     try:
+        #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
+        #         obj = PayUrfuData.objects.create(data=qd)
+        #         obj.save()
+        #         return RESTResponse({"Success"})
+        #     except:
+        #         return RESTResponse({"Failed": "POST get query params"})
+        # else:
             # if not request.GET:
             #     try:
             #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
@@ -219,16 +219,17 @@ class PayUrfuDataViewSet(APIView):
             #     except:
             #         return RESTResponse({"Failed"})
             # else:
-            try:
-                # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
-                obj = PayUrfuData.objects.create(data=request.body)
-                obj.save()
-                return RESTResponse({"Success"})
-            except:
-                logger.warning(request.body)
-                logger.warning(request.data)
-                logger.warning(request.GET)
-                return RESTResponse({"Failed": "POST body params"})
+        try:
+            # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
+            obj = PayUrfuData.objects.create(data=request.body)
+            obj.save()
+            return RESTResponse({"Success"})
+        except:
+            logger.warning(request.body)
+            logger.warning(request.data)
+            logger.warning(request.GET)
+            return RESTResponse({"Failed": "POST body params"})
+
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
