@@ -19,11 +19,14 @@ class VerifiedProfileView(APIView):
 
     def get(self, request):
         form = ProfileForm()
+        context = {
+            'form': form
+        }
         fragment = Fragment()
         fragment.add_content(
             render_template(
                 '../templates/profile_edit.html',
-                {'form': form}
+                context
             )
         )
         return fragment
