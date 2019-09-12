@@ -16,4 +16,4 @@ class VerifiedProfileView(APIView):
 
     def get(self, request):
         form = ProfileForm()
-        return render(request, 'verified_profile/profile_edit.html', {'form': form})
+        return render(request, 'itoo_api/verified_profile/profile_edit.html', {'form': form})
