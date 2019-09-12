@@ -22,7 +22,7 @@ class VerifiedProfileView(APIView):
         fragment = Fragment()
         fragment.add_content(
             render_template(
-                'templates/profile_edit.html',
+                '../templates/profile_edit.html',
                 {'form': form}
             )
         )
