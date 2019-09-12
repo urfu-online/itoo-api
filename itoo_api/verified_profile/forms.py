@@ -33,7 +33,7 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'birth_date': forms.Select(
+            'birth_date': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
