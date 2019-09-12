@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-
+import os
 import itoo_api
+
+
+def package_data(pkg, root_list):
+    """Generic function to find package_data for `pkg` under `root`."""
+    data = []
+    for root in root_list:
+        for dirname, _, files in os.walk(os.path.join(pkg, root)):
+            for fname in files:
+                data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
+
+    return {pkg: data}
+
 
 setup(
     name='itoo-api',
@@ -32,4 +44,5 @@ setup(
         'django>=1.8,<1.9',
         'Pillow',
     ],
+    package_data=package_data("itoo_api", ["templates"]),
 )
