@@ -44,5 +44,5 @@ setup(
         'django>=1.8,<1.9',
         'Pillow',
     ],
-    package_data=package_data("itoo_api", ["templates"]),
+    package_data=package_data("verified_profile", ["templates"]),
 )
