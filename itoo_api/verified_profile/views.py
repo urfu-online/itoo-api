@@ -9,24 +9,23 @@ from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
 
-
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-class VerifiedProfileView(APIView):
-    permission_classes = (AllowAny, )
+# class VerifiedProfileView(APIView):
+#     permission_classes = (AllowAny, )
 
-    def get(self, request):
-        form = ProfileForm()
-        context = {
-            'form': form
-        }
-        return render_template(
-                '../templates/profile_edit.html',
-                context
-            )
-        # return render(request, 'templates/profile_edit.html', {'form': form})
+def profile_new(self, request):
+    form = ProfileForm()
+    context = {
+        'form': form
+    }
+    return render_template(
+        '../templates/profile_edit.html',
+        context
+    )
+    # return render(request, 'templates/profile_edit.html', {'form': form})
 
 
 def load_resource(resource_path):  # pragma: NO COVER
@@ -47,4 +46,3 @@ def render_template(template_path, context=None):  # pragma: NO COVER
     template_str = load_resource(template_path)
     template = Template(template_str)
     return template.render(Context(context))
-
