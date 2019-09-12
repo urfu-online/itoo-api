@@ -28,6 +28,21 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'city': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'birth_date': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'job': forms.TextInput(
                 attrs={
                     'class': 'form-control'
