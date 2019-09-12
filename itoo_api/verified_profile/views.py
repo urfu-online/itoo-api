@@ -22,8 +22,11 @@ def profile_new(request):
         context = {
             'form': form
         }
-        return render_template(
-            '../templates/profile_edit.html',
+        template_path = '../templates/profile_edit.html'
+        template_str = load_resource(template_path)
+        return render(
+            request,
+            template_str,
             context
         )
     # return render(request, 'templates/profile_edit.html', {'form': form})
