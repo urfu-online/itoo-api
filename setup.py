@@ -41,10 +41,10 @@ setup(
     ],
     zip_safe=False,
     include_package_data=True,
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(),
     install_requires=[
         'django>=1.8,<1.9',
         'Pillow',
     ],
-    package_data=package_data("verified_profile", ["templates"]),
+    package_data=package_data("itoo_api", ["templates"]),
 )
