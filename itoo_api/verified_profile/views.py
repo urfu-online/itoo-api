@@ -22,14 +22,10 @@ class VerifiedProfileView(APIView):
         context = {
             'form': form
         }
-        fragment = Fragment()
-        fragment.add_content(
-            render_template(
+        return render_template(
                 '../templates/profile_edit.html',
                 context
             )
-        )
-        return fragment
         # return render(request, 'templates/profile_edit.html', {'form': form})
 
 
