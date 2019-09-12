@@ -39,6 +39,8 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
     ],
+    zip_safe=False,
+    include_package_data=True,
     packages=find_packages(exclude=['tests']),
     install_requires=[
         'django>=1.8,<1.9',
