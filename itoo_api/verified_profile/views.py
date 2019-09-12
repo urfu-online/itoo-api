@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # class VerifiedProfileView(APIView):
 #     permission_classes = (AllowAny, )
 
-def profile_new(self, request):
+def profile_new(request):
     form = ProfileForm()
     context = {
         'form': form
