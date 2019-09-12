@@ -38,9 +38,9 @@ class ProfileForm(forms.ModelForm):
                 }
             ),
             'claim_scan': forms.FileInput(
-                attrs={
-                    'class': 'custom-file-input'
-                }
+                # attrs={
+                #     'class': 'custom-file-input'
+                # }
             ),
             'series': forms.TextInput(
                 attrs={
@@ -68,9 +68,9 @@ class ProfileForm(forms.ModelForm):
                 }
             ),
             'passport_scan': forms.FileInput(
-                attrs={
-                    'class': 'custom-file-input'
-                }
+                # attrs={
+                #     'class': 'custom-file-input'
+                # }
             ),
             'education_level': forms.TextInput(
                 attrs={
@@ -78,14 +78,14 @@ class ProfileForm(forms.ModelForm):
                 }
             ),
             'diploma_scan': forms.FileInput(
-                attrs={
-                    'class': 'custom-file-input'
-                }
+                # attrs={
+                #     'class': 'custom-file-input'
+                # }
             ),
             'doc_forwarding': forms.FileInput(
-                attrs={
-                    'class': 'custom-file-input'
-                }
+                # attrs={
+                #     'class': 'custom-file-input'
+                # }
             ),
             'mail_index': forms.TextInput(
                 attrs={
