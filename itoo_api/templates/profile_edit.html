@@ -27,7 +27,7 @@
                 {% for field in form %}
                 <div class="fieldWrapper form-group" aria-required='true'>
                     {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
-                    {% if field.label == 'first_name' or field.label == 'last_name' %}
+                    {% if field.label == 'Имя' or field.label == 'Фамилия' %}
                     <div class="form-row">
                         <div class="col">
                             {{ field }}
