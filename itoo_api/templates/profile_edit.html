@@ -25,26 +25,6 @@
                 {% endif %}
 
                 {% for field in form %}
-<!--                {% if field.label == 'Имя' or field.label == 'Фамилия'%}-->
-<!--                <div class="form-row">-->
-<!--                {% if field.label == 'Имя' %}-->
-<!--                    <div class="col">-->
-<!--                        {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}-->
-<!--                        {{ field }}-->
-<!--                        <p class="help">{{ field.help_text|safe }}</p>-->
-<!--                        {% endif %}-->
-<!--                    </div>-->
-<!--                    {% elif field.label == 'Фамилия' %}-->
-<!--                    <div class="col">-->
-<!--                        {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}-->
-<!--                        {{ field }}-->
-<!--                        {% if field.help_text %}-->
-<!--                        <p class="help">{{ field.help_text|safe }}</p>-->
-<!--                        {% endif %}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                {% endif %}-->
-<!--                {% else %}-->
                 <div class="fieldWrapper form-group" aria-required='true'>
                     {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
                     {{ field }}
@@ -52,7 +32,6 @@
                     <p class="help">{{ field.help_text|safe }}</p>
                     {% endif %}
                 </div>
-<!--                {% endif %}-->
                 {% endfor %}
                 <button type="submit" class="btn btn-success">Далее</button>
             </form>
