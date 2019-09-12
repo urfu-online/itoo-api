@@ -27,20 +27,18 @@
                 {% for field in form %}
                 <div class="fieldWrapper form-group" aria-required='true'>
                     {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
-                    {% if field.label == 'Имя' %}
                     <div class="form-row">
+                        {% if field.label == 'Имя' %}
                         <div class="col">
                             {{ field }}
                         </div>
-                    </div>
-                    {% elif field.label == 'Фамилия' %}
-                    <div class="form-row">
+                        {% elif field.label == 'Фамилия' %}
                         <div class="col">
                             {{ field }}
                         </div>
+                        {% else %}
                     </div>
-                    {% else %}
-                        {{ field }}
+                    {{ field }}
                     {% endif %}
                     {% if field.help_text %}
                     <p class="help">{{ field.help_text|safe }}</p>
