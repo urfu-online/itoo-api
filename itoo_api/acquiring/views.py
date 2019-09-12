@@ -68,12 +68,14 @@ class CourseModesChange(APIView):
         logger.warning(course_key_get)
         course_key = CourseKey.from_string(course_key_get)
         logger.warning(course_key)
-        CourseMode.objects.get_or_create(course_id=course_key, mode_slug=mode_slug, mode_display_name=mode_display_name, min_price=min_price, suggested_prices=suggested_prices, sku=sku)
+        CourseMode.objects.get_or_create(course_id=course_key, mode_slug=mode_slug, mode_display_name=mode_display_name,
+                                         min_price=min_price, suggested_prices=suggested_prices, sku=sku)
 
         return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
             course=course_key
         ))
+
 
 class ChangeModeStateUserViewSet(APIView):
     permission_classes = (AllowAny,)
@@ -144,7 +146,8 @@ class ChangeModeStateUserViewSet(APIView):
                         'message': (u"'{value}' is an invalid enrollment activation status.").format(value=is_active)
                     }
                 )
-        except : pass
+        except:
+            pass
 
         enrollment = api.get_enrollment(username, unicode(course_key))
         mode_changed = enrollment and mode is not None and enrollment['mode'] != mode
@@ -177,7 +180,6 @@ class ChangeModeStateUserViewSet(APIView):
             )
         return Response(response)
 
-
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
     #     course = get_course_by_id(course_key)
@@ -188,7 +190,7 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     # permission_classes = (IsAuthenticated,IsAdminUser,)
     permission_classes = (AllowAny,)
 
-    queryset = CourseOverview.objects.all() # pylint: disable=no-member
+    queryset = CourseOverview.objects.all()  # pylint: disable=no-member
     serializer_class = CourseModeSerializer
     lookup_field = 'id'
 
@@ -197,8 +199,9 @@ from django.core import serializers
 from django.utils import timezone
 from django.utils import six
 
+
 class PayUrfuDataViewSet(APIView):
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         # if not request.data:
@@ -210,15 +213,15 @@ class PayUrfuDataViewSet(APIView):
         #     except:
         #         return RESTResponse({"Failed": "POST get query params"})
         # else:
-            # if not request.GET:
-            #     try:
-            #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
-            #         obj = PayUrfuData.objects.create(data='{0}{1}'.format(qd, request.body))
-            #         obj.save()
-            #         return RESTResponse({"Success"})
-            #     except:
-            #         return RESTResponse({"Failed"})
-            # else:
+        # if not request.GET:
+        #     try:
+        #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
+        #         obj = PayUrfuData.objects.create(data='{0}{1}'.format(qd, request.body))
+        #         obj.save()
+        #         return RESTResponse({"Success"})
+        #     except:
+        #         return RESTResponse({"Failed"})
+        # else:
         try:
             # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
             obj = PayUrfuData.objects.create(data=request.body)
@@ -229,7 +232,6 @@ class PayUrfuDataViewSet(APIView):
             logger.warning(request.data)
             logger.warning(request.GET)
             return RESTResponse({"Failed": "POST body params"})
-
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
