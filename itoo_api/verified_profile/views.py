@@ -24,7 +24,7 @@ def profile_new(request):
     }
     template_path = '../templates/profile_edit.html'
     template_str = load_resource(template_path)
-    return render(request,template_str,context)
+    return render(request,template_path,context)
 
     # return render(request, 'templates/profile_edit.html', {'form': form})
 
