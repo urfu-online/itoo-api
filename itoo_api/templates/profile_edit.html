@@ -9,7 +9,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="navbar-brand">
-        <h1>Анкета</h1>
+        <h1>Данные для оплаты</h1>
     </div>
 </nav>
 <div class="content container">
@@ -17,7 +17,7 @@
         <div class="col-md-8">
             <form method="POST" class="post-form">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="btn btn-success">Далее/button>
             </form>
         </div>
     </div>
