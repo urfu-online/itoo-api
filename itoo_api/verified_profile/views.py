@@ -17,14 +17,15 @@ logger = logging.getLogger(__name__)
 #     permission_classes = (AllowAny, )
 
 def profile_new(request):
-    form = ProfileForm()
-    context = {
-        'form': form
-    }
-    return render_template(
-        '../templates/profile_edit.html',
-        context
-    )
+    if request.method == 'get':
+        form = ProfileForm()
+        context = {
+            'form': form
+        }
+        return render_template(
+            '../templates/profile_edit.html',
+            context
+        )
     # return render(request, 'templates/profile_edit.html', {'form': form})
 
 
