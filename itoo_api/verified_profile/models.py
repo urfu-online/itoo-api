@@ -44,7 +44,7 @@ class Profile(models.Model):
     unit_code = models.CharField("Код подразделения", max_length=16, null=True, blank=True)
     issue_date = models.CharField("Дата выдачи", max_length=16, null=True, blank=True)
 
-    passport_scan = models.FileField("Скан заявления", upload_to=generate_new_filename)
+    passport_scan = models.FileField("Скан паспорта", upload_to=generate_new_filename)
 
     education_level = models.CharField("Уровень базового образования", max_length=1, choices=EDUCATION_LEVEL,
                                        null=False, blank=False)
