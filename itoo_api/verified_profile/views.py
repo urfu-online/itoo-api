@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
 # import json
+import urllib
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .forms import ProfileForm
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
@@ -15,16 +16,36 @@ logger = logging.getLogger(__name__)
 
 # class VerifiedProfileView(APIView):
 #     permission_classes = (AllowAny, )
+def redirect_params(url, params=None):
+    response = redirect(url)
+    if params:
+        query_string = urllib.urlencode(params)
+        response['Location'] += '?' + query_string
+    return response
+
 
 def profile_new(request):
     # if request.method == 'GET':
-    form = ProfileForm()
-    context = {
-        'form': form
-    }
     template_path = '../templates/profile_edit.html'
-    # template_str = load_resource(template_path)
-    return render(request,template_path,context)
+    if request.method == "POST":
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.save()
+            profile_params = {
+                'profile': profile
+            }
+            my_render =  redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+        else:
+            my_render = render(request, template_path, {'form': form })
+    else:
+        form = ProfileForm()
+        context = {
+            'form': form
+        }
+        my_render = render(request,template_path, context)
+
+    return my_render
 
     # return render(request, 'templates/profile_edit.html', {'form': form})
 
