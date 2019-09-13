@@ -93,7 +93,7 @@ class ProfileForm(forms.ModelForm):
                 #     'class': 'custom-file-input'
                 # }
             ),
-            'education_level': forms.TextInput(
+            'education_level': forms.Select(
                 attrs={
                     'class': 'form-control'
                 }
@@ -102,6 +102,11 @@ class ProfileForm(forms.ModelForm):
                 # attrs={
                 #     'class': 'custom-file-input'
                 # }
+            ),
+            'all_valid': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-control'
+                }
             ),
             'doc_forwarding': forms.FileInput(
                 # attrs={
