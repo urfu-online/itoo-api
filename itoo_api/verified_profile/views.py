@@ -29,16 +29,16 @@ def profile_new(request):
     template_path = '../templates/profile_edit.html'
     if request.method == "POST":
         form = ProfileForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.save()
-            profile_params = {
-                'profile': profile
-            }
-            logger.debug(profile_params)
-            my_render =  redirect_params('https://ubu.urfu.ru/pay/', profile_params)
-        else:
-            my_render = render(request, template_path, {'form': form })
+        # if form.is_valid():
+        profile = form.save(commit=False)
+        profile.save()
+        profile_params = {
+            'profile': profile
+        }
+        logger.debug(profile_params)
+        # my_render =  redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+        # else:
+        #     my_render = render(request, template_path, {'form': form })
     else:
         form = ProfileForm()
         context = {
