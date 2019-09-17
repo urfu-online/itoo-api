@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
+from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
 
 
 class ProgramCourseInline(admin.TabularInline):
@@ -51,3 +51,9 @@ class OrganizationCourseAdmin(admin.ModelAdmin):
 class PayUrfuDataAdmin(admin.ModelAdmin):
     list_display = ('pub_date',)
     date_hierarchy = 'pub_date'
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name')
+    search_fields = ('first_name', 'last_name', 'second_name')
