@@ -15,7 +15,7 @@
 <div class="content container">
     <div class="row">
         <div class="col-md-8">
-            <form action="" method="POST" class="post-form p-3">{% csrf_token %}
+            <form method="POST" class="post-form p-3">{% csrf_token %}
                 {% if form.subject.errors %}
                 <ol role="alertdialog">
                     {% for error in form.subject.errors %}
@@ -33,7 +33,7 @@
                     {% endif %}
                 </div>
                 {% endfor %}
-                <button type="submit" value="Submit" class="btn btn-success">Далее</button>
+                <input type="submit" value="Submit" class="btn btn-success"/>
             </form>
         </div>
     </div>
