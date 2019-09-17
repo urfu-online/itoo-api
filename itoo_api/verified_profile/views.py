@@ -38,6 +38,12 @@ def profile_new(request):
             }
             logger.debug(profile_params)
             return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+        else:
+            context = {
+                'form': form
+            }
+            return render(request, template_path, context)
+
     elif request.method == "GET":
         form = ProfileForm()
         context = {
