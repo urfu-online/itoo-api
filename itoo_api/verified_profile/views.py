@@ -37,17 +37,13 @@ def profile_new(request):
                 'profile': profile
             }
             logger.debug(profile_params)
-            my_render =  redirect_params('https://ubu.urfu.ru/pay/', profile_params)
-        else:
-            my_render = render(request, template_path, {'form': form })
-    else:
+            return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+    elif request.method == "GET":
         form = ProfileForm()
         context = {
             'form': form
         }
-        my_render = render(request, template_path, context)
-
-    return my_render
+        return render(request, template_path, context)
 
     # return render(request, 'templates/profile_edit.html', {'form': form})
 
