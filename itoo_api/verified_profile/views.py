@@ -30,6 +30,7 @@ def profile_new(request):
     if request.method == "POST":
         form = ProfileForm(request.POST)
         logger.debug(form.errors)
+        logger.debug(str(form))
         if form.is_valid():
             form.save()
             profile_params = {
