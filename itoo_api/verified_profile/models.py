@@ -76,7 +76,7 @@ class Profile(models.Model):
             )
 
     def __str__(self):
-        return self.email
+        return self.fio()
 
     class Meta:
         verbose_name = 'анкета для зачисления'
