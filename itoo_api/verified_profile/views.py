@@ -57,7 +57,7 @@ def profile_new(request):
 def profile_read(request):
     launch = {}
     if request.method == "POST":
-        course_modes = request.POST.post('course_modes')
+        course_modes = request.body('course_modes')
         for mod in course_modes:
             launch = {
                 'username': mod.username,
