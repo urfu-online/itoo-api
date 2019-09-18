@@ -23,7 +23,17 @@ def redirect_params(url, params=None):
 
 
 def profile_new(request):
-    logger.warning(str(request.user.email))
+    launch = {}
+    if request.POST.get('course_modes'):
+        course_modes = request.POST.get('course_modes')
+        for mod in course_modes:
+            launch = {
+                'username': mod.username,
+                'course_id': mod.course_id,
+                'amount' : mod.course_modes_min_price
+            }
+
+    logger.warning(launch)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -37,7 +47,7 @@ def profile_new(request):
                     second_name=profile.second_name
                 ),
                 'client_phone': profile.phone,
-                'client_email': 'alexofficial@gggg.ru',
+                'client_email': request.user.email,
                 'amount': '2000'
             }
             return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
