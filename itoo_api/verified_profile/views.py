@@ -57,15 +57,16 @@ def profile_new(request):
 def profile_read(request):
     launch = {}
     if request.method == "POST":
-        course_modes = request.body('course_modes')
-        for mod in course_modes:
-            launch = {
-                'username': mod.username,
-                'course_id': mod.course_id,
-                'amount': mod.course_modes_min_price
-            }
-        logger.warning("11111111111")
-        logger.warning(launch)
+        logger.warning(request.body)
+        # course_modes = request.body
+        # for mod in course_modes:
+        #     launch = {
+        #         'username': mod.username,
+        #         'course_id': mod.course_id,
+        #         'amount': mod.course_modes_min_price
+        #     }
+        # logger.warning("11111111111")
+        # logger.warning(launch)
     else:
         form = ProfileForm()
         context = {
