@@ -5,7 +5,7 @@ import uuid
 import os
 
 
-def generate_new_filename(filename):
+def generate_new_filename(filename, **args):
     f, ext = os.path.splitext(filename)
     filename = '%s%s' % (uuid.uuid4().hex, ext)
     fullpath = "verified_profile/{subdir}/{filename}".format(
