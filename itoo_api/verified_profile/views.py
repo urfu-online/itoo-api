@@ -24,8 +24,8 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     launch = {}
-    course_modes = request.POST.post('course_modes')
-    logger.warning(course_modes)
+    # course_modes = request.body('course_modes')
+    logger.warning(request.data)
     if request.method == "POST":
         if 'course_modes' in request.POST:
             course_modes = request.POST.post('course_modes')
