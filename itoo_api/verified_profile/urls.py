@@ -11,6 +11,7 @@ from itoo_api.verified_profile.views import *
 app_name = 'verified_profile'
 urlpatterns = [
     url(r'profile/', profile_new, name='profile_new'),
+    url(r'profile_read/', profile_read, name='profile_read')
     # url(r'paid_course_cus/', PaidCoursesCusViewSet, name='paid_course_cus')
     # url(r'^list/', include(router_list.urls)),
 ]
