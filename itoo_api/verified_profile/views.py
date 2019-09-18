@@ -30,7 +30,7 @@ def profile_new(request):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.save()
-            logger.debug(str(profile))
+            logger.debug(str(profile.first_name))
             profile_params = {
                 'profile': profile
             }
