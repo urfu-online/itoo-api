@@ -24,38 +24,41 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     launch = {}
-    if 'course_modes' in request.POST:
-        course_modes = request.POST.get('course_modes')
-        for mod in course_modes:
-            launch = {
-                'username': mod.username,
-                'course_id': mod.course_id,
-                'amount' : mod.course_modes_min_price
-            }
-
-    logger.warning(launch)
+    course_modes = request.POST.get('course_modes')
+    logger.warning(course_modes)
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.save()
-            profile_params = {
-                'contract_number': 3,
-                'client_name': "{first_name} {last_name} {second_name}".format(
-                    first_name=profile.first_name,
-                    last_name=profile.last_name,
-                    second_name=profile.second_name
-                ),
-                'client_phone': profile.phone,
-                'client_email': request.user.email,
-                'amount': '2000'
-            }
-            return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+        if 'course_modes' in request.POST:
+            course_modes = request.POST.get('course_modes')
+            for mod in course_modes:
+                launch = {
+                    'username': mod.username,
+                    'course_id': mod.course_id,
+                    'amount': mod.course_modes_min_price
+                }
+            logger.warning("11111111111")
+            logger.warning(launch)
         else:
-            context = {
-                'form': form
-            }
-            return render(request, '../templates/profile_edit.html', context)
+            form = ProfileForm(request.POST, request.FILES)
+            if form.is_valid():
+                profile = form.save(commit=False)
+                profile.save()
+                profile_params = {
+                    'contract_number': 3,
+                    'client_name': "{first_name} {last_name} {second_name}".format(
+                        first_name=profile.first_name,
+                        last_name=profile.last_name,
+                        second_name=profile.second_name
+                    ),
+                    'client_phone': profile.phone,
+                    'client_email': request.user.email,
+                    'amount': '2000'
+                }
+                return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+            else:
+                context = {
+                    'form': form
+                }
+                return render(request, '../templates/profile_edit.html', context)
 
     elif request.method == "GET":
         form = ProfileForm()
