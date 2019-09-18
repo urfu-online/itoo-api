@@ -9,7 +9,7 @@ from django.shortcuts import render ,redirect
 from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
-from django.contrib.auth.models import User
+from student.models import UserProfile
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def profile_new(request):
                     second_name=profile.second_name
                 ),
                 'client_phone': profile.phone,
-                'client_email': User.email,
+                'client_email': UserProfile.mailing_address,
                 'amount': '2000'
             }
             # return redirect('https://ubu.urfu.ru/pay/')
