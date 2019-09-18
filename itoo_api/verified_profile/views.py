@@ -23,7 +23,7 @@ def redirect_params(url, params=None):
 
 
 def profile_new(request):
-    logger.warning(str(request.user))
+    logger.warning(str(request.user.email))
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
