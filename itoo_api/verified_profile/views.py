@@ -9,6 +9,7 @@ from django.shortcuts import render ,redirect
 from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
+from django.contrib.auth.models import User
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -32,10 +33,18 @@ def profile_new(request):
             profile.save()
             logger.warning(str(profile.first_name))
             profile_params = {
-                'profile': profile
+                'contract_number': 3,
+                'client_name': "{first_name} {last_name} {second_name}".format(
+                    first_name=profile.first_name,
+                    last_name=profile.last_name,
+                    second_name=profile.second_name
+                ),
+                'client_phone': profile.phone,
+                'client_email': User.email,
+                'amount': '2000'
             }
-            return redirect('https://ubu.urfu.ru/pay/')
-            # return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+            # return redirect('https://ubu.urfu.ru/pay/')
+            return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
         else:
             context = {
                 'form': form
