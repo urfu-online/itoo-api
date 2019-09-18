@@ -24,11 +24,11 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     launch = {}
-    course_modes = request.POST.get('course_modes')
+    course_modes = request.POST.post('course_modes')
     logger.warning(course_modes)
     if request.method == "POST":
         if 'course_modes' in request.POST:
-            course_modes = request.POST.get('course_modes')
+            course_modes = request.POST.post('course_modes')
             for mod in course_modes:
                 launch = {
                     'username': mod.username,
