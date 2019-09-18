@@ -28,13 +28,12 @@ def profile_new(request):
     # if request.method == 'GET':
     template_path = '../templates/profile_edit.html'
     if request.method == "POST":
-        form = ProfileForm(request.POST)
-        logger.debug(form.errors)
-        logger.debug(str(form))
+        form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            profile.save()
             profile_params = {
-                'profile': form
+                'profile': profile
             }
             logger.debug(profile_params)
             return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
