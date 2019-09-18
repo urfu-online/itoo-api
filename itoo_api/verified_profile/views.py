@@ -25,8 +25,6 @@ def redirect_params(url, params=None):
 
 
 def profile_new(request):
-    # if request.method == 'GET':
-    template_path = '../templates/profile_edit.html'
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -36,19 +34,20 @@ def profile_new(request):
                 'profile': profile
             }
             logger.debug(profile_params)
-            return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+            return redirect('https://ubu.urfu.ru/pay/')
+            # return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
         else:
             context = {
                 'form': form
             }
-            return render(request, template_path, context)
+            return render(request, '../templates/profile_edit.html', context)
 
     elif request.method == "GET":
         form = ProfileForm()
         context = {
             'form': form
         }
-        return render(request, template_path, context)
+        return render(request, '../templates/profile_edit.html', context)
 
     # return render(request, 'templates/profile_edit.html', {'form': form})
 
