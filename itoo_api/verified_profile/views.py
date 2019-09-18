@@ -30,10 +30,10 @@ def profile_new(request):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.save()
+            logger.debug(str(profile))
             profile_params = {
                 'profile': profile
             }
-            logger.debug(profile_params)
             return redirect('https://ubu.urfu.ru/pay/')
             # return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
         else:
