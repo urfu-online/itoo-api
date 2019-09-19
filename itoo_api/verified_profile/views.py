@@ -5,7 +5,9 @@ import urllib
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .forms import ProfileForm
-from django.shortcuts import render, redirect
+from .models import Profile
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
@@ -54,22 +56,28 @@ def profile_new(request):
         return render(request, '../templates/profile_edit.html', context)
 
 
-def profile_read(request):
+def profile_edit(request, username):
     launch = {}
     if request.method == "POST":
         logger.warning(request.body)
-        # course_modes = request.body
-        # for mod in course_modes:
-        #     launch = {
-        #         'username': mod.username,
-        #         'course_id': mod.course_id,
-        #         'amount': mod.course_modes_min_price
-        #     }
-        # logger.warning("11111111111")
-        # logger.warning(launch)
+        course_modes = request.body.course_modes
+        for mod in course_modes:
+            launch = {
+                'username': mod.username,
+                'course_id': mod.course_id,
+                'amount': mod.course_modes_min_price
+            }
+        # if Profile.objects.filter(User.username=launch['username']).exists():
+        #     redirect('profile/')
+
     else:
         form = ProfileForm()
-        context = {
-            'form': form
-        }
-        return render(request, '../templates/profile_edit.html', context)
+        return render(request, '../templates/profile_edit.html', {'form': form})
+
+def profile_detail(request, username):
+    # user = get_object_or_404(User, username=username)
+    profile = Profile.get_profile(username=username)
+    if profile==None:
+        return redirect('profile/{username}/new'.format(username=username))
+    else:
+        return render(request, '../templates/profile_detail.html', {'profile': profile})

@@ -5,7 +5,7 @@ Database ORM models for payments prerequisites
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
+from django.contrib.auth.models import User
 from ..utils import generate_new_filename
 
 
@@ -59,8 +59,17 @@ class Profile(models.Model):
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
+    user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
+
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    @classmethod
+    def get_profile(cls, username):
+        if cls.objects.select_related().filter(user=username).exists():
+            return cls.objects.select_related().filter(user=username)
+        else:
+            return None
 
     def fio(self):
         if self.second_name:
