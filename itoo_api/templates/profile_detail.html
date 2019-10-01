@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-
+<!--href="{% url 'profile_edit' username=profile.user.username %}"-->
 {% block content %}
 <div class="content container">
     <div class="row">
         <div class="col-md-8">
-            <a class="btn btn-default" href="{% url 'profile_edit' username=profile.user.username %}"><span
-                    class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-default" href="#">
+                <span class="glyphicon glyphicon-pencil"></span></a>
             {% for item in profile %}
                 <h1>{{ item.user.username }}</h1>
                 <p>{{ item.first_name }}</p>
