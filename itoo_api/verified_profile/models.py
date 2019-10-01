@@ -59,7 +59,7 @@ class Profile(models.Model):
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
-    user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile', verbose_name="Пользователь", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile', verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)

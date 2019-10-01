@@ -4,10 +4,10 @@
 <div class="content container">
     <div class="row">
         <div class="col-md-8">
-            <a class="btn btn-default" href="{% url 'profile_edit' username=profile.username %}"><span
+            <a class="btn btn-default" href="{% url 'profile_edit' username=profile.user.username %}"><span
                     class="glyphicon glyphicon-pencil"></span></a>
             {% for item in profile %}
-                <h1>{{ item.username }}</h1>
+                <h1>{{ item.user.username }}</h1>
                 <p>{{ item.first_name }}</p>
                 <p>{{ item.last_name }}</p>
                 <p>{{ item.second_name }}</p>
