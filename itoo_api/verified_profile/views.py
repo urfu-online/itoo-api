@@ -81,6 +81,6 @@ def profile_detail(request):
     profile = Profile.get_profile(user=user)
     logger.warning(profile)
     if profile==None:
-        return redirect(reverse('profile_new'))
+        return redirect(reverse('verified_profile:profile_new'))
     else:
         return render(request, '../templates/profile_detail.html', {'profile': profile})
