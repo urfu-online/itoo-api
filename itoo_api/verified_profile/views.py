@@ -77,7 +77,8 @@ def profile_edit(request, username):
 def profile_detail(request, username):
     # user = get_object_or_404(User, username=username)
     profile = Profile.get_profile(username=username)
-    if profile==None:
-        return redirect('profile/{username}/new'.format(username=username))
-    else:
-        return render(request, '../templates/profile_detail.html', {'profile': profile})
+    logger.warning(profile)
+    # if profile==None:
+    #     return redirect('profile/{username}/new'.format(username=username))
+    # else:
+    return render(request, '../templates/profile_detail.html', {'profile': profile})
