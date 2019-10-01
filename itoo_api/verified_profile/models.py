@@ -59,7 +59,7 @@ class Profile(models.Model):
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
-    user = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='custom_user', verbose_name="Пользователь", on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
