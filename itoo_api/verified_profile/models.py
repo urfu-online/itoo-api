@@ -66,8 +66,8 @@ class Profile(models.Model):
 
     @classmethod
     def get_profile(cls, username):
-        if cls.objects.select_related().filter(username=username).exists():
-            return cls.objects.select_related().filter(username=username)
+        if cls.objects.select_related().filter(user__username=username).exists():
+            return cls.objects.select_related().filter(user__username=username)
         else:
             return None
 
