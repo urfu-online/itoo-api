@@ -65,9 +65,9 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     @classmethod
-    def get_profile(cls, username):
-        if cls.objects.select_related().filter(user__username=username).exists():
-            return cls.objects.select_related().filter(user__username=username)
+    def get_profile(cls, user):
+        if cls.objects.select_related().filter(user=user).exists():
+            return cls.objects.select_related().filter(user=user)
         else:
             return None
 

@@ -12,6 +12,8 @@ from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
 
+from django.core.urlresolvers import reverse
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -46,18 +48,18 @@ def profile_new(request):
             context = {
                 'form': form
             }
-            return render(request, '../templates/profile_edit.html', context)
+            return render(request, '../templates/profile_new.html', context)
 
     elif request.method == "GET":
         form = ProfileForm()
         context = {
             'form': form
         }
-        return render(request, '../templates/profile_edit.html', context)
+        return render(request, '../templates/profile_new.html', context)
 
 
-def profile_edit(request, username):
-    launch = {}
+def profile_edit(request):
+    launch = dict()
     if request.method == "POST":
         logger.warning(request.body)
         course_modes = request.body.course_modes
@@ -70,15 +72,15 @@ def profile_edit(request, username):
         # if Profile.objects.filter(User.username=launch['username']).exists():
         #     redirect('profile/')
 
-    else:
+    elif request.method == "GET":
         form = ProfileForm()
         return render(request, '../templates/profile_edit.html', {'form': form})
 
-def profile_detail(request, username):
-    # user = get_object_or_404(User, username=username)
-    profile = Profile.get_profile(username=username)
+def profile_detail(request):
+    user = request.user
+    profile = Profile.get_profile(user=user)
     logger.warning(profile)
     if profile==None:
-        return redirect('profile/{username}/new'.format(username=username))
+        return redirect(reverse('profile_new'))
     else:
         return render(request, '../templates/profile_detail.html', {'profile': profile})
