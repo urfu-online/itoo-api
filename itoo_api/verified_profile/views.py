@@ -84,7 +84,7 @@ def profile_edit(request):
         #     redirect('profile/')
 
     elif request.method == "GET":
-        form = ProfileForm()
+        form = ProfileForm(instance=profile)
         return render(request, '../templates/profile_edit.html', {'form': form})
 
 
