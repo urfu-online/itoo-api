@@ -34,7 +34,7 @@ def profile_new(request):
             profile = form.save(commit=False)
             profile.save()
             logger.warning(profile.first_name)
-            logger.warning(urllib.quote(profile.first_name))
+            logger.warning(urllib.quote(profile.first_name.encode('utf8')))
             profile_params = {
                 'contract_number': 3,
                 'client_name': "{first_name} {last_name} {second_name}".format(
