@@ -22,6 +22,7 @@ def redirect_params(url, params=None):
     response = redirect(url)
     if params:
         query_string = urllib.urlencode(params)
+        logger.warning(query_string)
         response['Location'] += '?' + query_string
     return response
 
@@ -32,6 +33,8 @@ def profile_new(request):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.save()
+            logger.warning(profile.first_name)
+            logger.warning(urllib.quote(profile.first_name))
             profile_params = {
                 'contract_number': 3,
                 'client_name': "{first_name} {last_name} {second_name}".format(
