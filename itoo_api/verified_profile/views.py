@@ -91,13 +91,13 @@ def profile_detail(request):
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
     elif request.method == "POST":
-        profile = Profile.get_profile(user=user)
+        profile = Profile.get_profile(user=user)[0]
         profile_params = {
             'contract_number': 3,
             'client_name': "{first_name} {last_name} {second_name}".format(
-                first_name=profile.values_list('first_name', flat=True).encode('utf8'),
-                last_name=profile.values_list('last_name', flat=True).encode('utf8'),
-                second_name=profile.values_list('second_name', flat=True).encode('utf8'),
+                first_name=profile.values_list('first_name', flat=True),
+                last_name=profile.values_list('last_name', flat=True),
+                second_name=profile.values_list('second_name', flat=True),
             ),
             'client_phone': profile.values_list('phone', flat=True),
             'client_email': request.user.email,
