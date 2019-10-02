@@ -79,11 +79,28 @@ def profile_edit(request):
         form = ProfileForm()
         return render(request, '../templates/profile_edit.html', {'form': form})
 
+
 def profile_detail(request):
     user = request.user
-    profile = Profile.get_profile(user=user)
-    logger.warning(profile)
-    if profile==None:
-        return redirect(reverse('itoo:verified_profile:profile_new'))
-    else:
-        return render(request, '../templates/profile_detail.html', {'profile': profile})
+
+    if request.method == "GET":
+        profile = Profile.get_profile(user=user)
+        if profile == None:
+            return redirect(reverse('itoo:verified_profile:profile_new'))
+        else:
+            return render(request, '../templates/profile_detail.html', {'profile': profile})
+
+    elif request.method == "POST":
+        profile = Profile.get_profile(user=user)
+        profile_params = {
+            'contract_number': 3,
+            'client_name': "{first_name} {last_name} {second_name}".format(
+                first_name=profile.first_name.encode('utf8'),
+                last_name=profile.last_name.encode('utf8'),
+                second_name=profile.second_name.encode('utf8')
+            ),
+            'client_phone': profile.phone,
+            'client_email': request.user.email,
+            'amount': '2000'
+        }
+        return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
