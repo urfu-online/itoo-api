@@ -95,9 +95,9 @@ def profile_detail(request):
         profile_params = {
             'contract_number': 3,
             'client_name': "{first_name} {last_name} {second_name}".format(
-                first_name=profile.first_name,
-                last_name=profile.last_name,
-                second_name=profile.second_name,
+                first_name=profile.first_name.encode('utf8'),
+                last_name=profile.last_name.encode('utf8'),
+                second_name=profile.second_name.encode('utf8'),
             ),
             'client_phone': profile.phone,
             'client_email': request.user.email,
