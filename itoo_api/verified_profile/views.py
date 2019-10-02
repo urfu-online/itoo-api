@@ -64,7 +64,7 @@ def profile_new(request):
 def profile_edit(request):
     launch = dict()
     user = request.user
-    profile = Profile.get_profile(user=user)
+    profile = Profile.get_profile(user=user)[0]
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
