@@ -30,7 +30,7 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.save()
