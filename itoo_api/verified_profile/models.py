@@ -78,14 +78,14 @@ class Profile(models.Model):
     def fio(self):
         if self.second_name:
             return "{last_name} {first_name} {second_name}".format(
-                last_name=self.last_name.encode('utf8'),
-                first_name=self.first_name.encode('utf8'),
-                second_name=self.second_name.encode('utf8')
+                last_name=self.last_name,
+                first_name=self.first_name,
+                second_name=self.second_name
             )
         else:
             return "{last_name} {first_name}".format(
-                last_name=self.last_name.encode('utf8'),
-                first_name=self.first_name.encode('utf8')
+                last_name=self.last_name,
+                first_name=self.first_name
             )
 
     def __str__(self):
