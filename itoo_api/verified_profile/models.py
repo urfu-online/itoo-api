@@ -75,22 +75,22 @@ class Profile(models.Model):
         else:
             return None
 
-    def fio(self):
-        # return  self.second_name
-        if self.second_name.encode('utf-8'):
-            return "{last_name} {first_name} {second_name}".format(
-                last_name=self.last_name.encode('utf-8'),
-                first_name=self.first_name.encode('utf-8'),
-                second_name=self.second_name.encode('utf-8')
-            )
-        else:
-            return "{last_name} {first_name}".format(
-                last_name=self.last_name.encode('utf-8'),
-                first_name=self.first_name.encode('utf-8')
-            )
+    # def fio(self):
+    #     # return  self.second_name
+    #     if self.second_name.encode('utf-8'):
+    #         return "{last_name} {first_name} {second_name}".format(
+    #             last_name=self.last_name.encode('utf-8'),
+    #             first_name=self.first_name.encode('utf-8'),
+    #             second_name=self.second_name.encode('utf-8')
+    #         )
+    #     else:
+    #         return "{last_name} {first_name}".format(
+    #             last_name=self.last_name.encode('utf-8'),
+    #             first_name=self.first_name.encode('utf-8')
+    #         )
 
     def __str__(self):
-        return self.fio()
+        return self.user.email
 
     class Meta:
         verbose_name = 'анкета для зачисления'
