@@ -34,7 +34,7 @@ def profile_new(request):
             profile.save()
             profile_params = {
                 'contract_number': 3,
-                'client_name': "{first_name} {last_name} {second_name}".format(
+                'client_name': u"{first_name} {last_name} {second_name}".format(
                     first_name=profile.first_name,
                     last_name=profile.last_name,
                     second_name=profile.second_name
