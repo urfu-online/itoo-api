@@ -95,11 +95,11 @@ def profile_detail(request):
         profile_params = {
             'contract_number': 3,
             'client_name': "{first_name} {last_name} {second_name}".format(
-                first_name=profile.values('first_name'),
-                last_name=profile.values('last_name'),
-                second_name=profile.values('second_name')
+                first_name=profile.values('first_name')[0],
+                last_name=profile.values('last_name')[0],
+                second_name=profile.values('second_name')[0]
             ),
-            'client_phone': profile.values('phone'),
+            'client_phone': profile.values('phone')[0],
             'client_email': request.user.email,
             'amount': '2000'
         }
