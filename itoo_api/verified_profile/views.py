@@ -63,15 +63,23 @@ def profile_new(request):
 
 def profile_edit(request):
     launch = dict()
+    user = request.user
+    profile = Profile.get_profile(user=user)
     if request.method == "POST":
-        logger.warning(request.body)
-        course_modes = request.body.course_modes
-        for mod in course_modes:
-            launch = {
-                'username': mod.username,
-                'course_id': mod.course_id,
-                'amount': mod.course_modes_min_price
-            }
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect(reverse('itoo:verified_profile:profile_detail'))
+        # logger.warning(request.body)
+        # course_modes = request.body.course_modes
+        # for mod in course_modes:
+        #     launch = {
+        #         'username': mod.username,
+        #         'course_id': mod.course_id,
+        #         'amount': mod.course_modes_min_price
+        #     }
         # if Profile.objects.filter(User.username=launch['username']).exists():
         #     redirect('profile/')
 
