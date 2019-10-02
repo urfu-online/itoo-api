@@ -55,5 +55,5 @@ class PayUrfuDataAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
+    list_display = ('user__email','first_name', 'last_name', 'all_valid')
     search_fields = ('first_name', 'last_name', 'second_name')
