@@ -33,6 +33,7 @@ def profile_new(request):
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             profile = form.save(commit=False)
+            profile.user = request.user
             profile.save()
             profile_params = {
                 'contract_number': 3,

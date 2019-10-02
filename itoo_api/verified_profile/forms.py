@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid']
+        exclude = ['all_valid', 'user']
         widgets = {
             'first_name': forms.TextInput(
                 attrs={
