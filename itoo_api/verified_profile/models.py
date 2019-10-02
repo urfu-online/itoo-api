@@ -7,6 +7,10 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from ..utils import generate_new_filename
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
 @python_2_unicode_compatible
@@ -72,6 +76,7 @@ class Profile(models.Model):
             return None
 
     def fio(self):
+        logger.warning(self.second_name)
         if self.second_name:
             return "{last_name} {first_name} {second_name}".format(
                 last_name=self.last_name,
