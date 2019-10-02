@@ -75,7 +75,6 @@ class Profile(models.Model):
         else:
             return None
 
-    @python_2_unicode_compatible
     def fio(self):
         if self.second_name:
             return "{last_name} {first_name} {second_name}".format(
