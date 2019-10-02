@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def redirect_params(url, params=None):
     response = redirect(url)
     if params:
-        query_string = urllib.quote(params)
+        query_string = urllib.urlencode(params)
         response['Location'] += '?' + query_string
     return response
 
@@ -35,9 +35,9 @@ def profile_new(request):
             profile_params = {
                 'contract_number': 3,
                 'client_name': u"{first_name} {last_name} {second_name}".format(
-                    first_name=profile.first_name,
-                    last_name=profile.last_name,
-                    second_name=profile.second_name
+                    first_name=urllib.quote(profile.first_name),
+                    last_name=urllib.quote(profile.last_name),
+                    second_name=urllib.quote(profile.second_name)
                 ),
                 'client_phone': profile.phone,
                 'client_email': request.user.email,
