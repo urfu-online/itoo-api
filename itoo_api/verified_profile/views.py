@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def redirect_params(url, params=None):
     response = redirect(url)
     if params:
-        query_string = urllib.urlencode(params)
+        query_string = urllib.quote(params)
         response['Location'] += '?' + query_string
     return response
 
