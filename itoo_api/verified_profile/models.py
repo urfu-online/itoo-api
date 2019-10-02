@@ -76,18 +76,17 @@ class Profile(models.Model):
             return None
 
     def fio(self):
-        logger.warning(self.second_name)
-        # if self.second_name:
-        return "{second_name}".format(
-            # last_name=self.last_name,
-            # first_name=self.first_name,
-            second_name=self.second_name
-        )
-        # else:
-        #     return "{last_name} {first_name}".format(
-        #         last_name=self.last_name,
-        #         first_name=self.first_name
-        #     )
+        if self.second_name:
+            return "{last_name} {first_name} {second_name}".format(
+                last_name=self.last_name.encode('utf8'),
+                first_name=self.first_name.encode('utf8'),
+                second_name=self.second_name.encode('utf8')
+            )
+        else:
+            return "{last_name} {first_name}".format(
+                last_name=self.last_name.encode('utf8'),
+                first_name=self.first_name.encode('utf8')
+            )
 
     def __str__(self):
         return self.fio()
