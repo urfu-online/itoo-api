@@ -136,9 +136,6 @@ class EduBaseObject(TimeStampedModel):
     class Meta:
         abstract = True
 
-    def __str__(self):
-        return self.title
-
 
 @python_2_unicode_compatible
 class EduProgram(EduBaseObject):
@@ -148,9 +145,15 @@ class EduProgram(EduBaseObject):
         verbose_name = "образовательная программа"
         verbose_name_plural = "образовательные программы"
 
+    def __str__(self):
+        return self.title
+
 
 @python_2_unicode_compatible
 class EduProject(EduBaseObject):
     class Meta:
         verbose_name = "образовательный проект"
         verbose_name_plural = "образовательные проекты"
+
+    def __str__(self):
+        return self.title
