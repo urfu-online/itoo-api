@@ -2,7 +2,10 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from django_summernote.admin import SummernoteModelAdmin
+
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
+from itoo_api.models import EduProgram, EduProject, TextBlock
 
 
 class ProgramCourseInline(admin.TabularInline):
@@ -55,6 +58,25 @@ class PayUrfuDataAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user','first_name', 'last_name', 'second_name', 'all_valid')
-    search_fields = ('user','first_name', 'last_name', 'second_name', 'city')
+    list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid')
+    search_fields = ('user', 'first_name', 'last_name', 'second_name', 'city')
     list_filter = ('all_valid', 'education_level', 'city')
+
+
+class TextBlockInline(SummernoteModelAdmin, admin.TabularInline):
+    model = TextBlock
+    summernote_fields = '__all__'
+
+
+class EduProgramInline(admin.TabularInline):
+    model = EduProgram
+
+
+@admin.register(EduProject)
+class EduProjectAdmin(admin.ModelAdmin):
+    inlines = [EduProgramInline, TextBlockInline]
+
+
+@admin.register(EduProgram)
+class EduProgramAdmin(admin.ModelAdmin):
+    fields = '__all__'

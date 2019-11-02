@@ -5,7 +5,6 @@ Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
 
-
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
@@ -17,7 +16,8 @@ from verified_profile.models import Offer, Profile
 class Program(TimeStampedModel):
     name = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
-    slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
+    slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
+                            default="", unique=True)
     description = models.TextField('Описание')
     logo = models.ImageField(
         upload_to='program_logos',
@@ -62,7 +62,8 @@ class ProgramCourse(TimeStampedModel):
 class OrganizationCustom(TimeStampedModel):
     name = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
-    slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
+    slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
+                            default="", unique=True)
     description = models.TextField('Описание')
     logo = models.ImageField(
         upload_to='org_logos',
@@ -114,3 +115,34 @@ class PayUrfuData(TimeStampedModel):
         """ Meta class for this Django model """
         verbose_name = 'Данные от PAY URFU'
         verbose_name_plural = 'Данные от PAY URFU'
+
+
+@python_2_unicode_compatible
+class TextBlock(TimeStampedModel):
+    content = models.TextField("Контент", blank=True, default="")
+    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True, on_delete=models.SET_NULL)
+
+
+@python_2_unicode_compatible
+class EduBaseObject(TimeStampedModel):
+    title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
+    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        abstract = True
+
+
+@python_2_unicode_compatible
+class EduProgram(EduBaseObject):
+    project = models.ForeignKey("EduProject", related_name="programs", blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name = "образовательная программа"
+        verbose_name_plural = "образовательные программы"
+
+
+@python_2_unicode_compatible
+class EduProject(EduBaseObject):
+    class Meta:
+        verbose_name = "образовательный проект"
+        verbose_name_plural = "образовательные проекты"
