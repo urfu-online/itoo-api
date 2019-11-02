@@ -79,4 +79,5 @@ class EduProjectAdmin(admin.ModelAdmin):
 
 @admin.register(EduProgram)
 class EduProgramAdmin(admin.ModelAdmin):
-    fields = '__all__'
+    fields = ('title', 'project', 'owner')
+    inlines = [TextBlockInline]
