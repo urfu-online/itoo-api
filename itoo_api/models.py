@@ -120,7 +120,9 @@ class PayUrfuData(TimeStampedModel):
 @python_2_unicode_compatible
 class TextBlock(TimeStampedModel):
     content = models.TextField("Контент", blank=True, default="")
-    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True,
+    parent = models.ForeignKey("EduProgram", related_name="content", blank=True, null=True,
+                               on_delete=models.SET_NULL)
+    parent_project = models.ForeignKey("EduProject", related_name="text_content", blank=True, null=True,
                                on_delete=models.SET_NULL)
 
     def __str__(self):
