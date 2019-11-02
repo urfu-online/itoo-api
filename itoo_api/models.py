@@ -120,16 +120,24 @@ class PayUrfuData(TimeStampedModel):
 @python_2_unicode_compatible
 class TextBlock(TimeStampedModel):
     content = models.TextField("Контент", blank=True, default="")
-    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True, on_delete=models.SET_NULL)
+    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True,
+                               on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return "TextBlock"
 
 
 @python_2_unicode_compatible
 class EduBaseObject(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
-    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
+                              on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.title
 
 
 @python_2_unicode_compatible
