@@ -136,6 +136,9 @@ class EduBaseObject(TimeStampedModel):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.title
+
 
 @python_2_unicode_compatible
 class EduProgram(EduBaseObject):
