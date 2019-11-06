@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from django_summernote.admin import SummernoteInlineModelAdmin
+from django.contrib.contenttypes.admin import GenericTabularInline
 
 from itoo_api.models import Program, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
 from itoo_api.models import EduProgram, EduProject, TextBlock
@@ -63,10 +64,9 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('all_valid', 'education_level', 'city')
 
 
-class TextBlockInline(admin.StackedInline, SummernoteInlineModelAdmin):
+class TextBlockInline(GenericTabularInline, SummernoteInlineModelAdmin):
     model = TextBlock
     extra = 1
-    # summernote_fields = '__all__'
 
 
 class EduProgramInline(admin.TabularInline):
@@ -75,7 +75,7 @@ class EduProgramInline(admin.TabularInline):
 
 @admin.register(EduProject)
 class EduProjectAdmin(admin.ModelAdmin):
-    inlines = [EduProgramInline, TextBlockInline]
+    inlines = [TextBlockInline]
 
 
 @admin.register(EduProgram)
