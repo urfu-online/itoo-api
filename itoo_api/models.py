@@ -146,20 +146,10 @@ class TextBlock(TimeStampedModel):
 
 
 @python_2_unicode_compatible
-class EduBaseObject(TimeStampedModel):
+class EduProgram(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
     owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
                               on_delete=models.SET_NULL)
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.title
-
-
-@python_2_unicode_compatible
-class EduProgram(EduBaseObject):
     project = models.ForeignKey("EduProject", related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
 
@@ -172,7 +162,11 @@ class EduProgram(EduBaseObject):
 
 
 @python_2_unicode_compatible
-class EduProject(EduBaseObject):
+class EduProject(TimeStampedModel):
+    title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
+    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
+                              on_delete=models.SET_NULL)
+
     class Meta:
         verbose_name = "образовательный проект"
         verbose_name_plural = "образовательные проекты"
