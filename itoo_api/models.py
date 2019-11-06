@@ -51,6 +51,23 @@ class ProgramCourse(TimeStampedModel):
     program = models.ForeignKey(Program, db_index=True)
     active = models.BooleanField(default=True)
 
+    limit = models.Q(app_label='itoo_api', model='program') | models.Q(app_label='itoo_api', model='eduprogram')
+
+    content_type = models.ForeignKey(
+        ContentType,
+        verbose_name='content page',
+        limit_choices_to=limit,
+        null=True,
+        blank=True,
+    )
+
+    object_id = models.PositiveIntegerField(
+        verbose_name='related object',
+        null=True,
+    )
+
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+
     def __str__(self):
         return self.course_id
 

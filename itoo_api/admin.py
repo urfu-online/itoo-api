@@ -81,4 +81,4 @@ class EduProjectAdmin(admin.ModelAdmin):
 @admin.register(EduProgram)
 class EduProgramAdmin(admin.ModelAdmin):
     fields = ('title', 'project', 'owner')
-    inlines = [TextBlockInline]
+    inlines = [TextBlockInline, ProgramCourseInline]
