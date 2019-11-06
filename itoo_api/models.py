@@ -6,6 +6,8 @@ offers one programmatic API -- api.py for direct Python integration.
 """
 
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 
@@ -122,6 +124,22 @@ class TextBlock(TimeStampedModel):
     content = models.TextField("Контент", blank=True, default="")
     parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True,
                                on_delete=models.SET_NULL)
+    limit = models.Q(app_label='itoo_api', model='eduproject') | models.Q(app_label='itoo_api', model='eduprogram')
+
+    content_type = models.ForeignKey(
+        ContentType,
+        verbose_name='content page',
+        # limit_choices_to=limit,
+        null=True,
+        blank=True,
+    )
+
+    object_id = models.PositiveIntegerField(
+        verbose_name='related object',
+        null=True,
+    )
+
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return "TextBlock"
@@ -132,6 +150,9 @@ class EduBaseObject(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
     owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
                               on_delete=models.SET_NULL)
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return self.title
@@ -152,7 +173,6 @@ class EduProgram(EduBaseObject):
 
 @python_2_unicode_compatible
 class EduProject(EduBaseObject):
-
     class Meta:
         verbose_name = "образовательный проект"
         verbose_name_plural = "образовательные проекты"
