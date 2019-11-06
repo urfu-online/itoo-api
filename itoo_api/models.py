@@ -122,8 +122,6 @@ class PayUrfuData(TimeStampedModel):
 @python_2_unicode_compatible
 class TextBlock(TimeStampedModel):
     content = models.TextField("Контент", blank=True, default="")
-    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True,
-                               on_delete=models.SET_NULL)
     limit = models.Q(app_label='itoo_api', model='eduproject') | models.Q(app_label='itoo_api', model='eduprogram')
 
     content_type = models.ForeignKey(
