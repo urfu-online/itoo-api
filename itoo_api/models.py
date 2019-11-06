@@ -129,7 +129,7 @@ class TextBlock(TimeStampedModel):
     content_type = models.ForeignKey(
         ContentType,
         verbose_name='content page',
-        # limit_choices_to=limit,
+        limit_choices_to=limit,
         null=True,
         blank=True,
     )
@@ -164,7 +164,7 @@ class EduProgram(TimeStampedModel):
 @python_2_unicode_compatible
 class EduProject(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
-    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
+    owner = models.ForeignKey(OrganizationCustom, related_name="projects", blank=True, null=True,
                               on_delete=models.SET_NULL)
 
     class Meta:
