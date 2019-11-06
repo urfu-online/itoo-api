@@ -120,9 +120,7 @@ class PayUrfuData(TimeStampedModel):
 @python_2_unicode_compatible
 class TextBlock(TimeStampedModel):
     content = models.TextField("Контент", blank=True, default="")
-    parent = models.ForeignKey("EduProgram", related_name="content", blank=True, null=True,
-                               on_delete=models.SET_NULL)
-    parent_project = models.ForeignKey("EduProject", related_name="text_content", blank=True, null=True,
+    parent = models.ForeignKey("EduBaseObject", related_name="content", blank=True, null=True,
                                on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -132,9 +130,8 @@ class TextBlock(TimeStampedModel):
 @python_2_unicode_compatible
 class EduBaseObject(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
-
-    class Meta:
-        abstract = True
+    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
+                              on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
@@ -144,8 +141,6 @@ class EduBaseObject(TimeStampedModel):
 class EduProgram(EduBaseObject):
     project = models.ForeignKey("EduProject", related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
-    owner = models.ForeignKey(OrganizationCustom, related_name="programs", blank=True, null=True,
-                              on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "образовательная программа"
@@ -157,8 +152,6 @@ class EduProgram(EduBaseObject):
 
 @python_2_unicode_compatible
 class EduProject(EduBaseObject):
-    owner = models.ForeignKey(OrganizationCustom, related_name="projects", blank=True, null=True,
-                              on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "образовательный проект"
