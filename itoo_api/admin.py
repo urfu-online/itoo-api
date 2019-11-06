@@ -12,6 +12,9 @@ from itoo_api.models import EduProgram, EduProject, TextBlock
 class ProgramCourseInline(admin.TabularInline):
     model = ProgramCourse
 
+class ProgramCourseGInline(GenericTabularInline):
+    model = ProgramCourse
+
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
@@ -81,4 +84,4 @@ class EduProjectAdmin(admin.ModelAdmin):
 @admin.register(EduProgram)
 class EduProgramAdmin(admin.ModelAdmin):
     fields = ('title', 'project', 'owner')
-    inlines = [TextBlockInline, ProgramCourseInline]
+    inlines = [TextBlockInline, ProgramCourseGInline]
