@@ -77,7 +77,7 @@ class ProgramSerializer(serializers.ModelSerializer):
             'active', 'content')
 
     def get_content(self, obj):
-        return obj.content()
+        return obj.content
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
