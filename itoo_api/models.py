@@ -104,7 +104,6 @@ class Program(TimeStampedModel):
     def get_courses(self):
         return self.programcourse_set.all()
 
-    @property
     def content(self):
         return TextBlock.objects.filter(object_id=self.id, content_type__model="Program")
 
