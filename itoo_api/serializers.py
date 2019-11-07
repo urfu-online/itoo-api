@@ -74,7 +74,7 @@ class ProgramSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
-            'active', 'get_content')
+            'active', 'content')
 
     # def get_content(self):
     #     return self.content()
