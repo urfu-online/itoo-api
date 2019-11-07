@@ -5,9 +5,10 @@ URLS for itoo_api end points.
 from rest_framework import routers
 
 from itoo_api.v0.views import ProgramViewSet, ProgramCourseViewSet, \
-    OrganizationCustomViewSet, OrganizationCourseViewSet
+    OrganizationCustomViewSet, OrganizationCourseViewSet, EduProjectViewSet
 
 router = routers.SimpleRouter()
+router.register(r'projects', EduProjectViewSet)
 router.register(r'programs', ProgramViewSet)
 router.register(r'link_courses_program', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationCustomViewSet)

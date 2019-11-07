@@ -11,7 +11,7 @@ from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
-from itoo_api.models import Program, OrganizationCustom
+from itoo_api.models import Program, OrganizationCustom, EduProject
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -21,9 +21,20 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
     """
     Serialize a course descriptor and related information.
     """
+
     class Meta:
         model = CourseOverview
-        fields = ('id','display_name','course_image_url','start_display','catalog_visibility') # description field ????
+        fields = (
+        'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
+
+
+# pylint: disable=too-few-public-methods
+class EduProjectSerializer(serializers.ModelSerializer):
+    """ Serializes the Program object."""
+
+    class Meta(object):  # pylint: disable=missing-docstring
+        model = EduProject
+        fields = ('id', 'name', 'owner', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 # pylint: disable=too-few-public-methods
@@ -32,12 +43,13 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'name', 'owner', 'project', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     courses = serializers.SerializerMethodField()
+
     # program_slug = serializers.CharField(source='program.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
@@ -61,11 +73,12 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 class OrganizationCourseSerializer(serializers.ModelSerializer):
     """ Serializes the OrganizationCustom object."""
     courses = serializers.SerializerMethodField()
+
     # org_slug = serializers.CharField(source='org.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
-        fields = ('name', 'slug', 'active','courses')
+        fields = ('name', 'slug', 'active', 'courses')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
@@ -77,7 +90,8 @@ class CourseEnrollmentSerializer(serializers.ModelSerializer):
     """
     Serializes enrollment information for course summary
     """
-    uid = serializers.CharField(source='username', required=True, allow_blank=False, validators=[UniqueValidator(queryset=User.objects)])
+    uid = serializers.CharField(source='username', required=True, allow_blank=False,
+                                validators=[UniqueValidator(queryset=User.objects)])
 
     class Meta:
         model = CourseEnrollment
