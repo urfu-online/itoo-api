@@ -73,7 +73,6 @@ class EduProject(TimeStampedModel):
         verbose_name = 'Образовательный проект'
         verbose_name_plural = 'Образовательные проекты'
 
-    @property
     def content(self):
         return TextBlock.objects.filter(object_id=self.id, content_type__model="EduProject")
 

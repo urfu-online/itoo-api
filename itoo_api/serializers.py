@@ -50,15 +50,15 @@ class TextBlockSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
-    content_data = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'content_data')
+            'content')
 
-    def get_content_data(self, obj):
+    def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
         return content_serializer.data
 
