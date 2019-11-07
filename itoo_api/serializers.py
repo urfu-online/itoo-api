@@ -50,6 +50,7 @@ class TextBlockSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
+    content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = EduProject
@@ -58,8 +59,9 @@ class EduProjectSerializer(serializers.ModelSerializer):
             'content')
         read_only_fields = ('content',)
 
-    def get_content(self):
-        return self.content()
+    def get_content(self, obj):
+        content = TextBlockSerializer(obj.content(), many=True)
+        return content.data
 
 
 # pylint: disable=too-few-public-methods
@@ -77,7 +79,8 @@ class ProgramSerializer(serializers.ModelSerializer):
             'active', 'content')
 
     def get_content(self, obj):
-        return obj.content
+        content = TextBlockSerializer(obj.content(), many=True)
+        return content.data
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
