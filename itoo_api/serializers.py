@@ -31,19 +31,22 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
 # pylint: disable=too-few-public-methods
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
+    owner_slug = serializers.CharField(source='organizationcustom.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = EduProject
-        fields = ('id', 'title', 'owner', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 # pylint: disable=too-few-public-methods
 class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
+    eduproject_slug = serializers.CharField(source='eduproject.slug')
+    owner_slug = serializers.CharField(source='organizationcustom.slug')
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'title', 'owner', 'project', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'title', 'owner_slug', 'eduproject_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
