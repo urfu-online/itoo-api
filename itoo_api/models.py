@@ -74,7 +74,7 @@ class EduProject(TimeStampedModel):
         verbose_name_plural = 'Образовательные проекты'
 
     @property
-    def get_content(self):
+    def content(self):
         return TextBlock.objects.filter(object_id=self.id, content_type__model=self.model.__name__)
 
 
@@ -105,7 +105,7 @@ class Program(TimeStampedModel):
         return self.programcourse_set.all()
 
     @property
-    def get_content(self):
+    def content(self):
         return TextBlock.objects.filter(object_id=self.id, content_type__model=self.model.__name__)
 
     class Meta:
