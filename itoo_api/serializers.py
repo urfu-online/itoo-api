@@ -51,13 +51,14 @@ class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
 
-    # content = TextObjectRelatedField()
+    content = TextBlockRelatedField(read_only=True)
 
-    class Meta(object):  # pylint: disable=missing-docstring
+    class Meta:  # pylint: disable=missing-docstring
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            )  # 'content'
+            'content')
+        read_only_fields = ('content',)
 
 
 # pylint: disable=too-few-public-methods
@@ -65,14 +66,16 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
-    # content = TextBlockSerializer(many=True, read_only=True)
 
-    class Meta(object):  # pylint: disable=missing-docstring
+    content = TextBlockRelatedField(read_only=True)
+
+    class Meta:  # pylint: disable=missing-docstring
         model = Program
         fields = (
             'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
-            'active')
+            'active', 'content')
+        read_only_fields = ('content',)
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
