@@ -28,11 +28,11 @@ class ProgramInline(admin.TabularInline):
 
 @admin.register(EduProject)
 class EduProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'short_name', 'logo', 'active', 'owner')
+    list_display = ('title', 'short_name', 'logo', 'active', 'owner')
     list_filter = ('active', 'owner')
-    ordering = ('name', 'short_name',)
+    ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
-    search_fields = ('name', 'short_name', 'slug')
+    search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramInline, TextBlockInline]
 
 
@@ -50,11 +50,11 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('name', 'short_name', 'logo', 'active', 'owner')
+    list_display = ('title', 'short_name', 'logo', 'active', 'owner')
     list_filter = ('active', 'owner')
-    ordering = ('name', 'short_name',)
+    ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
-    search_fields = ('name', 'short_name', 'slug')
+    search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
 
 
@@ -64,11 +64,11 @@ class OrganizationCourseInline(admin.TabularInline):
 
 @admin.register(OrganizationCustom)
 class OrganizationCustomAdmin(admin.ModelAdmin):
-    list_display = ('name', 'short_name', 'logo', 'active',)
+    list_display = ('title', 'short_name', 'logo', 'active',)
     list_filter = ('active',)
-    ordering = ('name', 'short_name',)
+    ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
-    search_fields = ('name', 'short_name', 'slug')
+    search_fields = ('title', 'short_name', 'slug')
     inlines = [OrganizationCourseInline]
 
 

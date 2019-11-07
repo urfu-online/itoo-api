@@ -16,7 +16,7 @@ from verified_profile.models import Offer, Profile
 
 @python_2_unicode_compatible
 class OrganizationCustom(TimeStampedModel):
-    name = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
+    title = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)
@@ -47,7 +47,7 @@ class OrganizationCustom(TimeStampedModel):
 
 @python_2_unicode_compatible
 class EduProject(TimeStampedModel):
-    name = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
+    title = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)

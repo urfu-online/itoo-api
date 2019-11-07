@@ -34,7 +34,7 @@ class EduProjectSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = EduProject
-        fields = ('id', 'name', 'owner', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'title', 'owner', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 # pylint: disable=too-few-public-methods
@@ -43,7 +43,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'name', 'owner', 'project', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'title', 'owner', 'project', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
@@ -67,7 +67,7 @@ class OrganizationCustomSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
-        fields = ('id', 'name', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = ('id', 'title', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
 
 
 class OrganizationCourseSerializer(serializers.ModelSerializer):
@@ -78,7 +78,7 @@ class OrganizationCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = OrganizationCustom
-        fields = ('name', 'slug', 'active', 'courses')
+        fields = ('title', 'slug', 'active', 'courses')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
@@ -124,7 +124,7 @@ def serialize_program(program):
     """
     return {
         'id': program.id,
-        'name': program.name,
+        'title': program.name,
         'short_name': program.short_name,
         'description': program.description,
         'logo': program.logo,
