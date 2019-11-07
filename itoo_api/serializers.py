@@ -67,7 +67,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
-    # content = serializers.ReadOnlyField()
+    content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
@@ -76,9 +76,8 @@ class ProgramSerializer(serializers.ModelSerializer):
             'image_background',
             'active', 'content')
 
-    def get_content(self):
-        print("!!!!!!!!!!!!!!!!!!!!!!", self)
-        return self.content()
+    def get_content(self, obj):
+        return obj.content()
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
