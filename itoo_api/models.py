@@ -153,6 +153,7 @@ class PayUrfuData(TimeStampedModel):
 
 @python_2_unicode_compatible
 class TextBlock(TimeStampedModel):
+    type_slug = models.CharField("Тип отображения", default="html")
     content = models.TextField("Контент", blank=True, default="")
     limit = models.Q(app_label='itoo_api', model='eduproject') | models.Q(app_label='itoo_api', model='eduprogram')
 

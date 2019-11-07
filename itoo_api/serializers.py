@@ -11,7 +11,7 @@ from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
-from itoo_api.models import Program, OrganizationCustom, EduProject
+from itoo_api.models import Program, OrganizationCustom, EduProject, TextBlock
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -25,7 +25,13 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
     class Meta:
         model = CourseOverview
         fields = (
-        'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
+            'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
+
+
+class TextBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TextBlock
+        fields = ('type_slug', 'content')
 
 
 # pylint: disable=too-few-public-methods
@@ -33,9 +39,13 @@ class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
 
+    content = TextBlockSerializer(many=True)
+
     class Meta(object):  # pylint: disable=missing-docstring
         model = EduProject
-        fields = ('id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = (
+            'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
+            'content')
 
 
 # pylint: disable=too-few-public-methods
@@ -43,10 +53,14 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
+    content = TextBlockSerializer(many=True)
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active')
+        fields = (
+            'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
+            'image_background',
+            'active', 'content')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
