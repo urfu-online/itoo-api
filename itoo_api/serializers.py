@@ -34,16 +34,16 @@ class TextBlockSerializer(serializers.ModelSerializer):
         fields = ('type_slug', 'content')
 
 
-class TextBlockRelatedField(serializers.RelatedField):
-    def to_representation(self, value):
-        """
-        Serialize bookmark instances using a bookmark serializer,
-        and note instances using a note serializer.
-        """
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', value)
-        serializer = TextBlockSerializer(value)
-
-        return serializer.data
+# class TextBlockRelatedField(serializers.RelatedField):
+#     def to_representation(self, value):
+#         """
+#         Serialize bookmark instances using a bookmark serializer,
+#         and note instances using a note serializer.
+#         """
+#         print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', value)
+#         serializer = TextBlockSerializer(value)
+#
+#         return serializer.data
 
 
 # pylint: disable=too-few-public-methods
@@ -51,7 +51,7 @@ class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
 
-    content = TextBlockRelatedField(read_only=True)
+    content = TextBlockSerializer(many=True, read_only=True)
 
     class Meta:  # pylint: disable=missing-docstring
         model = EduProject
@@ -67,7 +67,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
 
-    content = TextBlockRelatedField(read_only=True)
+    content = TextBlockSerializer(many=True, read_only=True)
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
