@@ -67,15 +67,14 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
-    content = serializers.SerializerMethodField(source='get_content')
+    content = serializers.ReadOnlyField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
         fields = (
             'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
-            'active', 'content')
-        read_only_fields = ('content',)
+            'active', 'get_content')
 
     # def get_content(self):
     #     return self.content()
