@@ -75,7 +75,7 @@ class EduProject(TimeStampedModel):
 
     @property
     def content(self):
-        return TextBlock.objects.filter(object_id=self.id, content_type__model=self.model.__name__)
+        return TextBlock.objects.filter(object_id=self.id, content_type__model="EduProject")
 
 
 @python_2_unicode_compatible
