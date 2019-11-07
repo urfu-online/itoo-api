@@ -7,7 +7,7 @@ import logging
 from rest_framework import viewsets
 
 from itoo_api.models import Program, OrganizationCustom, EduProject
-from itoo_api.serializers import ProgramSerializer, OrganizationSerializer, ProgramCourseSerializer, \
+from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
     OrganizationCustomSerializer, OrganizationCourseSerializer, EduProjectSerializer
 
 # from student.views import send_enrollment_email
