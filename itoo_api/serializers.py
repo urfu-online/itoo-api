@@ -58,6 +58,9 @@ class EduProjectSerializer(serializers.ModelSerializer):
             'content')
         read_only_fields = ('content',)
 
+    def get_content(self):
+        return self.content()
+
 
 # pylint: disable=too-few-public-methods
 class ProgramSerializer(serializers.ModelSerializer):
@@ -72,6 +75,9 @@ class ProgramSerializer(serializers.ModelSerializer):
             'image_background',
             'active', 'content')
         read_only_fields = ('content',)
+
+    def get_content(self):
+        return self.content()
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
