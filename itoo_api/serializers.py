@@ -67,7 +67,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
 
-    content = serializers.Field()  #TextBlockSerializer(many=True, read_only=True)
+    content = TextBlockSerializer(many=True, read_only=True)
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
