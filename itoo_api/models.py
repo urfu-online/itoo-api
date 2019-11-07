@@ -20,7 +20,7 @@ class OrganizationCustom(TimeStampedModel):
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)
-    description = models.TextField('Описание')
+    description = models.TextField('Описание', blank=True, null=True)
     logo = models.ImageField(
         upload_to='org_logos',
         help_text='Please add only .PNG files for logo images. This logo will be used on Organization logo.',
@@ -53,7 +53,7 @@ class EduProject(TimeStampedModel):
                             default="", unique=True)
     owner = models.ForeignKey(OrganizationCustom, related_name="projects", blank=True, null=True,
                               on_delete=models.SET_NULL)
-    description = models.TextField('Описание')
+    description = models.TextField('Описание', blank=True, null=True)
     logo = models.ImageField(
         upload_to='project_logos',
         help_text='Please add only .PNG files for logo images. This logo will be used on Edu project logo.',
@@ -80,7 +80,7 @@ class Program(TimeStampedModel):
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)
-    description = models.TextField('Описание')
+    description = models.TextField('Описание', blank=True, null=True)
     logo = models.ImageField(
         upload_to='program_logos',
         help_text='Please add only .PNG files for logo images. This logo will be used on Program logo.',
