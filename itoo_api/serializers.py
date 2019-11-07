@@ -77,6 +77,7 @@ class ProgramSerializer(serializers.ModelSerializer):
         read_only_fields = ('content',)
 
     def get_content(self):
+        print("!!!!!!!!!!!!!!!!!!!!!!", self)
         return self.content()
 
 
