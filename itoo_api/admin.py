@@ -39,8 +39,8 @@ class EduProjectAdmin(admin.ModelAdmin):
 @admin.register(ProgramCourse)
 class ProgramCourseAdmin(admin.ModelAdmin):
     list_display = ('course_id', 'program', 'active')
-    ordering = ('course_id', 'program__name',)
-    search_fields = ('course_id', 'program__name', 'program__short_name',)
+    ordering = ('course_id', 'program__title',)
+    search_fields = ('course_id', 'program__title', 'program__short_name',)
 
 
 # @admin.register(EduProject)
@@ -75,8 +75,8 @@ class OrganizationCustomAdmin(admin.ModelAdmin):
 @admin.register(OrganizationCourse)
 class OrganizationCourseAdmin(admin.ModelAdmin):
     list_display = ('course_id', 'org', 'active')
-    ordering = ('course_id', 'org__name',)
-    search_fields = ('course_id', 'org__name', 'org__short_name',)
+    ordering = ('course_id', 'org__title',)
+    search_fields = ('course_id', 'org__title', 'org__short_name',)
 
 
 @admin.register(PayUrfuData)

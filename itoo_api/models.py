@@ -34,7 +34,7 @@ class OrganizationCustom(TimeStampedModel):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_courses(self):
         return self.organizationcourse_set.all()
@@ -67,7 +67,7 @@ class EduProject(TimeStampedModel):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta(object):
         verbose_name = 'Образовательный проект'

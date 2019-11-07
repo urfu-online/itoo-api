@@ -5,7 +5,7 @@ python containers (mainly arrays and dicts).
 import logging
 from opaque_keys.edx.keys import CourseKey
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from organizations.models import Organization
+# from organizations.models import Organization
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
@@ -54,7 +54,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
-        fields = ('name', 'slug', 'active', 'courses')
+        fields = ('title', 'slug', 'active', 'courses')
 
     def get_courses(self, obj):
         course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
@@ -110,12 +110,12 @@ class UserEnrollmentSerializer(serializers.ModelSerializer):
         fields = ('course_id', 'mode', 'grade')
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
-    """ Serializes the Organization object."""
-
-    class Meta(object):  # pylint: disable=missing-docstring
-        model = Organization
-        fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
+# class OrganizationSerializer(serializers.ModelSerializer):
+#     """ Serializes the Organization object."""
+#
+#     class Meta(object):  # pylint: disable=missing-docstring
+#         model = Organization
+#         fields = ('id', 'name', 'short_name', 'description', 'logo', 'active')
 
 
 def serialize_program(program):
@@ -124,7 +124,7 @@ def serialize_program(program):
     """
     return {
         'id': program.id,
-        'title': program.name,
+        'title': program.title,
         'short_name': program.short_name,
         'description': program.description,
         'logo': program.logo,
