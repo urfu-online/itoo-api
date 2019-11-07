@@ -106,7 +106,7 @@ class Program(TimeStampedModel):
 
     @property
     def content(self):
-        return TextBlock.objects.filter(object_id=self.id, content_type__model=self.model.__name__)
+        return TextBlock.objects.filter(object_id=self.id, content_type__model="Program")
 
     class Meta:
         verbose_name = "Образовательная программа"
