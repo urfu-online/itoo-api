@@ -77,7 +77,7 @@ class ProgramSerializer(serializers.ModelSerializer):
             'image_background',
             'active', 'content')
 
-    def get_content_data(self, obj):
+    def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
         return content_serializer.data
 
