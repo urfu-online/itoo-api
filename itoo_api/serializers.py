@@ -28,6 +28,22 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
             'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
 
 
+class TextObjectRelatedField(serializers.RelatedField):
+    def to_representation(self, value):
+        """
+        Serialize bookmark instances using a bookmark serializer,
+        and note instances using a note serializer.
+        """
+        if isinstance(value, EduProject):
+            serializer = EduProjectSerializer(value)
+        elif isinstance(value, Program):
+            serializer = ProgramSerializer(value)
+        else:
+            raise Exception('Unexpected type of tagged object')
+
+        return serializer.data
+
+
 class TextBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextBlock
