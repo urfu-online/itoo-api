@@ -51,8 +51,6 @@ class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
 
-    content = TextBlockSerializer(many=True, read_only=True)
-
     class Meta:  # pylint: disable=missing-docstring
         model = EduProject
         fields = (
@@ -66,8 +64,6 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
-
-    content = TextBlockSerializer(many=True, read_only=True)
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
