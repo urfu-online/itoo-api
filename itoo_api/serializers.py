@@ -28,26 +28,22 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
             'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
 
 
-class TextObjectRelatedField(serializers.RelatedField):
+class TextBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TextBlock
+        fields = ('type_slug', 'content')
+
+
+class TextBlockRelatedField(serializers.RelatedField):
     def to_representation(self, value):
         """
         Serialize bookmark instances using a bookmark serializer,
         and note instances using a note serializer.
         """
-        if isinstance(value, EduProject):
-            serializer = EduProjectSerializer(value)
-        elif isinstance(value, Program):
-            serializer = ProgramSerializer(value)
-        else:
-            raise Exception('Unexpected type of tagged object')
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', value)
+        serializer = TextBlockSerializer(value)
 
         return serializer.data
-
-
-class TextBlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TextBlock
-        fields = ('type_slug', 'content')
 
 
 # pylint: disable=too-few-public-methods
@@ -55,13 +51,13 @@ class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
 
-    content = TextBlockSerializer(many=True, read_only=True)
+    # content = TextObjectRelatedField()
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'content')
+            )  # 'content'
 
 
 # pylint: disable=too-few-public-methods
@@ -69,14 +65,14 @@ class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
-    content = TextBlockSerializer(many=True, read_only=True)
+    # content = TextBlockSerializer(many=True, read_only=True)
 
     class Meta(object):  # pylint: disable=missing-docstring
         model = Program
         fields = (
             'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
-            'active', 'content')
+            'active')
 
 
 class ProgramCourseSerializer(serializers.ModelSerializer):
