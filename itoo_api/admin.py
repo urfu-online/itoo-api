@@ -28,7 +28,7 @@ class ProgramInline(admin.TabularInline):
 
 @admin.register(EduProject)
 class EduProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'logo', 'active', 'owner')
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
     list_filter = ('active', 'owner')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
@@ -50,7 +50,7 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'logo', 'active', 'owner')
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
     list_filter = ('active', 'owner')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
