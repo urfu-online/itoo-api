@@ -26,18 +26,13 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     if request.method == "POST":
-
         logger.warning(request)
         request.session.set_test_cookie()
         form = ProfileForm(request.POST, request.FILES)
         slug = request.session.get('slug', None)
-        logger.warning(str(slug)+"!!!!!!!!!!!слуг ебаный")
-
         program = None
-
         if slug:
             program = Program.get_program(slug=slug)
-
 
         if form.is_valid() and program:
             profile = form.save(commit=False)
@@ -63,14 +58,19 @@ def profile_new(request):
             return render(request, '../templates/profile_new.html', context)
 
     elif request.method == "GET":
-        logger.warning(request.GET)
-
-        slug = request.GET.get("slug", None)
+        program = None
+        slug = request.session.get("slug", None)
         if slug:
-            request.session["slug"] = slug
+            has_program = True
+            program = Program.get_program(slug=slug)
+        else:
+            has_program = False
+
         form = ProfileForm()
         context = {
-            'form': form
+            'form': form,
+            "has_program": has_program,
+            "program": program
         }
         return render(request, '../templates/profile_new.html', context)
 
@@ -108,9 +108,10 @@ def profile_detail(request):
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
         slug = request.GET.get('program_slug', None)
-        if profile == None:
+        if not profile and slug:
+            request.session["slug"] = slug
             # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
-            return redirect("api/itoo_api/verified_profile/profile/new/"+ '?slug='+slug)
+            return redirect("api/itoo_api/verified_profile/profile/new/")
         else:
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
