@@ -206,9 +206,13 @@ class TextBlock(TimeStampedModel):
 
 @python_2_unicode_compatible
 class EnrollProgram(TimeStampedModel):
-    user = models.ForeignKey(User, db_index=True, related_name='enrollprogram_profile',
-                             verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, db_index=True, verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
 
     def __str__(self):
         return self.user.username
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = 'Запись на программу'
+        verbose_name_plural = 'Запись на прграммы'
