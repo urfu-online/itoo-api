@@ -26,9 +26,11 @@ def redirect_params(url, params=None):
 
 def profile_new(request):
     if request.method == "POST":
+
         logger.warning(request)
+        request.session.set_test_cookie()
         form = ProfileForm(request.POST, request.FILES)
-        slug = request.POST.get('slug', None)
+        slug = request.session.get('slug', None)
         logger.warning(str(slug)+"!!!!!!!!!!!слуг ебаный")
 
         program = None
@@ -62,6 +64,10 @@ def profile_new(request):
 
     elif request.method == "GET":
         logger.warning(request.GET)
+
+        slug = request.GET.get("slug", None)
+        if slug:
+            request.session["slug"] = slug
         form = ProfileForm()
         context = {
             'form': form
