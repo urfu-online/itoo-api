@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if not has_program %}
+<div class="container shadow-sm p-2 mt-2">
+    <h4 class="bg-danger m-3 text-white p-2">Ошибка! неизвестная программа для записи</h4>
+</div>
+{% endif %}
 <div class="content container p-5 m-3 shadow">
+    <h4>Запись на программу {{ program }}</h4>
     <form method="post" class="post-form p-3" enctype=multipart/form-data>{% csrf_token %}
         {% if form.subject.errors %}
         <ol role="alertdialog">
@@ -10,7 +16,6 @@
             {% endfor %}
         </ol>
         {% endif %}
-
         {% for field in form %}
         <div class="fieldWrapper form-group" aria-required='true'>
             {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
