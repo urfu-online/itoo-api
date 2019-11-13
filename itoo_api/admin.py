@@ -26,6 +26,7 @@ class ProgramInline(admin.TabularInline):
     model = Program
 
 
+@admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
     list_display = ('user__username', 'user__email', 'program__slug', 'program__title',)
