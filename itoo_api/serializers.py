@@ -12,6 +12,7 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
 from itoo_api.models import Program, OrganizationCustom, EduProject, TextBlock
+from itoo_api.verified_profile import Profile
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -32,6 +33,12 @@ class TextBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextBlock
         fields = ('type_slug', 'content')
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('user__username', 'user__email', 'all_valid')
 
 
 # class TextBlockRelatedField(serializers.RelatedField):

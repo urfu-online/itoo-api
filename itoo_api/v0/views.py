@@ -10,6 +10,9 @@ from itoo_api.models import Program, OrganizationCustom, EduProject
 from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
     OrganizationCustomSerializer, OrganizationCourseSerializer, EduProjectSerializer
 
+from itoo_api.models import Profile
+from itoo_api.serializers import ProfileSerializer
+
 # from student.views import send_enrollment_email
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -22,6 +25,15 @@ class EduProjectViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = EduProject.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = EduProjectSerializer
     lookup_field = 'slug'
+
+
+class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
+    """ view to fetch list programs data or single program
+    using program short name.
+    """
+    queryset = Profile.objects.filter(active=True)  # pylint: disable=no-member
+    serializer_class = ProfileSerializer
+    lookup_field = 'username'
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
@@ -74,7 +86,6 @@ class OrganizationCourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = OrganizationCustom.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = OrganizationCourseSerializer
     lookup_field = 'slug'
-
 
 # class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
 #     """Program view to fetch list programs data or single program
