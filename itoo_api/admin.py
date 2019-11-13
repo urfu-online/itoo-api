@@ -29,7 +29,7 @@ class ProgramInline(admin.TabularInline):
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user', 'program__slug', 'program__title',)
+    list_display = ('user', 'program',)
     list_filter = ('program__title',)
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
