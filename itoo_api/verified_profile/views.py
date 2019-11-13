@@ -46,7 +46,7 @@ def profile_new(request):
                 'client_email': request.user.email,
                 'amount': '2000'
             }
-            return redirect(request.META.get('HTTP_REFERER'))
+            return redirect('https://courses.openedu.urfu.ru/npr')
         else:
             context = {
                 'form': form
@@ -111,4 +111,4 @@ def profile_detail(request):
             'client_email': request.user.email,
             'amount': '2000'
         }
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect('https://courses.openedu.urfu.ru/npr')
