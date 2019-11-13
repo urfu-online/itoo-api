@@ -40,7 +40,7 @@ class EnrollProgramViewSet(viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
-    queryset = EnrollProgram.objects.filter(active=True)  # pylint: disable=no-member
+    queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
     lookup_field = 'user__username'
 
