@@ -33,7 +33,7 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Profile.objects.all()  # pylint: disable=no-member
     serializer_class = ProfileSerializer
-    lookup_field = 'username'
+    lookup_field = 'user.username'
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
