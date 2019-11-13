@@ -6,9 +6,9 @@ import logging
 # from organizations.models import Organization
 from rest_framework import viewsets
 
-from itoo_api.models import Program, OrganizationCustom, EduProject
+from itoo_api.models import Program, OrganizationCustom, EduProject, EnrollProgram
 from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
-    OrganizationCustomSerializer, OrganizationCourseSerializer, EduProjectSerializer
+    OrganizationCustomSerializer, OrganizationCourseSerializer, EduProjectSerializer, EnrollProgramSerializer
 
 from itoo_api.verified_profile.models import Profile
 from itoo_api.serializers import ProfileSerializer
@@ -33,6 +33,15 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Profile.objects.all()  # pylint: disable=no-member
     serializer_class = ProfileSerializer
+    lookup_field = 'user__username'
+
+
+class EnrollProgramViewSet(viewsets.ReadOnlyModelViewSet):
+    """Program view to fetch list programs data or single program
+    using program short name.
+    """
+    queryset = EnrollProgram.objects.filter(active=True)  # pylint: disable=no-member
+    serializer_class = EnrollProgramSerializer
     lookup_field = 'user__username'
 
 

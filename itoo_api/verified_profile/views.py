@@ -12,6 +12,8 @@ from django.template import Context, Template
 from xblock.fragment import Fragment
 import pkg_resources
 
+from itoo_api.models import EnrollProgram, Program
+
 from django.core.urlresolvers import reverse
 
 logging.basicConfig()
@@ -35,17 +37,17 @@ def profile_new(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            profile_params = {
-                'contract_number': 3,
-                'client_name': "{first_name} {last_name} {second_name}".format(
-                    first_name=profile.first_name.encode('utf8'),
-                    last_name=profile.last_name.encode('utf8'),
-                    second_name=profile.second_name.encode('utf8')
-                ),
-                'client_phone': profile.phone,
-                'client_email': request.user.email,
-                'amount': '2000'
-            }
+            # profile_params = {
+            #     'contract_number': 3,
+            #     'client_name': "{first_name} {last_name} {second_name}".format(
+            #         first_name=profile.first_name.encode('utf8'),
+            #         last_name=profile.last_name.encode('utf8'),
+            #         second_name=profile.second_name.encode('utf8')
+            #     ),
+            #     'client_phone': profile.phone,
+            #     'client_email': request.user.email,
+            #     'amount': '2000'
+            # }
             return redirect('https://courses.openedu.urfu.ru/npr')
         else:
             context = {
@@ -62,7 +64,7 @@ def profile_new(request):
 
 
 def profile_edit(request):
-    launch = dict()
+    # launch = dict()
     user = request.user
     profile = Profile.get_profile(user=user)[0]
     if request.method == "POST":
@@ -93,22 +95,30 @@ def profile_detail(request):
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
+
+        slug = request.GET.get('program_slug', None)
+        program = Program.get_program(slug=slug)
+        if program:
+            EnrollProgram.objects.save(user=user, program=program)
+        else:
+            return redirect('https://courses.openedu.urfu.ru/npr')
+
         if profile == None:
             return redirect(reverse('itoo:verified_profile:profile_new'))
         else:
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
     elif request.method == "POST":
-        profile = Profile.get_profile(user=user)[0]
-        profile_params = {
-            'contract_number': 3,
-            'client_name': "{first_name} {last_name} {second_name}".format(
-                first_name=profile.first_name.encode('utf8'),
-                last_name=profile.last_name.encode('utf8'),
-                second_name=profile.second_name.encode('utf8'),
-            ),
-            'client_phone': profile.phone,
-            'client_email': request.user.email,
-            'amount': '2000'
-        }
+        # profile = Profile.get_profile(user=user)[0]
+        # profile_params = {
+        #     'contract_number': 3,
+        #     'client_name': "{first_name} {last_name} {second_name}".format(
+        #         first_name=profile.first_name.encode('utf8'),
+        #         last_name=profile.last_name.encode('utf8'),
+        #         second_name=profile.second_name.encode('utf8'),
+        #     ),
+        #     'client_phone': profile.phone,
+        #     'client_email': request.user.email,
+        #     'amount': '2000'
+        # }
         return redirect('https://courses.openedu.urfu.ru/npr')

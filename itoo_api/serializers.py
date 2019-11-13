@@ -11,7 +11,7 @@ from rest_framework.validators import UniqueValidator
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
-from itoo_api.models import Program, OrganizationCustom, EduProject, TextBlock
+from itoo_api.models import Program, OrganizationCustom, EduProject, TextBlock, EnrollProgram
 from itoo_api.verified_profile.models import Profile
 
 logging.basicConfig()
@@ -42,6 +42,16 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('username', 'email', 'all_valid')
+
+
+class EnrollProgramSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
+    program_slug = serializers.CharField(source='program.slug')
+
+    class Meta:
+        model = EnrollProgram
+        fields = ('username', 'email', 'program_slug')
 
 
 # class TextBlockRelatedField(serializers.RelatedField):

@@ -10,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
+from django.contrib.auth.models import User
 
 from verified_profile.models import Offer, Profile
 
@@ -106,6 +107,13 @@ class Program(TimeStampedModel):
     def content(self):
         return TextBlock.objects.filter(object_id=self.id, content_type__model="Program")
 
+    @classmethod
+    def get_program(cls, slug):
+        if cls.objects.select_related().filter(slug=slug).exists():
+            return cls.objects.select_related().filter(slug=slug)
+        else:
+            return None
+
     class Meta:
         verbose_name = "Образовательная программа"
         verbose_name_plural = "Образовательные программы"
@@ -181,6 +189,7 @@ class TextBlock(TimeStampedModel):
     def __str__(self):
         return "TextBlock"
 
+
 # @python_2_unicode_compatible
 # class EduProject(TimeStampedModel):
 #     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
@@ -193,3 +202,13 @@ class TextBlock(TimeStampedModel):
 #
 #     def __str__(self):
 #         return self.title
+
+
+@python_2_unicode_compatible
+class EnrollProgram(models.Model):
+    user = models.ForeignKey(User, unique=True, db_index=True, related_name='enrollprogram_profile',
+                             verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
+    program = models.ForeignKey(Program, db_index=True)
+
+    def __str__(self):
+        return self.user.username
