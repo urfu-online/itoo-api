@@ -110,7 +110,7 @@ class Program(TimeStampedModel):
     @classmethod
     def get_program(cls, slug):
         if cls.objects.select_related().filter(slug=slug).exists():
-            return cls.objects.select_related().filter(slug=slug)
+            return cls.objects.select_related().filter(slug=slug).first()
         else:
             return None
 
