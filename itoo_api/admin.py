@@ -29,11 +29,11 @@ class ProgramInline(admin.TabularInline):
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user__username', 'user__email', 'program__slug', 'program__title',)
+    list_display = ('user', 'program__slug', 'program__title',)
     list_filter = ('program__title',)
-    ordering = ('user__username', 'user__email', 'program__title')
+    ordering = ('user', 'program__title')
     readonly_fields = ('created',)
-    search_fields = ('user__username', 'user__email', 'program__slug', 'program__title')
+    search_fields = ('user', 'program__slug', 'program__title')
 
 
 @admin.register(EduProject)
