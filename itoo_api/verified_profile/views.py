@@ -111,4 +111,4 @@ def profile_detail(request):
             'client_email': request.user.email,
             'amount': '2000'
         }
-        return redirect(request.META.get('HTTP_REFERER'))
+        return redirect(request.META.get('HTTP_REFERER', '/'))
