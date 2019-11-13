@@ -46,7 +46,7 @@ def profile_new(request):
                 'client_email': request.user.email,
                 'amount': '2000'
             }
-            return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
             context = {
                 'form': form
@@ -111,4 +111,4 @@ def profile_detail(request):
             'client_email': request.user.email,
             'amount': '2000'
         }
-        return redirect_params('https://ubu.urfu.ru/pay/', profile_params)
+        return redirect(request.META.get('HTTP_REFERER'))
