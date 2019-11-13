@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="ru">
 <head>
-    <title>Данные для оплаты</title>
+    <title>Анкета</title>
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -10,16 +10,12 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="navbar-brand">
-        <h1>Данные для оплаты</h1>
+        <h1>Анкета</h1>
     </div>
 </nav>
 <div class="content container">
-    <div class="row">
-        <div class="col-md-8">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </div>
+    {% block content %}
+    {% endblock %}
 </div>
 
 

@@ -1,27 +1,74 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="content container">
-    <div class="row">
-        <div class="col-md-8">
-            <a class="btn btn-primary" href="{% url 'itoo:verified_profile:profile_edit' %}">
-                <span>Редактировать</span>
-            </a>
-            <h4>Проверьте данные:</h4>
-            {% for item in profile %}
-                <p>{{ item.user.username }}</p>
-                <p>{{ item.user.email }}</p>
-                <p>{{ item.first_name }}</p>
-                <p>{{ item.last_name }}</p>
-                <p>{{ item.second_name }}</p>
-                <p>{{ item.city }}</p>
-                <p>{{ item.series }}</p>
-                <p>{{ item.number }}</p>
-                <p>{{ item.phone }}</p>
-            {% endfor %}
-            <form method="post" class="post-form p-3" enctype=multipart/form-data>{% csrf_token %}
-                <input type="submit" value="Всё верно" class="btn btn-success"/>
-            </form>
-        </div>
+<div class="content container p-5 m-5 shadow">
+    <h4>Проверьте данные:</h4>
+    <ul class="list-group list-group-flush">
+        {% for item in profile %}
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Логин</li>
+            <li class="list-group-item flex-fill">{{ item.user.username }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">E-mail</li>
+            <li class="list-group-item flex-fill">{{ item.user.email }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">ФИО</li>
+            <li class="list-group-item flex-fill">{{ item.last_name }} {{ item.first_name }} {{ item.second_name }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Дата рождения</li>
+            <li class="list-group-item flex-fill">{{ item.birth_date }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Страна</li>
+            <li class="list-group-item flex-fill">{{ item.country }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Город</li>
+            <li class="list-group-item flex-fill">{{ item.city }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Адрес регистрации</li>
+            <li class="list-group-item flex-fill">{{ item.address_register }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Серия и номер паспорта</li>
+            <li class="list-group-item flex-fill">{{ item.series }} {{ item.number }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Кем выдан</li>
+            <li class="list-group-item flex-fill">{{ item.issued_by }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Код подразделения/li>
+            <li class="list-group-item flex-fill">{{ item.unit_code }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Дата выдачи</li>
+            <li class="list-group-item flex-fill">{{ item.issue_date }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Телефон</li>
+            <li class="list-group-item flex-fill">{{ item.phone }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Место работы</li>
+            <li class="list-group-item flex-fill">{{ item.job }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item flex-fill">Должность</li>
+            <li class="list-group-item flex-fill">{{ item.position }}</li>
+        </ul>
+        {% endfor %}
+    </ul>
+    <div class="d-flex row justify-content-between">
+        <a class="btn btn-primary" href="{% url 'itoo:verified_profile:profile_edit' %}">
+            <span>Редактировать</span>
+        </a>
+        <form method="post" class="post-form" enctype=multipart/form-data>{% csrf_token %}
+            <input type="submit" value="Всё верно" class="btn btn-success"/>
+        </form>
     </div>
 </div>
 <!--        {% if post.published_date %}-->
