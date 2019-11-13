@@ -108,12 +108,19 @@ def profile_detail(request):
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
         slug = request.GET.get('program_slug', None)
-        if not profile and slug:
+        if slug:
             request.session["slug"] = slug
+        if not profile:
             # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
             return redirect("api/itoo_api/verified_profile/profile/new/")
         else:
-            return render(request, '../templates/profile_detail.html', {'profile': profile})
+            has_enroll_program = False
+            program = Program.get_program(slug=slug)
+            enroll = EnrollProgram.objects.get(user=request.user, program=program)
+            if enroll:
+                has_enroll_program = True
+            return render(request, '../templates/profile_detail.html',
+                          {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
 
     elif request.method == "POST":
         # profile = Profile.get_profile(user=user)[0]
