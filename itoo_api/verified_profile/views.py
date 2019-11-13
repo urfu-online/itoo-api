@@ -30,13 +30,15 @@ def redirect_params(url, params=None):
     return response
 
 
-def profile_new(request):
+def profile_new(request, **kwargs):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid():
+        program = Program.get_program(slug=kwargs['slug'])
+        if form.is_valid() and program:
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
+            EnrollProgram.objects.get_or_create(user=profile.user, program=program)
             # profile_params = {
             #     'contract_number': 3,
             #     'client_name': "{first_name} {last_name} {second_name}".format(
@@ -95,16 +97,9 @@ def profile_detail(request):
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
-
         slug = request.GET.get('program_slug', None)
-        program = Program.get_program(slug=slug)
-        if program:
-            EnrollProgram.objects.get_or_create(user=user, program=program)
-        else:
-            return redirect('https://courses.openedu.urfu.ru/npr')
-
         if profile == None:
-            return redirect(reverse('itoo:verified_profile:profile_new'))
+            return redirect(reverse('itoo:verified_profile:profile_new', kwargs={'slug':slug}))
         else:
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
