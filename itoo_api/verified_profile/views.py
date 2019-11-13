@@ -2,19 +2,13 @@
 import logging
 # import json
 import urllib
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from .forms import ProfileForm
-from .models import Profile
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-from django.template import Context, Template
-from xblock.fragment import Fragment
-import pkg_resources
-
-from itoo_api.models import EnrollProgram, Program
 
 from django.core.urlresolvers import reverse
+from django.shortcuts import render, redirect
+
+from itoo_api.models import EnrollProgram, Program
+from .forms import ProfileForm
+from .models import Profile
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -32,6 +26,7 @@ def redirect_params(url, params=None):
 
 def profile_new(request, **kwargs):
     if request.method == "POST":
+        logger.warning(request)
         form = ProfileForm(request.POST, request.FILES)
         program = Program.get_program(slug=kwargs['slug'])
         if form.is_valid() and program:
@@ -58,6 +53,7 @@ def profile_new(request, **kwargs):
             return render(request, '../templates/profile_new.html', context)
 
     elif request.method == "GET":
+        logger.warning(request.GET)
         form = ProfileForm()
         context = {
             'form': form
