@@ -99,7 +99,8 @@ def profile_detail(request):
         slug = request.GET.get('program_slug', None)
         program = Program.get_program(slug=slug)
         if program:
-            EnrollProgram.objects.save(user=user, program=program)
+            obj = EnrollProgram.objects.get(user=user, program=program)
+            obj.save()
         else:
             return redirect('https://courses.openedu.urfu.ru/npr')
 
