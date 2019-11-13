@@ -36,9 +36,12 @@ class TextBlockSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
+
     class Meta:
         model = Profile
-        fields = ('user__username', 'user__email', 'all_valid')
+        fields = ('username', 'email', 'all_valid')
 
 
 # class TextBlockRelatedField(serializers.RelatedField):
