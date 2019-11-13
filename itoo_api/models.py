@@ -209,6 +209,13 @@ class EnrollProgram(TimeStampedModel):
     user = models.ForeignKey(User, db_index=True, verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
 
+    @classmethod
+    def get_enroll_program(cls, user, program):
+        if cls.objects.select_related().filter(user=user, program=program).exists():
+            return cls.objects.select_related().filter(user=user, program=program).first()
+        else:
+            return None
+
     def __str__(self):
         return self.user.username
 

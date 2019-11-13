@@ -114,21 +114,27 @@ def profile_detail(request):
             # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
             return redirect("api/itoo_api/verified_profile/profile/new/")
         else:
-            has_enroll_program = False
-            enroll = None
             program = Program.get_program(slug=slug)
             if program:
-                enroll = EnrollProgram.objects.get(user=request.user, program=program)
+                enroll = EnrollProgram.get_enroll_program(user=request.user, program=program)
             else:
                 has_enroll_program = False
                 return render(request, '../templates/profile_detail.html',
-                       {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
+                              {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
             if enroll:
                 has_enroll_program = True
-            return render(request, '../templates/profile_detail.html',
-                          {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
+                return render(request, '../templates/profile_detail.html',
+                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
+            else:
+                has_enroll_program = False
+                return render(request, '../templates/profile_detail.html',
+                              {'profile': profile, 'has_enroll_program':has_enroll_program,'program':program})
 
     elif request.method == "POST":
+        slug = request.session.get("slug", None)
+        if slug:
+            program = Program.get_program(slug=slug)
+            EnrollProgram.objects.get_or_create(user=request.user, program=program)
         # profile = Profile.get_profile(user=user)[0]
         # profile_params = {
         #     'contract_number': 3,

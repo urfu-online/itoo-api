@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if has_enroll_program %}
+
+{% if has_enroll_program and program %}
 <div class="container shadow-sm p-2 mt-2">
     <h4 class="text-muted p-2">Предупреждение! Вы уже записаны на данную программу</h4>
     <h4 class="text-muted p-2">Программа: {{ program }}</h4>
 </div>
+{% else %}
+<div class="container shadow-sm p-2 mt-2">
+    <h4 class="text-muted p-2">Предупреждение! Вы не записываетесь на программу</h4>
+</div>
 {% endif %}
+{% endif %}
+
 <div class="content container p-5 m-5 shadow">
     <h4>Проверьте данные:</h4>
     <ul class="list-group list-group-flush">
