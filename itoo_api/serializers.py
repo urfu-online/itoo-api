@@ -12,7 +12,7 @@ from student.models import CourseEnrollment
 from django.contrib.auth.models import User
 
 from itoo_api.models import Program, OrganizationCustom, EduProject, TextBlock
-from itoo_api.verified_profile import Profile
+from itoo_api.verified_profile.models import Profile
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
