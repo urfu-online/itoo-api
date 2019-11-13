@@ -115,8 +115,14 @@ def profile_detail(request):
             return redirect("api/itoo_api/verified_profile/profile/new/")
         else:
             has_enroll_program = False
+            enroll = None
             program = Program.get_program(slug=slug)
-            enroll = EnrollProgram.objects.get(user=request.user, program=program)
+            if program:
+                enroll = EnrollProgram.objects.get(user=request.user, program=program)
+            else:
+                has_enroll_program = False
+                return render(request, '../templates/profile_detail.html',
+                       {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
             if enroll:
                 has_enroll_program = True
             return render(request, '../templates/profile_detail.html',
