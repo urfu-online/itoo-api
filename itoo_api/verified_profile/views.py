@@ -24,11 +24,11 @@ def redirect_params(url, params=None):
     return response
 
 
-def profile_new(request, **kwargs):
+def profile_new(request, slug):
     if request.method == "POST":
         logger.warning(request)
         form = ProfileForm(request.POST, request.FILES)
-        program = Program.get_program(slug=kwargs['slug'])
+        program = Program.get_program(slug=slug)
         if form.is_valid() and program:
             profile = form.save(commit=False)
             profile.user = request.user
@@ -95,7 +95,8 @@ def profile_detail(request):
         profile = Profile.get_profile(user=user)
         slug = request.GET.get('program_slug', None)
         if profile == None:
-            return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
+            # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
+            return redirect('profile_new', slug=slug)
         else:
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
