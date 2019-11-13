@@ -206,7 +206,7 @@ class TextBlock(TimeStampedModel):
 
 @python_2_unicode_compatible
 class EnrollProgram(TimeStampedModel):
-    user = models.ForeignKey(User, unique=True, db_index=True, related_name='enrollprogram_profile',
+    user = models.ForeignKey(User, db_index=True, related_name='enrollprogram_profile',
                              verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
 
