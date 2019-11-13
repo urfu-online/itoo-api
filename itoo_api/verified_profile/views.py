@@ -96,7 +96,7 @@ def profile_detail(request):
         slug = request.GET.get('program_slug', None)
         if profile == None:
             # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
-            return redirect('profile_new', slug=slug)
+            return redirect(reverse('itoo:verified_profile:profile_new', kwargs={'slug': slug}))
         else:
             return render(request, '../templates/profile_detail.html', {'profile': profile})
 
