@@ -128,7 +128,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     "message": (
                         u"An error occurred while retrieving enrollments for user "
                         u"'{username}' in course '{course_id}'"
-                    ).format(user=request.user.username, program_slug=self.lookup_url_kwarg)
+                    ).format(user=request.user.username, program_slug=program_slug)
                 }
             )
 
