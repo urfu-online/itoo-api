@@ -4,7 +4,7 @@ Views for itoo_api end points.
 """
 import logging
 # from organizations.models import Organization
-from rest_framework import viewsets
+from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
 from itoo_api.models import Program, OrganizationCustom, EduProject, EnrollProgram
@@ -87,7 +87,7 @@ import operator
 #         return obj
 
 
-class EnrollProgramViewSet(viewsets.ModelViewSet):
+class EnrollProgramViewSet(APIView):
     """Program view to fetch list programs data or single program
     using program short name.
     """
