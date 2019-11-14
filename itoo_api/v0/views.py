@@ -42,52 +42,6 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'user__username'
 
 
-# class MultipleFieldLookupMixin(object):
-#     """
-#     Apply this mixin to any view or viewset to get multiple field filtering
-#     based on a `lookup_fields` attribute, instead of the default single field filtering.
-#     """
-#
-#     def get_object(self, *args, **kwargs):
-#         logger.warning(self.kwargs)
-#         user = self.kwargs["pk"].split(",")[0]
-#         program = self.kwargs["pk"].split(",")[1]
-#         obj = EnrollProgram.objects.filter(user=user,program=program)
-#         # queryset = self.get_queryset()  # Get the base queryset
-#         # queryset = self.filter_queryset(queryset)  # Apply any filter backends
-#         # filter = {}
-#
-#         #
-#         # for field in self.lookup_fields:
-#         #
-#         #     if self.kwargs[field]:  # Ignore empty fields.
-#         #         filter[field] = self.kwargs[field]
-#         # obj = get_object_or_404(queryset, **filter)  # Lookup the object
-#
-#
-#         return obj
-from django.db.models import Q
-import operator
-
-
-# class MultipleFieldLookupMixin(object):
-#     """
-#     Apply this mixin to any view or viewset to get multiple field filtering
-#     based on a `lookup_fields` attribute, instead of the default single field filtering.
-#     """
-#
-#     def get_object(self):
-#         queryset = self.get_queryset()  # Get the base queryset
-#         queryset = self.filter_queryset(queryset)  # Apply any filter backends
-#         filter = {}
-#         for field in self.lookup_fields:
-#             if self.kwargs[field]:  # Ignore empty fields.
-#                 filter[field] = self.kwargs[field]
-#         obj = get_object_or_404(queryset, **filter)  # Lookup the object
-#         self.check_object_permissions(self.request, obj)
-#         return obj
-
-
 class EnrollProgramViewSet(viewsets.ModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
@@ -117,7 +71,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     if enroll_program:
                         return Response(EnrollProgramSerializer(enroll_program).data)
                     else:
-                        return Response({'detail':'failed'})
+                        return Response({'detail': 'failed'})
                 except ObjectDoesNotExist:
                     return None
 
@@ -131,37 +85,6 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     ).format(user=request.user.username, program_slug=program_slug)
                 }
             )
-
-    # def get(self, request, username=None, program_slug=None):
-    #     username = username or request.user.username
-    #
-    #     uid = User.objects.get(username=username)
-    #
-    #     # TODO Implement proper permissions
-    #     if request.user.username != username and not request.user.is_superuser:
-    #         # Return a 404 instead of a 403 (Unauthorized). If one user is looking up
-    #         # other users, do not let them deduce the existence of an enrollment.
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-    #
-    #     try:
-    #         program = Program.get_program(slug=program_slug)
-    #         if program:
-    #             try:
-    #                 enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
-    #                 return Response(EnrollProgramSerializer(enroll_program).data)
-    #             except ObjectDoesNotExist:
-    #                 return None
-    #
-    #     except:
-    #         return Response(
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #             data={
-    #                 "message": (
-    #                     u"An error occurred while retrieving enrollments for user "
-    #                     u"'{username}' in course '{course_id}'"
-    #                 ).format(user=request.user.username, program_slug=program_slug)
-    #             }
-    #         )
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
