@@ -71,7 +71,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     if enroll_program:
                         return Response(EnrollProgramSerializer(enroll_program).data)
                     else:
-                        return Response({'detail':'Failed'})
+                        return Response({'detail': 'failed'})
                 except ObjectDoesNotExist:
                     return None
 
