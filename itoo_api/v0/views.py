@@ -65,25 +65,33 @@ from django.db.models import Q
 import operator
 
 
-class MultipleFieldLookupMixin(object):
-    def get_object(self):
-        queryset = self.get_queryset()  # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        filter = {}
-        for field in self.lookup_field:
-            filter[field] = self.kwargs[self.lookup_field]
-        q = reduce(operator.or_, (Q(x) for x in filter.items()))
-        return get_object_or_404(queryset, q)
+# class MultipleFieldLookupMixin(object):
+#     """
+#     Apply this mixin to any view or viewset to get multiple field filtering
+#     based on a `lookup_fields` attribute, instead of the default single field filtering.
+#     """
+#
+#     def get_object(self):
+#         queryset = self.get_queryset()  # Get the base queryset
+#         queryset = self.filter_queryset(queryset)  # Apply any filter backends
+#         filter = {}
+#         for field in self.lookup_fields:
+#             if self.kwargs[field]:  # Ignore empty fields.
+#                 filter[field] = self.kwargs[field]
+#         obj = get_object_or_404(queryset, **filter)  # Lookup the object
+#         self.check_object_permissions(self.request, obj)
+#         return obj
 
 
-class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ModelViewSet):
+class EnrollProgramViewSet(viewsets.ModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
 
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
-    lookup_field = ('user__username', 'program_slug')
+    lookup_fields = 'user__username'
+    filter_fields = ('user__username', 'program_slug')
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
