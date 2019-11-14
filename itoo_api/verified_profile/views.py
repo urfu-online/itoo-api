@@ -82,23 +82,15 @@ def profile_edit(request):
     # launch = dict()
     user = request.user
     profile = Profile.get_profile(user=user)[0]
+    slug = request.session.get("slug", None)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            return redirect(reverse('itoo:verified_profile:profile_detail'))
-        # logger.warning(request.body)
-        # course_modes = request.body.course_modes
-        # for mod in course_modes:
-        #     launch = {
-        #         'username': mod.username,
-        #         'course_id': mod.course_id,
-        #         'amount': mod.course_modes_min_price
-        #     }
-        # if Profile.objects.filter(User.username=launch['username']).exists():
-        #     redirect('profile/')
+            return redirect("api/itoo_api/verified_profile/profile/?program_slug={}".format(slug))
+            # return redirect(reverse('itoo:verified_profile:profile_detail'))
 
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
@@ -145,7 +137,7 @@ def profile_detail(request):
                 if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
                     CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
-        # TODO: Что то придумать с этой с ифками
+        # TODO: Что то придумать с этими с ифками
         else:
             slug = ''
         return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
