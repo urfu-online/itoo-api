@@ -53,7 +53,7 @@ def profile_new(request):
             #     'client_email': request.user.email,
             #     'amount': '2000'
             # }
-            return redirect('https://courses.openedu.urfu.ru/npr')
+            return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
         else:
             context = {
                 'form': form
@@ -144,21 +144,7 @@ def profile_detail(request):
                     for course_key in course_keys:
                         CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
-        # TODO: Course enrollment
-        # TODO: course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
-        # TODO: from enrollment import api | api.get_enrollment('alexKekovich2','course-v1:UrFU+MOTIVATION+fall_2019')
-        # TODO: api.add_enrollment | https://github.com/edx/edx-platform/blob/open-release/ginkgo.master/common/djangoapps/enrollment/api.py
-
-        # profile = Profile.get_profile(user=user)[0]
-        # profile_params = {
-        #     'contract_number': 3,
-        #     'client_name': "{first_name} {last_name} {second_name}".format(
-        #         first_name=profile.first_name.encode('utf8'),
-        #         last_name=profile.last_name.encode('utf8'),
-        #         second_name=profile.second_name.encode('utf8'),
-        #     ),
-        #     'client_phone': profile.phone,
-        #     'client_email': request.user.email,
-        #     'amount': '2000'
-        # }
-        return redirect('https://courses.openedu.urfu.ru/npr')
+        # TODO: Что то придумать с этой с ифками
+        else:
+            slug = ''
+        return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))

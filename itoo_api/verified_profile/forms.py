@@ -8,12 +8,12 @@ class ProfileForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['all_valid', 'user']
         widgets = {
-            'first_name': forms.TextInput(
+            'last_name': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'last_name': forms.TextInput(
+            'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }

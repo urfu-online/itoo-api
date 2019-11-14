@@ -40,7 +40,7 @@ class Profile(models.Model):
     position = models.CharField("Должность", max_length=2048, null=True, blank=True)
     address_register = models.TextField("Адрес регистрации", blank=True, null=True)
 
-    claim_scan = models.FileField("Скан заявления", upload_to=generate_new_filename)
+    claim_scan = models.FileField("Скан заявления", upload_to=generate_new_filename, null=True, blank=True)
 
     series = models.CharField("Серия", max_length=8, null=True, blank=True)
     number = models.CharField("Номер", max_length=8, null=True, blank=True)
@@ -48,7 +48,7 @@ class Profile(models.Model):
     unit_code = models.CharField("Код подразделения", max_length=16, null=True, blank=True)
     issue_date = models.CharField("Дата выдачи", max_length=16, null=True, blank=True)
 
-    passport_scan = models.FileField("Скан паспорта", upload_to=generate_new_filename)
+    passport_scan = models.FileField("Скан паспорта", upload_to=generate_new_filename, null=True, blank=True)
 
     education_level = models.CharField("Уровень базового образования", max_length=1, choices=EDUCATION_LEVEL,
                                        null=False, blank=False)

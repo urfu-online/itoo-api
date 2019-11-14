@@ -2,12 +2,13 @@
 
 {% block content %}
 {% if not has_program %}
-<div class="container shadow-sm p-2 mt-2">
+<div class="container shadow-sm p-2 mt-5">
     <h4 class="bg-danger m-3 text-white p-2">Ошибка! неизвестная программа для записи</h4>
 </div>
 {% endif %}
-<div class="content container p-5 m-3 shadow">
-    <h4>Запись на программу {{ program }}</h4>
+<div class="content container mt-5 p-5 m-3 shadow">
+    <h2>Анкета</h2>
+    <h4>Запись на программу &laquo;{{ program }}&raquo;</h4>
     <form method="post" class="post-form p-3" enctype=multipart/form-data>{% csrf_token %}
         {% if form.subject.errors %}
         <ol role="alertdialog">
