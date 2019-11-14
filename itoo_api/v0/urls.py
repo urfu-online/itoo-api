@@ -14,7 +14,7 @@ router.register(r'link_courses_program', ProgramCourseViewSet)
 router.register(r'organizations', OrganizationCustomViewSet)
 router.register(r'link_courses_org', OrganizationCourseViewSet)
 router.register(r'valid', ProfileViewSet)
-router.register(r'enroll_program/(?P<username>\d+),(?P<program_slug>\d+)', EnrollProgramViewSet)
+router.register(r'enroll_program/(?P<username>\d+)/(?P<program_slug>\d+)', EnrollProgramViewSet)
 # router.register(r'paid_courses_role', PaidCoursesRoleViewSet.as_view(), base_name='paid_courses_role')
 # router.register(r'add_enroll/(?P<user_id>\d+)&(?P<course_id>\d+)&(?P<mode>\d+)/?$', AddEnrollmentViewSet, base_name='add_enroll')
 
