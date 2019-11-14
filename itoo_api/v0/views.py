@@ -99,7 +99,8 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         username = request.user.username
-        logger.warning(self.lookup_url_kwarg)
+        program_slug = self.kwargs.get(self.lookup_url_kwarg)
+        logger.warning(program_slug)
         logger.warning(request.user)
         uid = User.objects.get(username=username)
 
@@ -110,7 +111,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         try:
-            program = Program.get_program(slug=self.lookup_url_kwarg)
+            program = Program.get_program(slug=program_slug)
             logger.warning(program)
             if program:
                 try:
