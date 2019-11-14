@@ -45,7 +45,9 @@ class MultipleFieldLookupMixin(object):
 
     def get_object(self, *args, **kwargs):
         logger.warning(self.kwargs)
-        obj = EnrollProgram.objects.filter(user=self.kwargs["user__username"],program=self.kwargs["program_slug"])
+        user = self.kwargs["pk"].split(",")[0]
+        program = self.kwargs["pk"].split(",")[1]
+        obj = EnrollProgram.objects.filter(user=user,program=program)
         # queryset = self.get_queryset()  # Get the base queryset
         # queryset = self.filter_queryset(queryset)  # Apply any filter backends
         # filter = {}
