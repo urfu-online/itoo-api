@@ -43,11 +43,11 @@ class MultipleFieldLookupMixin(object):
     based on a `lookup_fields` attribute, instead of the default single field filtering.
     """
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         queryset = self.get_queryset()  # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
         filter = {}
-        logger.warning(str(self.lookup_fields))
+        logger.warning(str(self.kwargs) + "!!!!!!!!!!!!!!!!!!!!")
         for field in self.lookup_fields:
             logger.warning(str(field))
             if self.kwargs[field]:  # Ignore empty fields.
