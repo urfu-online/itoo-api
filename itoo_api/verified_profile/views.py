@@ -116,7 +116,7 @@ def profile_detail(request):
         else:
             program = Program.get_program(slug=slug)
             if program:
-                enroll = EnrollProgram.get_enroll_program(user=request.user, program=program)
+                enroll = EnrollProgram.get_enroll_program(user=user, program=program)
             else:
                 has_enroll_program = False
                 return render(request, '../templates/profile_detail.html',
@@ -134,7 +134,8 @@ def profile_detail(request):
         slug = request.session.get("slug", None)
         if slug:
             program = Program.get_program(slug=slug)
-            EnrollProgram.objects.get_or_create(user=request.user, program=program)
+            if program:
+                EnrollProgram.objects.get_or_create(user=user, program=program)
         # profile = Profile.get_profile(user=user)[0]
         # profile_params = {
         #     'contract_number': 3,
