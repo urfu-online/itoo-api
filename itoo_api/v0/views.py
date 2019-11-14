@@ -13,7 +13,7 @@ from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
 
 from itoo_api.verified_profile.models import Profile
 from itoo_api.serializers import ProfileSerializer
-from django_filters import rest_framework as filters
+from django_filters import filters
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
