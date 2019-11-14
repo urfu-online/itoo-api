@@ -135,14 +135,15 @@ def profile_detail(request):
 
     elif request.method == "POST":
         slug = request.session.get("slug", None)
-        if slug:
-            program = Program.get_program(slug=slug)
-            if program:
-                EnrollProgram.objects.get_or_create(user=user, program=program)
-                if EnrollProgram.get_enroll_program(user=user, program=program):
-                    course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
-                    for course_key in course_keys:
-                        CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
+        program = Program.get_program(slug=slug)
+        if slug and program:
+            EnrollProgram.objects.get_or_create(user=user, program=program)
+
+        if EnrollProgram.get_enroll_program(user=user, program=program):
+            course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+            for course_key in course_keys:
+                if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
+                    CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
         # TODO: Что то придумать с этой с ифками
         else:
