@@ -28,8 +28,8 @@ class Profile(models.Model):
 
     EDUCATION_LEVEL = (('M', 'Среднее профессиональное'), ('H', 'Высшее'))
 
-    first_name = models.CharField("Имя", max_length=255, null=False, blank=False)
     last_name = models.CharField("Фамилия", max_length=255, null=False, blank=False)
+    first_name = models.CharField("Имя", max_length=255, null=False, blank=False)
     second_name = models.CharField("Отчество", max_length=255, null=True, blank=True)
     sex = models.CharField("Пол", max_length=1, choices=SEX, null=False, blank=False)
     city = models.CharField("Город", max_length=256, null=True, blank=False)
