@@ -25,7 +25,7 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'^v1/', include(router.urls)),
-    url(r'^enroll_program/{username},{program_slug}$', EnrollProgramViewSet.as_view())
+    url(r'^enroll_program/{username},{program_slug}$', EnrollProgramViewSet.as_view(), name='enroll_program')
     # url(r'^v0/course_mode_change/(?P<course_id_get>[^/.]+)/', CourseModesChange.as_view(), name='course_mode_change')
 #     .format(
     #         username=settings.USERNAME_PATTERN, course_key=settings.COURSE_ID_PATTERN)
