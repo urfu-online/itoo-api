@@ -13,6 +13,10 @@ from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
 
 from itoo_api.verified_profile.models import Profile
 from itoo_api.serializers import ProfileSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
@@ -90,7 +94,49 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
-    lookup_fields = 'user__username'
+
+    def get(self, request, username=None, program_slug=None):
+        """Create, read, or update enrollment information for a user.
+        HTTP Endpoint for all CRUD operations for a user course enrollment. Allows creation, reading, and
+        updates of the current enrollment for a particular course.
+        Args:
+            request (Request): To get current course enrollment information, a GET request will return
+                information for the current user and the specified course.
+            course_id (str): URI element specifying the course location. Enrollment information will be
+                returned, created, or updated for this particular course.
+            username (str): The username associated with this enrollment request.
+        Return:
+            A JSON serialized representation of the course enrollment.
+        """
+        username = username or request.user.username
+
+        uid = User.objects.get(username=username)
+
+        # TODO Implement proper permissions
+        if request.user.username != username and not request.user.is_superuser:
+            # Return a 404 instead of a 403 (Unauthorized). If one user is looking up
+            # other users, do not let them deduce the existence of an enrollment.
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            program = Program.get_program(slug=program_slug)
+            if program:
+                try:
+                    enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
+                    return Response(EnrollProgramSerializer(enroll_program).data)
+                except ObjectDoesNotExist:
+                    return None
+
+        except:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={
+                    "message": (
+                        u"An error occurred while retrieving enrollments for user "
+                        u"'{username}' in course '{course_id}'"
+                    ).format(user=request.user.username, program_slug=program_slug)
+                }
+            )
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
