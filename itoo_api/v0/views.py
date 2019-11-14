@@ -73,7 +73,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     else:
                         return Response({'detail': 'failed'})
                 except ObjectDoesNotExist:
-                    return None
+                    return Response({'detail': 'failed'})
 
         except:
             return Response(
