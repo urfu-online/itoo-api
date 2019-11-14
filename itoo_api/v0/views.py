@@ -52,6 +52,7 @@ class MultipleFieldLookupMixin(object):
                 filter[field] = self.kwargs[field]
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         logger.warning(obj)
+        logger.warning('!!!!!!!!!!!!!!!!!!!!!!!111111')
         return obj
 
 
