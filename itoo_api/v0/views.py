@@ -116,8 +116,10 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
             if program:
                 try:
                     enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
-                    logger.warning(enroll_program)
-                    return Response(EnrollProgramSerializer(enroll_program).data)
+                    if enroll_program:
+                        return Response(EnrollProgramSerializer(enroll_program).data)
+                    else:
+                        return Response({'detail':'failed'})
                 except ObjectDoesNotExist:
                     return None
 
