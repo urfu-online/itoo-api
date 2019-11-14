@@ -54,7 +54,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         username = request.user.username
         program_slug = self.kwargs.get(self.lookup_url_kwarg)
-        uid = User.objects.get(username=username)
+        # uid = User.objects.get(username=username)
 
         # TODO Implement proper permissions
         if request.user.username != username and not request.user.is_superuser:
@@ -64,7 +64,6 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
         try:
             program = Program.get_program(slug=program_slug)
-            logger.warning(program)
             if program:
                 try:
                     enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
