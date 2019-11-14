@@ -13,6 +13,7 @@ from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
 
 from itoo_api.verified_profile.models import Profile
 from itoo_api.serializers import ProfileSerializer
+from django_filters import rest_framework as filters
 
 # from student.views import send_enrollment_email
 logging.basicConfig()
@@ -91,7 +92,8 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
     lookup_fields = 'user__username'
-    filter_fields = ('user__username', 'program_slug')
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user__username', 'program_slug')
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
