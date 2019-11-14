@@ -51,6 +51,7 @@ class MultipleFieldLookupMixin(object):
             if self.kwargs[field]:  # Ignore empty fields.
                 filter[field] = self.kwargs[field]
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        logger.warning(obj)
         return obj
 
 
