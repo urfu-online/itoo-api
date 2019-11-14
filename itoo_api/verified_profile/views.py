@@ -136,6 +136,12 @@ def profile_detail(request):
             program = Program.get_program(slug=slug)
             if program:
                 EnrollProgram.objects.get_or_create(user=user, program=program)
+
+        # TODO: Course enrollment
+        # TODO: course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+        # TODO: from enrollment import api | api.get_enrollment('alexKekovich2','course-v1:UrFU+MOTIVATION+fall_2019')
+        # TODO: api.add_enrollment | https://github.com/edx/edx-platform/blob/open-release/ginkgo.master/common/djangoapps/enrollment/api.py
+
         # profile = Profile.get_profile(user=user)[0]
         # profile_params = {
         #     'contract_number': 3,
