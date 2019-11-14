@@ -60,7 +60,7 @@ class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ReadOnlyModelViewS
     """
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
-    lookup_field = ['user__username', 'program_slug']
+    lookup_field = 'user__username, program_slug'
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
