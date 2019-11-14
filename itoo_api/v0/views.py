@@ -74,6 +74,16 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                         return Response({'detail': 'failed'})
                 except ObjectDoesNotExist:
                     return Response({'detail': 'failed'})
+            else:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={
+                        "message": (
+                            u"An error occurred while retrieving enrollments for user "
+                            u"'{username}' in course '{program_slug}'"
+                        ).format(user=request.user.username, program_slug=program_slug)
+                    }
+                )
 
         except:
             return Response(
@@ -81,7 +91,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                 data={
                     "message": (
                         u"An error occurred while retrieving enrollments for user "
-                        u"'{username}' in course '{course_id}'"
+                        u"'{username}' in course '{program_slug}'"
                     ).format(user=request.user.username, program_slug=program_slug)
                 }
             )
