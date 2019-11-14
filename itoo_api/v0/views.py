@@ -51,8 +51,6 @@ class MultipleFieldLookupMixin(object):
             if self.kwargs[field]:  # Ignore empty fields.
                 filter[field] = self.kwargs[field]
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
-        logger.warning(obj)
-        logger.warning('!!!!!!!!!!!!!!!!!!!!!!!111111')
         return obj
 
 
@@ -62,7 +60,7 @@ class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ReadOnlyModelViewS
     """
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
-    lookup_field = ('user__username', 'program_slug')
+    lookup_field = ['user__username', 'program_slug']
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
