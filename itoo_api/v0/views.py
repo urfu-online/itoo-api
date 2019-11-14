@@ -63,11 +63,12 @@ class MultipleFieldLookupMixin(object):
         return obj
 
 
-class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ReadOnlyModelViewSet):
+class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
-    queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
+
+    # queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
     lookup_fields = ['user__username', 'program_slug']
 
