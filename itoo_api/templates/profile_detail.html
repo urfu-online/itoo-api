@@ -7,7 +7,7 @@
     <h4 class="text-muted p-2">Предупреждение! Вы уже записаны на данную программу</h4>
     <h4 class="text-muted p-2">Программа: {{ program }}</h4>
 </div>
-{% elif has_enroll_program %}
+{% elif has_enroll_program and not program %}
 <div class="container shadow-sm p-2 mt-2">
     <h4 class="text-muted p-2">Предупреждение! Вы не записываетесь на программу</h4>
 </div>
