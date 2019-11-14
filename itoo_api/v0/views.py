@@ -99,7 +99,8 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         username = request.user.username
-
+        logger.warning(self.lookup_url_kwarg)
+        logger.warning(request.user)
         uid = User.objects.get(username=username)
 
         # TODO Implement proper permissions
@@ -110,9 +111,11 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
         try:
             program = Program.get_program(slug=self.lookup_url_kwarg)
+            logger.warning(program)
             if program:
                 try:
                     enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
+                    logger.warning(enroll_program)
                     return Response(EnrollProgramSerializer(enroll_program).data)
                 except ObjectDoesNotExist:
                     return None
