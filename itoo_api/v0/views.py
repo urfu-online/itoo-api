@@ -80,7 +80,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                     data={
                         "message": (
                             u"An error occurred while retrieving enrollments for user "
-                            u"'{username}' in course '{program_slug}'"
+                            u"'{user}' in course '{program_slug}'"
                         ).format(user=request.user.username, program_slug=program_slug)
                     }
                 )
@@ -91,7 +91,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
                 data={
                     "message": (
                         u"An error occurred while retrieving enrollments for user "
-                        u"'{username}' in course '{program_slug}'"
+                        u"'{user}' in course '{program_slug}'"
                     ).format(user=request.user.username, program_slug=program_slug)
                 }
             )
