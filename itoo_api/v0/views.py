@@ -5,6 +5,7 @@ Views for itoo_api end points.
 import logging
 # from organizations.models import Organization
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 from itoo_api.models import Program, OrganizationCustom, EduProject, EnrollProgram
 from itoo_api.serializers import ProgramSerializer, ProgramCourseSerializer, \
@@ -36,13 +37,30 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'user__username'
 
 
-class EnrollProgramViewSet(viewsets.ReadOnlyModelViewSet):
+class MultipleFieldLookupMixin(object):
+    """
+    Apply this mixin to any view or viewset to get multiple field filtering
+    based on a `lookup_fields` attribute, instead of the default single field filtering.
+    """
+
+    def get_object(self):
+        queryset = self.get_queryset()  # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]:  # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        return obj
+
+
+class EnrollProgramViewSet(MultipleFieldLookupMixin, viewsets.ReadOnlyModelViewSet):
     """Program view to fetch list programs data or single program
     using program short name.
     """
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
-    lookup_field = 'user__username'
+    lookup_field = ('user__username', 'program_slug')
 
 
 class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
