@@ -47,7 +47,9 @@ class MultipleFieldLookupMixin(object):
         queryset = self.get_queryset()  # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
         filter = {}
+        logger.warning(str(self.lookup_fields))
         for field in self.lookup_fields:
+            logger.warning(str(field))
             if self.kwargs[field]:  # Ignore empty fields.
                 filter[field] = self.kwargs[field]
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
