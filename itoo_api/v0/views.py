@@ -71,7 +71,7 @@ class MultipleFieldLookupMixin(object):
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
         filter = {}
         for field in self.lookup_field:
-            filter[field] = self.kwargs[field]
+            filter[field] = self.kwargs[self.lookup_field]
         q = reduce(operator.or_, (Q(x) for x in filter.items()))
         return get_object_or_404(queryset, q)
 
