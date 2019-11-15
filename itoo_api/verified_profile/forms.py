@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'claim_scan']
+        exclude = ['all_valid', 'user']
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
@@ -58,11 +58,11 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            # 'claim_scan': forms.FileInput(
-            #     # attrs={
-            #     #     'class': 'custom-file-input'
-            #     # }
-            # ),
+            'claim_scan': forms.FileInput(
+                # attrs={
+                #     'class': 'custom-file-input'
+                # }
+            ),
             'series': forms.TextInput(
                 attrs={
                     'class': 'form-control'
