@@ -169,7 +169,7 @@ class PayUrfuData(TimeStampedModel):
 class TextBlock(TimeStampedModel):
     type_slug = models.CharField("Тип отображения", default="html", max_length=200)
     content = models.TextField("Контент", blank=True, default="")
-    limit = models.Q(app_label='itoo_api', model='eduproject') | models.Q(app_label='itoo_api', model='eduprogram')
+    limit = models.Q(app_label='itoo_api', model='eduproject') | models.Q(app_label='itoo_api', model='program')
 
     content_type = models.ForeignKey(
         ContentType,
