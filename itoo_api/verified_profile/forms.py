@@ -33,7 +33,7 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'birth_date': forms.TextInput(
+            'birth_date': forms.DateInput(
                 attrs={
                     'class': 'form-control'
                 }
@@ -91,6 +91,11 @@ class ProfileForm(forms.ModelForm):
             'address_living': forms.Textarea(
                 attrs={
                     'class': 'form-control'
+                }
+            ),
+            'terms': forms.CheckboxInput(
+                attrs={
+                    'class': 'required checkbox form-control'
                 }
             ),
         }
