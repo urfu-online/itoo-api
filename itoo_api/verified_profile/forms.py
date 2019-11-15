@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user']
+        exclude = ['all_valid', 'user', 'address_register', 'series', 'number', 'issued_by', 'unit_code', 'issue_date', 'passport_scan', 'diploma_scan']
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
@@ -53,42 +53,12 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'address_register': forms.Textarea(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
+            # 'address_register': forms.Textarea(
+            #     attrs={
+            #         'class': 'form-control'
+            #     }
+            # ),
             'claim_scan': forms.FileInput(
-                # attrs={
-                #     'class': 'custom-file-input'
-                # }
-            ),
-            'series': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'number': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'issued_by': forms.Textarea(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'unit_code': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'issue_date': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'passport_scan': forms.FileInput(
                 # attrs={
                 #     'class': 'custom-file-input'
                 # }
@@ -97,11 +67,6 @@ class ProfileForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control'
                 }
-            ),
-            'diploma_scan': forms.FileInput(
-                # attrs={
-                #     'class': 'custom-file-input'
-                # }
             ),
             'all_valid': forms.CheckboxInput(
                 attrs={
