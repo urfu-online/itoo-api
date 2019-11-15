@@ -32,12 +32,13 @@ class Profile(models.Model):
     first_name = models.CharField("Имя", max_length=255, null=False, blank=False)
     second_name = models.CharField("Отчество", max_length=255, null=True, blank=True)
     sex = models.CharField("Пол", max_length=1, choices=SEX, null=False, blank=False)
-    city = models.CharField("Город", max_length=256, null=True, blank=False)
-
     birth_date = models.CharField("Дата рождения", max_length=16, null=False, blank=False)
     phone = models.CharField("Телефон", max_length=255, null=False, blank=False)
+
+    city = models.CharField("Город", max_length=256, null=True, blank=False)
     job = models.CharField("Место работы", max_length=2048, null=True, blank=True)
     position = models.CharField("Должность", max_length=2048, null=True, blank=True)
+
     address_register = models.TextField("Адрес регистрации", blank=True, null=True)
 
     claim_scan = models.FileField("Скан заявления на зачисление в программу ", upload_to=generate_new_filename, null=True, blank=True)

@@ -28,17 +28,17 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'city': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
             'birth_date': forms.DateInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
             'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'city': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
@@ -95,7 +95,7 @@ class ProfileForm(forms.ModelForm):
             ),
             'terms': forms.CheckboxInput(
                 attrs={
-                    'class': 'required checkbox form-control'
+                    'class': 'form-control'
                 }
             ),
         }
