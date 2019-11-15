@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="content container mt-5 p-5 m-3 shadow">
+    <h2>Анкета</h2>
     <form method="post" class="post-form p-3" enctype=multipart/form-data>{% csrf_token %}
         {% if form.subject.errors %}
         <ol role="alertdialog">
