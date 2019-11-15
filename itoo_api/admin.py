@@ -100,3 +100,8 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid')
     search_fields = ('user', 'first_name', 'last_name', 'second_name', 'city')
     list_filter = ('all_valid', 'education_level', 'city')
+
+
+@admin.register(TextBlock)
+class TextBlockAdmin(admin.ModelAdmin):
+    list_display = ["type_slug", "content"]
