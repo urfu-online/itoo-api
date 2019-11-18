@@ -33,7 +33,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     list_filter = ('program__title',)
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
-    search_fields = ('user', 'program__slug', 'program__title')
+    search_fields = ('user__username', 'program__slug', 'program__title')
 
 
 @admin.register(EduProject)
@@ -98,7 +98,7 @@ class PayUrfuDataAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid')
-    search_fields = ('user', 'first_name', 'last_name', 'second_name', 'city')
+    search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city')
     list_filter = ('all_valid', 'education_level', 'city')
 
 
