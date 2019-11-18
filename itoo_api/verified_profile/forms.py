@@ -95,7 +95,7 @@ class ProfileForm(forms.ModelForm):
             ),
             'terms': forms.CheckboxInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control form-check-input'
                 }
             ),
         }
