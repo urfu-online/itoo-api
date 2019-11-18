@@ -42,6 +42,12 @@ def profile_new(request):
             profile.user = request.user
             profile.save()
             EnrollProgram.objects.get_or_create(user=profile.user, program=program)
+
+            if EnrollProgram.get_enroll_program(user=profile.user, program=program):
+                course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+                for course_key in course_keys:
+                    if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
+                        CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit', check_access=True)
             # profile_params = {
             #     'contract_number': 3,
             #     'client_name': "{first_name} {last_name} {second_name}".format(
