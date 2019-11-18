@@ -129,7 +129,7 @@ def profile_detail(request):
             else:
                 has_enroll_program = False
                 return render(request, '../templates/profile_detail.html',
-                              {'profile': profile, 'has_enroll_program':has_enroll_program,'program':program})
+                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
 
     elif request.method == "POST":
         slug = request.session.get("slug", None)
