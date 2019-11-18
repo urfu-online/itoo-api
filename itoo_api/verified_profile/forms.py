@@ -8,8 +8,7 @@ class ProfileForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['all_valid', 'user', 'address_register', 'series', 'number', 'issued_by', 'unit_code', 'issue_date',
                    'passport_scan', 'diploma_scan', 'claim_scan']
-        terms = forms.BooleanField(required=True,
-                                   widget=forms.CheckboxInput(attrs={'class': 'form-control form-check-inline'}))
+        terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
