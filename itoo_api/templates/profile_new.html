@@ -25,7 +25,7 @@
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
         </div>
-        {% if field.id_for_label === 'terms' %}
+        {% if (field.id_for_label === 'terms') %}
             <div aria-required="true" class="fieldWrapper form-group form-check form-check-inline">
                 {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
             {{ field }}
