@@ -67,7 +67,7 @@ class Profile(models.Model):
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
     terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности",
-                                blank=False, null=False)
+                                null=False, blank=False)
 
     user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile',
                                 verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
