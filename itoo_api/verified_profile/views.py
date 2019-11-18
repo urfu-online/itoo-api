@@ -82,11 +82,12 @@ def profile_new(request):
             program = Program.get_program(slug=slug)
         else:
             has_program = False
-
         form = ProfileForm()
+        profile_state = True
         context = {
             'form': form,
             "has_program": has_program,
+            'profile_state': profile_state,
             "program": program
         }
         return render(request, '../templates/profile_new.html', context)
