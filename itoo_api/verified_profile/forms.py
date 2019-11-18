@@ -6,7 +6,10 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'address_register', 'series', 'number', 'issued_by', 'unit_code', 'issue_date', 'passport_scan', 'diploma_scan', 'claim_scan']
+        exclude = ['all_valid', 'user', 'address_register', 'series', 'number', 'issued_by', 'unit_code', 'issue_date',
+                   'passport_scan', 'diploma_scan', 'claim_scan']
+        terms = forms.BooleanField(required=True,
+                                   widget=forms.CheckboxInput(attrs={'class': 'form-control form-check-inline'}))
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
@@ -91,11 +94,6 @@ class ProfileForm(forms.ModelForm):
             'address_living': forms.Textarea(
                 attrs={
                     'class': 'form-control'
-                }
-            ),
-            'terms': forms.CheckboxInput(
-                attrs={
-                    'class': 'form-control form-check-input'
                 }
             ),
         }
