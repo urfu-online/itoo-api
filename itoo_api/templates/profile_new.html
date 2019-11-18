@@ -25,12 +25,12 @@
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
         </div>
-        {% if (field.id_for_label === 'terms') %}
-            <div aria-required="true" class="fieldWrapper form-group form-check form-check-inline">
-                {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
-            {{ field }}
-            </div>
-        {% endif %}
+<!--        {% if (field.id_for_label === 'terms') %}-->
+<!--            <div aria-required="true" class="fieldWrapper form-group form-check form-check-inline">-->
+<!--                {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}-->
+<!--            {{ field }}-->
+<!--            </div>-->
+<!--        {% endif %}-->
         {% endfor %}
         <div class="supplemental-link">
             <a href="https://courses.openedu.urfu.ru/privacy">Ознакомьтесь с политикой конфиденциальности</a>
