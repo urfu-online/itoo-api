@@ -41,7 +41,8 @@ class Profile(models.Model):
 
     address_register = models.TextField("Адрес регистрации", blank=True, null=True)
 
-    claim_scan = models.FileField("Скан заявления на зачисление в программу ", upload_to=generate_new_filename, null=True, blank=True)
+    claim_scan = models.FileField("Скан заявления на зачисление в программу ", upload_to=generate_new_filename,
+                                  null=True, blank=True)
 
     series = models.CharField("Серия", max_length=8, null=True, blank=True)
     number = models.CharField("Номер", max_length=8, null=True, blank=True)
@@ -57,16 +58,19 @@ class Profile(models.Model):
 
     all_valid = models.BooleanField("Данные в доках слушателя совпадают и корректны", default=False)
 
-    doc_forwarding = models.FileField("Скан заявление о пересылке удостоверения слушателя почтой России", upload_to=generate_new_filename, null=True,
+    doc_forwarding = models.FileField("Скан заявление о пересылке удостоверения слушателя почтой России",
+                                      upload_to=generate_new_filename, null=True,
                                       blank=True)
 
     mail_index = models.CharField("Почтовый индекс", max_length=255, null=True, blank=True)
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
-    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности",default=False, blank=False, null=False)
+    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности",
+                                blank=False, null=False)
 
-    user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile', verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile',
+                                verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
