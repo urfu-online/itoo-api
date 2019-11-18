@@ -35,9 +35,13 @@ def profile_new(request):
         slug = request.session.get('slug', None)
         program = None
         if slug:
+            has_program = True
             program = Program.get_program(slug=slug)
+        else:
+            has_program = False
 
         if form.is_valid() and program:
+            profile_state = True
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
@@ -61,7 +65,11 @@ def profile_new(request):
             # }
             return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
         else:
+            profile_state = False
             context = {
+                'has_program' : has_program,
+                'profile_state': profile_state,
+                "program": program,
                 'form': form
             }
             return render(request, '../templates/profile_new.html', context)
