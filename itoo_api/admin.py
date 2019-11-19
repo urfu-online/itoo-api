@@ -107,12 +107,14 @@ def export_csv(modeladmin, request, queryset):
         smart_str(u"ID"),
         smart_str(u"Username"),
         smart_str(u"City"),
+        smart_str(u"Job"),
     ])
     for obj in queryset:
         writer.writerow([
             smart_str(obj.pk),
             smart_str(obj.user),
             smart_str(obj.city),
+            smart_str(obj.job),
         ])
     return response
 
