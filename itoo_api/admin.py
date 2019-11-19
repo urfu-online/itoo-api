@@ -95,11 +95,37 @@ class PayUrfuDataAdmin(admin.ModelAdmin):
     date_hierarchy = 'pub_date'
 
 
+def export_csv(modeladmin, request, queryset):
+    import csv
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Username"),
+        smart_str(u"City"),
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.pk),
+            smart_str(obj.user),
+            smart_str(obj.city),
+        ])
+    return response
+
+
+export_csv.short_description = u"Export CSV"
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city')
     list_filter = ('all_valid', 'education_level', 'city')
+    actions = [export_csv]
 
 
 @admin.register(TextBlock)
