@@ -13,8 +13,48 @@ from .models import Profile
 from student.models import CourseEnrollment
 from opaque_keys.edx.keys import CourseKey
 
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
+
+# TODO : CLASSED BASSED TURBO VIEW ::::
+# class ProfileDetail(DetailView):
+#     model = Profile
+#
+#
+# class ProfileCreate(CreateView):
+#     model = Profile
+#
+#     def form_valid(self, form):
+#         self.request.session.set_test_cookie()
+#         form = ProfileForm(self.request.POST, self.request.FILES)
+#         slug = self.request.session.get('slug', None)
+#         program = None
+#         if slug:
+#             has_program = True
+#             program = Program.get_program(slug=slug)
+#         else:
+#             has_program = False
+#         profile_state = True
+#         profile = form.save(commit=False)
+#         profile.user = self.request.user
+#         profile.save()
+#         EnrollProgram.objects.get_or_create(user=profile.user, program=program)
+#
+#         if EnrollProgram.get_enroll_program(user=profile.user, program=program):
+#             course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+#             for course_key in course_keys:
+#                 if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
+#                     CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit',
+#                                             check_access=True)
+#
+#
+#
+#
+# class ProfileUpdate(UpdateView):
+#     model = Profile
 
 
 def redirect_params(url, params=None):
@@ -51,7 +91,8 @@ def profile_new(request):
                 course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
                 for course_key in course_keys:
                     if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
-                        CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit', check_access=True)
+                        CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit',
+                                                check_access=True)
             # profile_params = {
             #     'contract_number': 3,
             #     'client_name': "{first_name} {last_name} {second_name}".format(
@@ -67,7 +108,7 @@ def profile_new(request):
         else:
             profile_state = False
             context = {
-                'has_program' : has_program,
+                'has_program': has_program,
                 'profile_state': profile_state,
                 "program": program,
                 'form': form
