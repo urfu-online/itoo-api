@@ -54,6 +54,31 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'series': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'number': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'issued_by': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'unit_code': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'issue_date': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
 
             # 'address_register': forms.Textarea(
             #     attrs={
