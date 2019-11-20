@@ -26,7 +26,7 @@
         <div class="fieldWrapper form-group" aria-required='true'>
             {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
             {{ field }}
-            {% if ( field.id_for_label == "id_series") or ( field.id_for_label == "id_number") or ( field.id_for_label == "id_issued_by") or field.id_for_label == ("id_unit_code") or ( field.id_for_label == "id_issue_date") %}
+            {% if field.id_for_label == "id_series" or field.id_for_label == "id_number" or field.id_for_label == "id_issued_by" or field.id_for_label == "id_unit_code" or field.id_for_label == "id_issue_date" %}
             <div class="shadow-sm">
                 <h4>Паспортные данные:</h4>
                 {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
