@@ -6,8 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'address_register', 'series', 'number', 'issued_by', 'unit_code', 'issue_date',
-                   'passport_scan', 'diploma_scan', 'claim_scan']
+        exclude = ['all_valid', 'user', 'address_register', 'passport_scan', 'diploma_scan', 'claim_scan']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -55,6 +54,7 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+
             # 'address_register': forms.Textarea(
             #     attrs={
             #         'class': 'form-control'
