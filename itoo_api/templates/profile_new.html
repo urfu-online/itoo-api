@@ -26,7 +26,7 @@
         <div class="fieldWrapper form-group" aria-required='true'>
             {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
             {{ field }}
-            {{ field.claim_scan }}
+            {{ field.id_for_label }}
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
