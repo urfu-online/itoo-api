@@ -12,7 +12,6 @@
 </div>
 {% endif %}
 <div class="content container mt-5 p-5 m-3 shadow">
-    {{ form.claim_scan }}
     <h2>Анкета</h2>
     <h4>Запись на программу &laquo;{{ program }}&raquo;</h4>
     <form method="post" class="post-form p-3" enctype=multipart/form-data>{% csrf_token %}
@@ -27,6 +26,7 @@
         <div class="fieldWrapper form-group" aria-required='true'>
             {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
             {{ field }}
+            {{ field.claim_scan }}
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
