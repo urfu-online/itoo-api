@@ -40,8 +40,8 @@
                     {{ form.birth_date }}</p>
                 <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
                     {{ form.phone }}</p>
-                <p><label for="id_email">Email<span class="red">*</span>:</label>
-                    {{ form.email }}</p>
+                <!--                <p><label for="id_email">Email<span class="red">*</span>:</label>-->
+                <!--                    {{ form.email }}</p>-->
                 <p>ВНИМАНИЕ! Ваш адрес электронной почты должен совпадать с тем адресом, который Вы указали при
                     регистрации на платформе openprofession.ru.
                     В противном случае мы не сможем идентифицировать Вас и выдать документ о повышении квалификации.</p>
@@ -105,6 +105,22 @@
             <!--<input name="passport_scan" required=""-->
             <!--id="id_passport_scan" type="file"></p>-->
             <!--</div>-->
+            <div class="subsection">
+                <h2>Паспортные данные:</h2>
+                <p><label for="id_series">Серия<span class="red">*</span>:</label>
+                    {{ form.series }}</p>
+                <p><label for="id_number">Номер<span class="red">*</span>:</label>
+                    {{ form.number }}
+                </p>
+                <p><label for="id_issued_by">Кем выдан<span class="red">*</span>:</label>
+                    {{ form.issued_by }}</p>
+                <p><label for="id_unit_code">Код подразделения<span class="red">*</span>:</label>
+                    {{ form.unit_code }}
+                </p>
+                <p><label for="id_issue_date">Дата выдачи<span class="red">*</span>:</label>
+                    {{ form.issue_date }}
+                </p>
+            </div>
 
             <div class="subsection">
                 <h2>Образование:</h2>
@@ -143,7 +159,7 @@
             {% endif %}
             <div class="subsection" style="height: 150px;">
                 <p><label for="id_terms">Я ознакомился с <a target="_blank"
-                                                                href="https://ozi.urfu.ru/fileadmin/user_upload/site_15891/politika_01.pdf">политикой
+                                                            href="https://ozi.urfu.ru/fileadmin/user_upload/site_15891/politika_01.pdf">политикой
                     обработки
                     персональных данных</a> и <a target="_blank"
                                                  href="https://openedu.urfu.ru/files/law/agreement.html">согласен на
