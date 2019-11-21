@@ -80,9 +80,9 @@ class ProfileForm(forms.ModelForm):
                 }
             ),
             'diploma_scan': forms.FileInput(
-                attrs={
-                    'class': 'form-control'
-                }
+                # attrs={
+                #     'class': 'form-control'
+                # }
             ),
 
             # 'address_register': forms.Textarea(
