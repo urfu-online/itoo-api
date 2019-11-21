@@ -13,14 +13,15 @@
 {% endif %}
 <div class="row">
     <div class="col container" id="form">
-        <h2>Анкета</h2>
-        <h5>Запись на программу {{ program }}</h5>
         <form enctype="multipart/form-data" action="" method="post">
             {{ form.non_field_errors }}
-            <!--            <div class="subsection">-->
-            <!--            </div>-->
+            <div class="subsection">
+                <h2>Анкета</h2>
+                <h5>Запись на программу {{ program }}</h5>
+            </div>
             <div class="subsection">
                 <h2>Личные данные:</h2>
+
 
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
