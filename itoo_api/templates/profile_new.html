@@ -26,55 +26,33 @@
 
 
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
-                    {{ form.last_name }}
-                    <input name="last_name" maxlength="255" required=""
-                           id="id_last_name" type="text"></p>
+                    {{ form.last_name }}</p>
                 <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
-                    {{ form.first_name }}
-                    <input name="first_name" maxlength="255" required=""
-                           id="id_first_name" type="text"></p>
+                    {{ form.first_name }}</p>
 
                 <p><label for="id_second_name">Отчество:</label>
-                    {{ form.second_name }}
-                    <input name="second_name" maxlength="255"
-                           id="id_second_name" type="text"></p>
+                    {{ form.second_name }}</p>
 
                 <p><label for="id_sex">Пол<span class="red">*</span>:</label>
                     {{ form.sex }}
-                    <select name="sex" required="" id="id_sex">
-                        <option value="" selected="">---------</option>
-                        <option value="m">мужской</option>
-                        <option value="f">женский</option>
-                    </select>
                 </p>
                 <p><label for="id_birth_date">Дата рождения<span class="red">*</span>:</label>
-                    {{ form.datepicker }}
-                    <input class="datepicker" name="birth_date" required="" id="id_birth_date" placeholder="dd/mm/yyyy"
-                           type="text"></p>
+                    {{ form.birth_date }}</p>
                 <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
-                    {{ form.phone }}
-                    <input name="phone" required="" id="id_phone" type="tel"></p>
+                    {{ form.phone }}</p>
                 <p><label for="id_email">Email<span class="red">*</span>:</label>
-                    {{ form.email }}
-                    <input name="email" maxlength="254" required="" id="id_email"
-                           type="email"></p>
+                    {{ form.email }}</p>
                 <p>ВНИМАНИЕ! Ваш адрес электронной почты должен совпадать с тем адресом, который Вы указали при
                     регистрации на платформе openprofession.ru.
                     В противном случае мы не сможем идентифицировать Вас и выдать документ о повышении квалификации.</p>
                 <p><label for="id_city">Город<span class="red">*</span>:</label>
-                    {{ form.job }}
-                    <input name="city" maxlength="2048" required="" id="id_city"
-                           type="text"></p>
+                    {{ form.city }}</p>
 
                 <p><label for="id_job">Место работы<span class="red">*</span>:</label>
-                    {{ form.job }}
-                    <input name="job" maxlength="2048" required="" id="id_job"
-                           type="text"></p>
+                    {{ form.job }}</p>
 
                 <p><label for="id_position">Должность<span class="red">*</span>:</label>
-                    {{ form.position }}
-                    <input name="position" maxlength="2048" required="" id="id_position"
-                           type="text"></p>
+                    {{ form.position }}</p>
                 <!--<p><label for="id_address_register">Адрес регистрации:</label>-->
                 <!--<textarea name="address_register" cols="40"-->
                 <!--rows="10" required=""-->
@@ -85,35 +63,25 @@
                 <!--rows="10" required=""-->
                 <!--id="id_address_living"></textarea></p>-->
                 <p><label for="id_claim_scan">Скан заявления о зачислении на обучение<span class="red">*</span>:</label>
-                    {{ form.claim_scan }}
-                    <input name="claim_scan" required=""
-                           id="id_claim_scan" type="file"></p>
+                    {{ form.claim_scan }}</p>
                 <p><a href="#">Скачать шаблон заявления</a></p>
 
                 <p><label for="id_doc_forwarding">Скан заявления о пересылке оригинала документа почтой России:</label>
-                    {{ form.doc_forwarding.errors }}
-                    <input name="doc_forwarding"
-                           id="id_doc_forwarding" type="file"></p>
+                    {{ form.doc_forwarding }}</p>
                 <p><a href="#">Скачать шаблон
                     заявления</a></p>
                 <p>В случае, если Вы проживаете не в Екатеринбурге, необходимо прикрепить скан заявления о почтовой
                     пересылке оригинала документа об обучении.</p>
 
                 <p><label for="id_mail_index">Почтовый индекс:</label>
-                    {{ form.mail_index.errors }}
-                    <input name="mail_index" maxlength="255"
-                           id="id_mail_index" type="text"></p>
+                    {{ form.mail_index }}</p>
 
                 <p><label for="id_country">Страна:</label>
-                    {{ form.country.errors }}
-                    <input name="country" maxlength="255"
-                           id="id_country" type="text" value="Россия"></p>
+                    {{ form.country }}</p>
 
                 <p><label for="id_address_living">Адрес для отправки оригинала документа (город, улица, дом,
                     квартира):</label>
-                    {{ form.address_living }}
-                    <input name="address_living" maxlength="255"
-                           id="id_address_living" type="text"></p>
+                    {{ form.address_living }}/p>
             </div>
 
             <!--<div class="subsection">-->
@@ -141,20 +109,9 @@
             <div class="subsection">
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
-                    {{ form.education_level }}
-                    <select name="education_level"
-                            required=""
-                            id="id_education_level">
-                        <option value="" selected="">---------</option>
-
-                        <option value="M">Среднее профессиональное</option>
-
-                        <option value="H">Высшее</option>
-
-                    </select></p>
+                    {{ form.education_level }}</p>
                 <p><label for="id_diploma_scan">Скан диплома<span class="red">*</span>:</label>
-                    {{ form.diploma_scan.errors }}
-                    <input type="file" name="diploma_scan" required="" id="id_diploma_scan">
+                    {{ form.diploma_scan }}
                 </p>
                 <p>ВНИМАНИЕ! В случае, если диплом был выдан не на территории РФ, необходимо предоставить подтверждение
                     пройденной процедуры нострификации,
@@ -185,17 +142,13 @@
             {% endif %}
             {% endif %}
             <div class="subsection" style="height: 150px;">
-                <p><label for="id_agreement">Я ознакомился с <a target="_blank"
+                <p><label for="id_terms">Я ознакомился с <a target="_blank"
                                                                 href="https://ozi.urfu.ru/fileadmin/user_upload/site_15891/politika_01.pdf">политикой
                     обработки
                     персональных данных</a> и <a target="_blank"
                                                  href="https://openedu.urfu.ru/files/law/agreement.html">согласен на
                     обработку персональных данных</a><span class="red">*</span></label>
-                    {{ form.agreement.errors }}
-                    <input name="agreement"
-                           id="id_agreement"
-                           required=""
-                           type="checkbox"></p>
+                    {{ form.terms }}</p>
                 <input value="Отправить" type="submit">
             </div>
 
