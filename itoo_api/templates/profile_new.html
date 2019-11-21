@@ -44,21 +44,21 @@
 
 
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
-                    {{ form.last_name.errors }}
+                    {{ form.last_name }}
                     <input name="last_name" maxlength="255" required=""
                            id="id_last_name" type="text"></p>
                 <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
-                    {{ form.first_name.errors }}
+                    {{ form.first_name }}
                     <input name="first_name" maxlength="255" required=""
                            id="id_first_name" type="text"></p>
 
                 <p><label for="id_second_name">Отчество:</label>
-                    {{ form.second_name.errors }}
+                    {{ form.second_name }}
                     <input name="second_name" maxlength="255"
                            id="id_second_name" type="text"></p>
 
                 <p><label for="id_sex">Пол<span class="red">*</span>:</label>
-                    {{ form.sex.errors }}
+                    {{ form.sex }}
                     <select name="sex" required="" id="id_sex">
                         <option value="" selected="">---------</option>
                         <option value="m">мужской</option>
@@ -66,31 +66,31 @@
                     </select>
                 </p>
                 <p><label for="id_birth_date">Дата рождения<span class="red">*</span>:</label>
-                    {{ form.datepicker.errors }}
+                    {{ form.datepicker }}
                     <input class="datepicker" name="birth_date" required="" id="id_birth_date" placeholder="dd/mm/yyyy"
                            type="text"></p>
                 <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
-                    {{ form.phone.errors }}
+                    {{ form.phone }}
                     <input name="phone" required="" id="id_phone" type="tel"></p>
                 <p><label for="id_email">Email<span class="red">*</span>:</label>
-                    {{ form.email.errors }}
+                    {{ form.email }}
                     <input name="email" maxlength="254" required="" id="id_email"
                            type="email"></p>
                 <p>ВНИМАНИЕ! Ваш адрес электронной почты должен совпадать с тем адресом, который Вы указали при
                     регистрации на платформе openprofession.ru.
                     В противном случае мы не сможем идентифицировать Вас и выдать документ о повышении квалификации.</p>
                 <p><label for="id_city">Город<span class="red">*</span>:</label>
-                    {{ form.job.errors }}
+                    {{ form.job }}
                     <input name="city" maxlength="2048" required="" id="id_city"
                            type="text"></p>
 
                 <p><label for="id_job">Место работы<span class="red">*</span>:</label>
-                    {{ form.job.errors }}
+                    {{ form.job }}
                     <input name="job" maxlength="2048" required="" id="id_job"
                            type="text"></p>
 
                 <p><label for="id_position">Должность<span class="red">*</span>:</label>
-                    {{ form.position.errors }}
+                    {{ form.position }}
                     <input name="position" maxlength="2048" required="" id="id_position"
                            type="text"></p>
                 <!--<p><label for="id_address_register">Адрес регистрации:</label>-->
@@ -103,7 +103,7 @@
                 <!--rows="10" required=""-->
                 <!--id="id_address_living"></textarea></p>-->
                 <p><label for="id_claim_scan">Скан заявления о зачислении на обучение<span class="red">*</span>:</label>
-                    {{ form.claim_scan.errors }}
+                    {{ form.claim_scan }}
                     <input name="claim_scan" required=""
                            id="id_claim_scan" type="file"></p>
                 <p><a href="#">Скачать шаблон заявления</a></p>
@@ -129,7 +129,7 @@
 
                 <p><label for="id_address_living">Адрес для отправки оригинала документа (город, улица, дом,
                     квартира):</label>
-                    {{ form.address_living.errors }}
+                    {{ form.address_living }}
                     <input name="address_living" maxlength="255"
                            id="id_address_living" type="text"></p>
             </div>
@@ -159,7 +159,7 @@
             <div class="subsection">
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
-                    {{ form.education_level.errors }}
+                    {{ form.education_level }}
                     <select name="education_level"
                             required=""
                             id="id_education_level">
