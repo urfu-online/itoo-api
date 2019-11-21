@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'address_register', 'passport_scan', 'diploma_scan', 'claim_scan']
+        exclude = ['all_valid', 'user', 'passport_scan']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
