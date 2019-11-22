@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'passport_scan']
+        exclude = ['all_valid', 'user', 'passport_scan', 'diploma_scan']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -79,11 +79,31 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'diploma_scan': forms.FileInput(
-                # attrs={
-                #     'class': 'form-control'
-                # }
+            'number_diploma': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
             ),
+            'edu_organization': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'specialty': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'year_of_ending': forms.DateInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            # 'diploma_scan': forms.FileInput(
+            #     # attrs={
+            #     #     'class': 'form-control'
+            #     # }
+            # ),
 
             # 'address_register': forms.Textarea(
             #     attrs={

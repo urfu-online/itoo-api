@@ -124,8 +124,20 @@
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
                     {{ form.education_level }}</p>
-                <p><label for="id_diploma_scan">Скан диплома:</label>
-                    {{ form.diploma_scan }}
+                <!--                <p><label for="id_diploma_scan">Скан диплома:</label>-->
+                <!--                    {{ form.diploma_scan }}-->
+                <!--                </p>-->
+                <p><label for="id_number_diploma">Номер документа об образовании<span class="red">*</span>:</label>
+                    {{ form.number_diploma }}
+                </p>
+                <p><label for="id_edu_organization">Образовательное учреждение<span class="red">*</span>:</label>
+                    {{ form.edu_organization }}
+                </p>
+                <p><label for="id_specialty">Специальность (направление подготовки)<span class="red">*</span>:</label>
+                    {{ form.specialty }}
+                </p>
+                <p><label for="id_year_of_ending">Год окончания<span class="red">*</span>:</label>
+                    {{ form.year_of_ending }}
                 </p>
                 <!--                <span class="red">*</span> -->
                 <!--                <p>ВНИМАНИЕ! В случае, если диплом был выдан не на территории РФ, необходимо предоставить подтверждение-->
