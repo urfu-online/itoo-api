@@ -191,18 +191,21 @@ def profile_new(request):
             #     'amount': '2000'
             # }
 
-            # from itoo_api.verified_profile.models import Profile
-            # from django.contrib.auth.models import User
-            # users = User.objects.all()
-            # program = Program.objects.all()
-            # for user in users:
-            #     obj = Profile.get_profile(user=user)
-            #     if obj:
-            #         if EnrollProgram.get_enroll_program(user=user, program=program):
-            #             course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
-            #             for course_key in course_keys:
-            #                 if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
-            #                     CourseEnrollment.update_enrollment(user=user, course_key=course_key, mode='audit', check_access=True)
+# from itoo_api.verified_profile.models import Profile
+# from itoo_api.models import EnrollProgram, Program
+# from django.contrib.auth.models import User
+# from opaque_keys.edx.keys import CourseKey
+# from student.models import CourseEnrollment
+# users = User.objects.all()
+# programs = Program.objects.all()
+# for program in programs:
+#     for user in users:
+#         obj = Profile.get_profile(user=user)
+#         if obj:
+#             if EnrollProgram.get_enroll_program(user=user, program=program):
+#                 course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+#                 for course_key in course_keys:
+#                     print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
 
             return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
         else:
