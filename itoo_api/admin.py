@@ -132,9 +132,9 @@ def export_csv_profile(modeladmin, request, queryset):
     writer.writerow([
         smart_str(u"ID"),
         smart_str(u"Username"),
-        smart_str(u"last_name")
-        smart_str(u"first_name")
-        smart_str(u"second_name")
+        smart_str(u"last_name"),
+        smart_str(u"first_name"),
+        smart_str(u"second_name"),
         smart_str(u"City"),
         smart_str(u"Job"),
     ])
