@@ -132,6 +132,9 @@ def export_csv_profile(modeladmin, request, queryset):
     writer.writerow([
         smart_str(u"ID"),
         smart_str(u"Username"),
+        smart_str(u"last_name")
+        smart_str(u"first_name")
+        smart_str(u"second_name")
         smart_str(u"City"),
         smart_str(u"Job"),
     ])
@@ -139,6 +142,9 @@ def export_csv_profile(modeladmin, request, queryset):
         writer.writerow([
             smart_str(obj.pk),
             smart_str(obj.user),
+            smart_str(obj.last_name),
+            smart_str(obj.first_name),
+            smart_str(obj.second_name),
             smart_str(obj.city),
             smart_str(obj.job),
         ])

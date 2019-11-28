@@ -205,7 +205,9 @@ def profile_new(request):
 #             if EnrollProgram.get_enroll_program(user=user, program=program):
 #                 course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
 #                 for course_key in course_keys:
-#                     print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
+#                     if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
+#                         print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
+#                         CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
             return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
         else:
