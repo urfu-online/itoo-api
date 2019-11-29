@@ -55,10 +55,6 @@ class Profile(models.Model):
     education_level = models.CharField("Уровень базового образования", max_length=1, choices=EDUCATION_LEVEL,
                                        null=False, blank=False)
     diploma_scan = models.FileField("Скан диплома", upload_to=generate_new_filename, null=True, blank=True)
-    number_diploma = models.CharField("Номер документа об образовании", max_length=255, null=True, blank=False)
-    edu_organization = models.CharField("Образовательное учреждение", max_length=355, null=True, blank=False)
-    specialty = models.CharField("Специальность (направление подготовки)", max_length=355, null=True, blank=False)
-    year_of_ending = models.CharField("Год окончания", max_length=16, null=True, blank=False)
 
     all_valid = models.BooleanField("Данные в доках слушателя совпадают и корректны", default=False)
 
@@ -70,7 +66,7 @@ class Profile(models.Model):
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
-    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности", default=True, blank=False)
+    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности", null=False, blank=False)
 
     user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile',
                                 verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
