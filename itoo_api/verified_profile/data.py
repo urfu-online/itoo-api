@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 cohorted = True  # Включать когорты
 
 
-def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_cohort_name="default", mode=None):
+def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_cohort_name="default", mode_slug=None):
     course_key = CourseKey.from_string(course_id)
     user = User.objects.get(email=userlike_str)
     course = get_course_by_id(course_key)
@@ -52,16 +52,22 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         course_modes = CourseMode.objects.filter(course_id=course_key, mode_slug__in=acceptable_modes)
         return course_modes
 
-    def _set_user_mode(mode):
+    def _set_user_mode():
         available_verified_modes = _check_verified_course_mode()
+        for mode in available_verified_modes:
+            if mode.mode_slug == mode_slug:
+                update_enrollment(user.username, course_id, mode_slug)
+                return True
+        return False
 
-        if not mode:
-            mode = available_verified_modes[0]
-
-        if mode in available_verified_modes:
-            update_enrollment(user.username, course_key, mode)
-        elif mode not in available_verified_modes:
-            raise CourseModeNotFoundError
+        #
+        # if not mode:
+        #     mode = available_verified_modes[0]
+        #
+        # if mode in available_verified_modes:
+        #     update_enrollment(user.username, course_id, mode)
+        # elif mode not in available_verified_modes:
+        #     raise CourseModeNotFoundError
 
     def _get_verified_cohort():
         if not is_course_cohorted(course_key):
@@ -105,7 +111,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         return "user is not enrolled"
 
     if enrollment:
-        return str(_set_user_mode(mode)), str(_set_user_cohort()), str(_verify_user())
+        return str(_set_user_mode()), str(_set_user_cohort()), str(_verify_user())
 
         # def _check_enrollment(self, user, course_key):
         #     enrollment_mode, is_active = CourseEnrollment.enrollment_mode_for_user(user, course_key)
