@@ -82,17 +82,19 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
         existing_manual_cohorts = get_course_cohorts(course, assignment_type=CourseCohort.MANUAL)
         logger.info(u"Cohorts on course '%s' '%s'",
                     course_id, existing_manual_cohorts)
-        if verified_cohort_name:  # алгоритм с одной платной когортой
-            if not verified_cohort_name in existing_manual_cohorts:
-                # Создадём когорту и группу контента
-                cohort = CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_key,
-                                             assignment_type=CourseCohort.MANUAL)
-                return cohort
-        else:
-            """
-            Место для алгоритма с привязкой когорты к треку и многими треками
-            """
-            pass
+
+        return existing_manual_cohorts[0]
+        # if verified_cohort_name:  # алгоритм с одной платной когортой
+        #     if not verified_cohort_name in existing_manual_cohorts:
+        #         # Создадём когорту и группу контента
+        #         cohort = CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_key,
+        #                                      assignment_type=CourseCohort.MANUAL)
+        #         return cohort
+        # else:
+        #     """
+        #     Место для алгоритма с привязкой когорты к треку и многими треками
+        #     """
+        #     pass
 
     def _set_user_cohort():
         cohort = _get_verified_cohort()
