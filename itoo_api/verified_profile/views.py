@@ -214,11 +214,13 @@ def profile_new(request):
             has_program = False
         form = ProfileForm()
         profile_state = True
+        template_scan = "Listener_state_({slug}).docx".format(slug=slug)
         context = {
             'form': form,
             "has_program": has_program,
             'profile_state': profile_state,
-            "program": program
+            "program": program,
+            "template_scan": template_scan
         }
         return render(request, '../templates/profile_new.html', context)
 

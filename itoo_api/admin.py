@@ -72,11 +72,35 @@ class EduProjectAdmin(admin.ModelAdmin):
     inlines = [ProgramInline, TextBlockInline]
 
 
+def export_csv_program_course_entoll(modeladmin, request, queryset):
+    import csv
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"course_id"),
+        smart_str(u"program"),
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.course_id),
+            smart_str(obj.program),
+        ])
+    return response
+
+
+export_csv_program_entoll.short_description = u"Export CSV"
+
+
 @admin.register(ProgramCourse)
 class ProgramCourseAdmin(admin.ModelAdmin):
     list_display = ('course_id', 'program', 'active')
     ordering = ('course_id', 'program__title',)
     search_fields = ('course_id', 'program__title', 'program__short_name',)
+    actions = [export_csv_program_course_entoll]
 
 
 # @admin.register(EduProject)
