@@ -5,18 +5,20 @@ from django.contrib.auth.models import User
 from opaque_keys.edx.keys import CourseKey
 import logging
 from student.models import CourseEnrollment
-from lms.djangoapps.verify_student.models import PhotoVerification
+from lms.djangoapps.verify_student.models import SoftwareSecurePhotoVerification
 import datetime
 
 # paid track
-from openedx.core.djangoapps.course_groups.cohorts import add_user_to_cohort, get_cohort, get_cohort_by_name
 from student.models import CourseEnrollment
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.course_groups.cohorts import (
     CourseCohort,
     get_course_cohorts,
     is_course_cohorted,
-    set_course_cohorted
+    set_course_cohorted,
+    add_user_to_cohort,
+    get_cohort,
+    get_cohort_by_name
 )
 
 from enrollment.api import (
@@ -66,22 +68,22 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
                 course_id
             )
             set_course_cohorted(course_key, cohorted)
+
+        course = get_course_by_id(course_key)
+        existing_manual_cohorts = get_course_cohorts(course, assignment_type=CourseCohort.MANUAL)
+        logger.info(u"Cohorts on course '%s' '%s'",
+                    course_id, existing_manual_cohorts)
+        if verified_cohort_name:  # алгоритм с одной платной когортой
+            if not verified_cohort_name in existing_manual_cohorts:
+                # Создадём когорту и группу контента
+                cohort = CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_id,
+                                             assignment_type=CourseCohort.MANUAL)
+                return cohort
         else:
-            course = get_course_by_id(course_key)
-            existing_manual_cohorts = get_course_cohorts(course, assignment_type=CourseCohort.MANUAL)
-            logger.info(u"Cohorts on course '%s' '%s'",
-                        course_id, existing_manual_cohorts)
-            if verified_cohort_name:  # алгоритм с одной платной когортой
-                if not verified_cohort_name in existing_manual_cohorts:
-                    # Создадём когорту и группу контента
-                    CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_id,
-                                        assignment_type=CourseCohort.MANUAL)
-                    return verified_cohort_name
-            else:
-                """
-                Место для алгоритма с привязкой когорты к треку и многими треками
-                """
-                pass
+            """
+            Место для алгоритма с привязкой когорты к треку и многими треками
+            """
+            pass
 
     def _set_user_mode():
         available_verified_modes = _check_verified_course_mode()
@@ -95,30 +97,37 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
                 raise CourseModeNotFoundError
 
     def _set_user_cohort():
-        verified_cohort_name = _get_verified_cohort()
-        args = {
-            'course_id': course_id,
-            'user_id': user.id,
-            'verified_cohort_name': verified_cohort_name,
-            'default_cohort_name': default_cohort_name
-        }
+        cohort = _get_verified_cohort()
+        add_user_to_cohort(cohort, user.email)
 
+    def _verify_user():
+        if not SoftwareSecurePhotoVerification.user_is_verified(user):
+            obj = SoftwareSecurePhotoVerification(user=user, photo_id_key="dummy_photo_id_key")
+            obj.status = 'approved'
+            obj.submitted_at = datetime.datetime.now()
+            obj.reviewing_user = User.objects.get(username='SoftwareSecure')
+            obj.save()
 
-
-
-    # def _check_enrollment(self, user, course_key):
-    #     enrollment_mode, is_active = CourseEnrollment.enrollment_mode_for_user(user, course_key)
-    #
-    #     if enrollment_mode is not None and is_active:
-    #         all_modes = CourseMode.modes_for_course_dict(course_key, include_expired=True)
-    #         course_mode = all_modes.get(enrollment_mode)
-    #         has_paid = (course_mode and course_mode.min_price > 0)
-    #
-    #     return (has_paid, bool(is_active))
-
-
-
+    enrollment = None
     try:
+        enrollment = CourseEnrollment.get_enrollment(user, course_key)
+    except CourseEnrollmentError:
+        return "user is not enrolled"
+
+    if enrollment:
+        return str(_set_user_mode()), str(_set_user_cohort()), str(_verify_user())
+
+        # def _check_enrollment(self, user, course_key):
+        #     enrollment_mode, is_active = CourseEnrollment.enrollment_mode_for_user(user, course_key)
+        #
+        #     if enrollment_mode is not None and is_active:
+        #         all_modes = CourseMode.modes_for_course_dict(course_key, include_expired=True)
+        #         course_mode = all_modes.get(enrollment_mode)
+        #         has_paid = (course_mode and course_mode.min_price > 0)
+        #
+        #     return (has_paid, bool(is_active))
+
+        # try:
         enrollment = CourseEnrollment.get_enrollment(user, course_key)
         # Note that this will enroll the user in the default cohort on initial enrollment.
         # That's good because it will force creation of the default cohort if necessary.
