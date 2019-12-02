@@ -37,7 +37,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
     user = User.objects.get(email=userlike_str)
     course = get_course_by_id(course_key)
     acceptable_modes = (
-        'verified'
+        'verified',
         'professional'
     )
 
@@ -49,17 +49,8 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         return user.is_active
 
     def _check_verified_course_mode():
-        modes_dict = CourseMode.modes_for_course_dict(
-            course_id=course_id,
-            modes=acceptable_modes,
-            include_expired=False,
-            course=course
-        )
-        available_verified_modes = []
-        course_modes = CourseMode.objects.filter(course_id=course_id)
-        for mode in course_modes:
-            available_verified_modes.append(modes_dict.get(mode, None))
-        return available_verified_modes
+        course_modes = CourseMode.objects.filter(course_id=course_key, mode_slug__in=acceptable_modes)
+        return course_modes
 
     def _get_verified_cohort():
         if not is_course_cohorted(course_key):
@@ -90,10 +81,10 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         if not mode:
             mode = available_verified_modes[0]
 
-            if mode in available_verified_modes:
-                update_enrollment(user.username, course_key, mode)
-            elif mode not in available_verified_modes:
-                raise CourseModeNotFoundError
+        if mode in available_verified_modes:
+            update_enrollment(user.username, course_key, mode)
+        elif mode not in available_verified_modes:
+            raise CourseModeNotFoundError
 
     def _set_user_cohort():
         cohort = _get_verified_cohort()
