@@ -69,6 +69,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
             )
             set_course_cohorted(course_key, cohorted)
 
+        logger.warning(course_key)
         course = get_course_by_id(course_key)
         existing_manual_cohorts = get_course_cohorts(course, assignment_type=CourseCohort.MANUAL)
         logger.info(u"Cohorts on course '%s' '%s'",
