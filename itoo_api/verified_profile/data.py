@@ -61,7 +61,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
             available_verified_modes.append(modes_dict.get(mode, None))
         return available_verified_modes
 
-    def _get_verified_cohort():
+    def _get_verified_cohort(course_key):
         if not is_course_cohorted(course_key):
             logger.error(
                 u"COURSE_NOT_COHORTED: Course '%s' is not cohorted",
@@ -69,7 +69,6 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
             )
             set_course_cohorted(course_key, cohorted)
 
-        logger.warning(course_key)
         course = get_course_by_id(course_key)
         existing_manual_cohorts = get_course_cohorts(course, assignment_type=CourseCohort.MANUAL)
         logger.info(u"Cohorts on course '%s' '%s'",
@@ -97,8 +96,8 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
             elif mode not in available_verified_modes:
                 raise CourseModeNotFoundError
 
-    def _set_user_cohort():
-        cohort = _get_verified_cohort()
+    def _set_user_cohort(course_key):
+        cohort = _get_verified_cohort(course_key)
         add_user_to_cohort(cohort, user.email)
 
     def _verify_user():
@@ -116,7 +115,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         return "user is not enrolled"
 
     if enrollment:
-        return str(_set_user_mode()), str(_set_user_cohort()), str(_verify_user())
+        return str(_set_user_mode()), str(_set_user_cohort(course_key)), str(_verify_user())
 
         # def _check_enrollment(self, user, course_key):
         #     enrollment_mode, is_active = CourseEnrollment.enrollment_mode_for_user(user, course_key)
