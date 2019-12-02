@@ -50,11 +50,15 @@ class Profile(models.Model):
     unit_code = models.CharField("Код подразделения", max_length=16, null=True, blank=False)
     issue_date = models.CharField("Дата выдачи", max_length=16, null=True, blank=False)
 
-    passport_scan = models.FileField("Скан паспорта", upload_to=generate_new_filename, null=True, blank=True)
+    # passport_scan = models.FileField("Скан паспорта", upload_to=generate_new_filename, null=True, blank=True)
 
     education_level = models.CharField("Уровень базового образования", max_length=1, choices=EDUCATION_LEVEL,
                                        null=False, blank=False)
-    diploma_scan = models.FileField("Скан диплома", upload_to=generate_new_filename, null=True, blank=True)
+    # diploma_scan = models.FileField("Скан диплома", upload_to=generate_new_filename, null=True, blank=True)
+    number_diploma = models.CharField("Номер документа об образовании", max_length=255, null=True, blank=False)
+    edu_organization = models.CharField("Образовательное учреждение", max_length=355, null=True, blank=False)
+    specialty = models.CharField("Специальность (направление подготовки)", max_length=355, null=True, blank=False)
+    year_of_ending = models.CharField("Год окончания", max_length=16, null=True, blank=False)
 
     all_valid = models.BooleanField("Данные в доках слушателя совпадают и корректны", default=False)
 
