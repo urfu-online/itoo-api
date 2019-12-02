@@ -32,7 +32,9 @@ logger = logging.getLogger(__name__)
 cohorted = True  # Включать когорты
 
 
-def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_cohort_name="default", mode_slug=None):
+def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", default_cohort_name="default",
+                  mode_slug="verified"):
+
     course_key = CourseKey.from_string(course_id)
     user = User.objects.get(email=userlike_str)
     course = get_course_by_id(course_key)
@@ -83,7 +85,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
         if verified_cohort_name:  # алгоритм с одной платной когортой
             if not verified_cohort_name in existing_manual_cohorts:
                 # Создадём когорту и группу контента
-                cohort = CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_id,
+                cohort = CourseCohort.create(cohort_name=verified_cohort_name, course_id=course_key,
                                              assignment_type=CourseCohort.MANUAL)
                 return cohort
         else:
