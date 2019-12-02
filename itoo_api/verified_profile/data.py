@@ -94,7 +94,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name=None, default_co
 
     def _set_user_cohort():
         cohort = _get_verified_cohort()
-        add_user_to_cohort(cohort, user.email)
+        add_user_to_cohort(cohort, user.username)
 
     def _verify_user():
         if not SoftwareSecurePhotoVerification.user_is_verified(user):
