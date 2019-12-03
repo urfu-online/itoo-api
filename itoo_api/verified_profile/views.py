@@ -179,17 +179,7 @@ def profile_new(request):
                     if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
                         CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit',
                                                 check_access=True)
-            # profile_params = {
-            #     'contract_number': 3,
-            #     'client_name': "{first_name} {last_name} {second_name}".format(
-            #         first_name=profile.first_name.encode('utf8'),
-            #         last_name=profile.last_name.encode('utf8'),
-            #         second_name=profile.second_name.encode('utf8')
-            #     ),
-            #     'client_phone': profile.phone,
-            #     'client_email': request.user.email,
-            #     'amount': '2000'
-            # }
+
                         # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
                         # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
@@ -237,11 +227,22 @@ def profile_edit(request):
             profile.user = request.user
             profile.save()
             return redirect("api/itoo_api/verified_profile/profile/?program_slug={}".format(slug))
+
+        else:
+            context = {
+                'profile_state': False,
+                'form': form
+            }
+            return render(request, '../templates/profile_edit.html', context)
             # return redirect(reverse('itoo:verified_profile:profile_detail'))
 
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
-        return render(request, '../templates/profile_edit.html', {'form': form})
+        context = {
+            'profile_state': True,
+            'form': form
+        }
+        return render(request, '../templates/profile_edit.html', context)
 
 
 def profile_detail(request):
