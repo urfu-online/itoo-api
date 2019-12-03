@@ -55,12 +55,12 @@
         {% endfor %}
     </ul>
     <div class="d-flex row justify-content-between m-3 p-2">
-<!--        <a class="shadow btn btn-primary" href="{% url 'itoo:verified_profile:profile_edit' %}">-->
-<!--            <span>Редактировать</span>-->
-<!--        </a>-->
         <form method="post" class="post-form" enctype=multipart/form-data>{% csrf_token %}
             <input type="submit" value="Всё верно" class="shadow btn btn-success"/>
         </form>
+        <a class="shadow btn btn-primary" href="{% url 'itoo:verified_profile:profile_edit' %}">
+            <span>Редактировать</span>
+        </a>
     </div>
 </div>
 <!--        {% if post.published_date %}-->
