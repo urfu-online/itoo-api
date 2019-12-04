@@ -245,6 +245,36 @@ def profile_edit(request):
         return render(request, '../templates/profile_edit.html', context)
 
 
+def profile_edit_exist(request):
+    # launch = dict()
+    user = request.user
+    profile = Profile.get_profile(user=user)[0]
+    slug = request.GET.get('program_slug', None)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+
+        else:
+            context = {
+                'profile_state': False,
+                'form': form
+            }
+            return render(request, '../templates/profile_edit.html', context)
+            # return redirect(reverse('itoo:verified_profile:profile_detail'))
+
+    elif request.method == "GET":
+        form = ProfileForm(instance=profile)
+        context = {
+            'profile_state': True,
+            'form': form
+        }
+        return render(request, '../templates/profile_edit.html', context)
+
+
 def profile_detail(request):
     user = request.user
 
