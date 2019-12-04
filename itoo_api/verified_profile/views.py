@@ -263,7 +263,7 @@ def profile_edit_exist(request):
                 'profile_state': False,
                 'form': form
             }
-            return render(request, '../templates/profile_edit.html', context)
+            return render(request, '../templates/profile_edit_exist.html', context)
             # return redirect(reverse('itoo:verified_profile:profile_detail'))
 
     elif request.method == "GET":
@@ -272,7 +272,7 @@ def profile_edit_exist(request):
             'profile_state': True,
             'form': form
         }
-        return render(request, '../templates/profile_edit.html', context)
+        return render(request, '../templates/profile_edit_exist.html', context)
 
 
 def profile_detail(request):
