@@ -48,7 +48,7 @@ class CheckSessionID(APIView):
         if user.is_authenticated():
             return Response({'detail': 'true'})
         else:
-            return Response({'detail': 'failed'})
+            return Response({'detail': 'false'})
 
 
 class EduProjectViewSet(viewsets.ReadOnlyModelViewSet):
