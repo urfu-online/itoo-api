@@ -33,8 +33,7 @@ logger = logging.getLogger(__name__)
 class CheckSessionID(APIView):
 
     def post(self, request):
-        body_unicode = request.body.decode('utf-8')
-        my_key = json.loads(body_unicode)
+        my_key = request.session.get('sessionid', None)
         logger.warn(my_key)
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
