@@ -34,9 +34,6 @@ class CheckSessionID(APIView):
 
     def post(self, request):
         my_key = request.COOKIES.get('sessionid', None)
-        logger.warn(request.COOKIES)
-        logger.warn(request.session)
-        logger.warn(request)
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
 
