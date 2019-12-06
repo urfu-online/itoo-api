@@ -25,7 +25,7 @@ from django.conf import settings
 from django.contrib.auth import get_user
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
-
+import json
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,8 @@ logger = logging.getLogger(__name__)
 class CheckSessionID(APIView):
 
     def post(self, request):
-        my_key = request.POST.get('sessionid', None)
+        body_unicode = request.body.decode('utf-8')
+        my_key = json.loads(body_unicode)
         logger.warn(my_key)
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
