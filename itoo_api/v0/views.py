@@ -46,9 +46,9 @@ class CheckSessionID(APIView):
             user = AnonymousUser()
 
         if user.is_authenticated():
-            return Response({'detail': 'true'})
+            return Response({'detail': True})
         else:
-            return Response({'detail': 'false'})
+            return Response({'detail': False})
 
 
 class EduProjectViewSet(viewsets.ReadOnlyModelViewSet):
