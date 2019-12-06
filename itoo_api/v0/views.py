@@ -20,8 +20,35 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
 # from student.views import send_enrollment_email
+from django.utils.importlib import import_module
+from django.conf import settings
+from django.contrib.auth import get_user
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
+
+
+class CheckSessionID(APIView):
+
+    def post(self, request):
+        my_key = request.POST.get('sessionid', None)
+        engine = import_module(settings.SESSION_ENGINE)
+        session = engine.SessionStore(my_key)
+
+        try:
+            user_id = session[SESSION_KEY]
+            backend_path = session[BACKEND_SESSION_KEY]
+            backend = load_backend(backend_path)
+            user = backend.get_user(user_id) or AnonymousUser()
+        except KeyError:
+            user = AnonymousUser()
+
+        if user.is_authenticated():
+            return Response({'detail': 'true'})
+        else:
+            return Response({'detail': 'failed'})
 
 
 class EduProjectViewSet(viewsets.ReadOnlyModelViewSet):
