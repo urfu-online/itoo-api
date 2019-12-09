@@ -155,6 +155,7 @@ def export_csv_profile(modeladmin, request, queryset):
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
         smart_str(u"ID"),
+        smart_str(u"User ID"),
         smart_str(u"Username"),
         smart_str(u"email"),
         smart_str(u"last_name"),
@@ -166,6 +167,7 @@ def export_csv_profile(modeladmin, request, queryset):
     for obj in queryset:
         writer.writerow([
             smart_str(obj.pk),
+            smart_str(obj.user.id),
             smart_str(obj.user),
             smart_str(obj.user.email),
             smart_str(obj.last_name),
