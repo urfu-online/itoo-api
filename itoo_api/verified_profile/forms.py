@@ -79,6 +79,11 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'series_diploma': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'number_diploma': forms.TextInput(
                 attrs={
                     'class': 'form-control'
