@@ -6,6 +6,7 @@ import logging
 # from organizations.models import Organization
 from rest_framework.views import APIView
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 
 from itoo_api.models import Program, OrganizationCustom, EduProject, EnrollProgram
@@ -76,6 +77,7 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
     queryset = EnrollProgram.objects.all()  # pylint: disable=no-member
     serializer_class = EnrollProgramSerializer
+    permission_classes = [AllowAny]
     lookup_url_kwarg = "program_slug"
 
     def retrieve(self, request, *args, **kwargs):
