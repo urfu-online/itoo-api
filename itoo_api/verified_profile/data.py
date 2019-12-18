@@ -34,6 +34,18 @@ logger = logging.getLogger(__name__)
 cohorted = True  # Включать когорты
 
 
+def set_job_or_create(email, job):
+    user = User.objects.get(email=email)
+    obj = Profile.get_profile(user=user)
+    if not obj:
+        obj = Profile.get_or_create(user=user)
+        setattr(obj, 'job', job)
+        obj.save()
+    else:
+        setattr(obj, 'job', job)
+        obj.save()
+
+
 def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", default_cohort_name="default",
                   mode_slug="verified"):
     course_key = CourseKey.from_string(course_id)
@@ -138,7 +150,6 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
         current_cohort = get_cohort(user, course_key)
         verified_cohort = get_cohort_by_name(course_key, verified_cohort_name)
 
-
 #
 # emails = ['anya270993@mail.ru', 'almalah@rambler.ru', 'levakot2004@mail.ru', 'kachalov@tpu.ru',
 #           'Bondareva_MA@bsu.edu.ru', 'panich@bsu.edu.ru', 'Ivanova_N-N@mail.ru', 'fomval2011@yandex.ru',
@@ -205,10 +216,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
 #           'lyvolkoff@yandex.ru', 'citygirl81@yandex.ru']
 
 #
-# users = []
-# for username in usernames:
-#     users.append(User.objects.get(username=username))
-#if EnrollProgram.get_enroll_program(user=user, program=program):
+# if EnrollProgram.get_enroll_program(user=user, program=program):
 # for user in users:
 #     if not SoftwareSecurePhotoVerification.user_is_verified(user):
 #         obj = SoftwareSecurePhotoVerification(user=user, photo_id_key="dummy_photo_id_key")
@@ -217,7 +225,10 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
 #         obj.reviewing_user = User.objects.get(username='SoftwareSecure')
 #         obj.save()
 #
-# users = User.objects.all()
+
+# users = []
+# for email in emails:
+#     users.append(User.objects.get(email=email))
 # for user in users:
 #     programs = Program.objects.filter(active=True)
 #     for program in programs:
