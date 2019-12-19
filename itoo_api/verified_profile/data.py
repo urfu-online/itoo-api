@@ -33,19 +33,6 @@ logger = logging.getLogger(__name__)
 
 cohorted = True  # Включать когорты
 
-
-def set_job_or_create(email, job):
-    user = User.objects.get(email=email)
-    obj = Profile.get_profile(user=user)
-    if not obj:
-        obj = Profile.get_or_create(user=user)
-        setattr(obj, 'job', job)
-        obj.save()
-    else:
-        setattr(obj, 'job', job)
-        obj.save()
-
-
 def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", default_cohort_name="default",
                   mode_slug="verified"):
     course_key = CourseKey.from_string(course_id)
