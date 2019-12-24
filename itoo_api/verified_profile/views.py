@@ -192,7 +192,10 @@ def profile_new(request):
                 "program": program,
                 'form': form
             }
-            return render(request, '../templates/profile_new.html', context)
+            if slug in ["IPMG", "IPMG_test"]:
+                return render(request, '../templates/IPMG/profile_new.html', context)
+            else:
+                return render(request, '../templates/profile_new.html', context)
 
     elif request.method == "GET":
         program = None
