@@ -173,13 +173,8 @@ def profile_new(request):
         if form.is_valid() and program:
             profile_state = True
             profile = form.save(commit=False)
-            try:
-                o = Profile.objects.get(user=profile.user)
-                o.delete()
-                profile.save()
-            except:
-                profile.user = request.user
-                profile.save()
+            profile.user = request.user
+            profile.save()
 
             EnrollProgram.objects.get_or_create(user=profile.user, program=program)
 
@@ -210,6 +205,9 @@ def profile_new(request):
                 return render(request, '../templates/profile_new.html', context)
 
     elif request.method == "GET":
+        user = request.user
+        if hasattr(user, 'request'):
+            return redirect(reverse('itoo:verified_profile:profile_edit'))
         program = None
         slug = request.session.get("slug", None)
 
