@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if not has_program %}
-<div class="container shadow-sm p-2 mt-5">
-    <h4 class="bg-danger m-3 text-white p-2">Ошибка! неизвестная программа для записи</h4>
-</div>
-{% endif %}
 {% if not profile_state %}
 <div class="container shadow-sm p-2 mt-5">
     <h4 class="bg-danger m-3 text-white p-2">Ошибка! Вы не заполнили все обязательные поля</h4>
@@ -17,8 +12,7 @@
             {{ form.non_field_errors }}
             <div class="subsection">
                 <div class="subsection">
-                    <h2>Анкета</h2>
-                    <h5>Запись на программу {{ program }}</h5>
+                    <h2>Редактирование анкеты</h2>
                 </div>
                 <h2>Личные данные:</h2>
 

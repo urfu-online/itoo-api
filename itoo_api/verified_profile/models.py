@@ -69,6 +69,9 @@ class Profile(models.Model):
 
     leader_id = models.CharField("Leader ID", max_length=355, null=True, blank=True)
     SNILS = models.CharField("Номер СНИЛС", max_length=355, null=True, blank=True)
+    add_email = models.EmailField("Почта для связи", max_length=254, null=True, blank=True)
+
+
 
     mail_index = models.CharField("Почтовый индекс", max_length=255, null=True, blank=True)
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)

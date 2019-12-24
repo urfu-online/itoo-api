@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'passport_scan', 'diploma_scan']
+        exclude = ['all_valid', 'user', 'diploma_scan']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -157,7 +157,7 @@ class ProfileFormIPMG(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'passport_scan', 'diploma_scan']
+        exclude = ['all_valid', 'user']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -175,17 +175,18 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'leader_id': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'SNILS': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
             'sex': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'city': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'country': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
@@ -195,16 +196,13 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'phone': forms.TextInput(
+            # месторождение
+            'address_living': forms.Textarea(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'city': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
+
             'job': forms.TextInput(
                 attrs={
                     'class': 'form-control'
@@ -215,6 +213,31 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            # адресработы
+
+            'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'add_email': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'leader_id': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'SNILS': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            # ПАСПОРТ
+
             'series': forms.TextInput(
                 attrs={
                     'class': 'form-control'
@@ -236,6 +259,18 @@ class ProfileFormIPMG(forms.ModelForm):
                 }
             ),
             'issue_date': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'address_register': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            # ОБРАЗОВАНИЕ
+            'education_level': forms.Select(
                 attrs={
                     'class': 'form-control'
                 }
@@ -281,34 +316,21 @@ class ProfileFormIPMG(forms.ModelForm):
             #     #     'class': 'custom-file-input'
             #     # }
             # ),
-            'education_level': forms.Select(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
+
             'all_valid': forms.CheckboxInput(
                 attrs={
                     'class': 'form-control'
                 }
             ),
-            'doc_forwarding': forms.FileInput(
-                # attrs={
-                #     'class': 'custom-file-input'
-                # }
-            ),
-            'mail_index': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'country': forms.TextInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
-            'address_living': forms.Textarea(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
+            # 'doc_forwarding': forms.FileInput(
+            #     attrs={
+            #         'class': 'custom-file-input'
+            #     }
+            # ),
+            # 'mail_index': forms.TextInput(
+            #     attrs={
+            #         'class': 'form-control'
+            #     }
+            # ),
+
         }
