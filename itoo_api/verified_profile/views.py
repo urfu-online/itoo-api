@@ -237,6 +237,9 @@ def profile_edit(request):
     user = request.user
     profile = Profile.get_profile(user=user)[0]
     slug = request.session.get("slug", None)
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ", slug)
+
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if slug in ["IPMG", "IPMG_test"]:
