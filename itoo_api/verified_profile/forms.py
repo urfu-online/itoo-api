@@ -180,6 +180,11 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'SNILS': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'sex': forms.Select(
                 attrs={
                     'class': 'form-control'
