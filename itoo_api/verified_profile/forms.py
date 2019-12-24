@@ -308,7 +308,8 @@ class ProfileFormIPMG(forms.ModelForm):
             'address_register': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'required': 'true'
+                    'required': 'true',
+                    'placeholder': '620000, г. Екатеринбург, ул. Ленина, дом 140, кв. 154'
                 }
             ),
 
