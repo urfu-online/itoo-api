@@ -11,12 +11,14 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'first_name': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'second_name': forms.TextInput(
@@ -235,12 +237,14 @@ class ProfileFormIPMG(forms.ModelForm):
             ),
             'leader_id': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'SNILS': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
 
