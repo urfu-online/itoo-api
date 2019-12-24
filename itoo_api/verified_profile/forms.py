@@ -7,7 +7,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = '__all__'
         exclude = ['all_valid', 'user', 'diploma_scan']
-        terms = forms.BooleanField(required=True, attrs={'required': 'true'})
+        terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
