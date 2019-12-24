@@ -172,7 +172,8 @@ def profile_new(request):
         if form.is_valid() and program:
             profile_state = True
             profile = form.save(commit=False)
-            profile.user = request.user
+            if not profile.user:
+                profile.user = request.user
             profile.save()
             EnrollProgram.objects.get_or_create(user=profile.user, program=program)
 
