@@ -326,6 +326,9 @@ def profile_detail(request):
     user = request.user
 
     if not request.user.is_authenticated():
+        slug = request.GET.get('program_slug', None)
+        if slug:
+            request.session["slug"] = slug
         return redirect('/login?next={}'.format(request.get_full_path()))
 
     if request.method == "GET":
