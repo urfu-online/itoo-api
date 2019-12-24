@@ -145,7 +145,7 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'address_living': forms.TextInput(
+            'address_living': forms.Textarea(
                 attrs={
                     'class': 'form-control'
                 }
@@ -197,7 +197,7 @@ class ProfileFormIPMG(forms.ModelForm):
                 }
             ),
             # месторождение
-            'address_living': forms.Textarea(
+            'address_living': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
