@@ -177,7 +177,6 @@ class ProfileFormIPMG(forms.ModelForm):
             'second_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'required': 'true'
                 }
             ),
             'sex': forms.Select(
