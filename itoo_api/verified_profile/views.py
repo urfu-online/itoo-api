@@ -197,12 +197,17 @@ def profile_new(request):
     elif request.method == "GET":
         program = None
         slug = request.session.get("slug", None)
+
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", slug)
+
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
         else:
             has_program = False
+
         form = ProfileForm()
+
         profile_state = True
         template_scan = "Listener_state_({slug}).docx".format(slug=slug)
         context = {
