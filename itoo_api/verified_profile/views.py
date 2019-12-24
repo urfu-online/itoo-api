@@ -326,7 +326,7 @@ def profile_detail(request):
     user = request.user
 
     if request.user.is_anonymous:
-        return redirect('/login/?next={}'.format(request.get_full_path))
+        return redirect('/login?next={}'.format(request.get_full_path()))
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
