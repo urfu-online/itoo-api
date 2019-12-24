@@ -15,100 +15,50 @@
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
             {{ form.non_field_errors }}
+
+
+<!-- ЛИЧНЫЕ ДАННЫЕ -->
             <div class="subsection">
                 <div class="subsection">
-                    <h2>Анкета</h2>
-                    <h5>Запись на программу {{ program }}</h5>
+                    <h2>Редактирование анкеты</h2>
                 </div>
                 <h2>Личные данные:</h2>
-
-
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
                 <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
                     {{ form.first_name }}</p>
-
                 <p><label for="id_second_name">Отчество:</label>
                     {{ form.second_name }}</p>
-
+                 <p><label for="id_sex">Пол<span class="red">*</span>:</label>
+                    {{ form.sex }}
+                </p>
+                <p><label for="id_city">Город<span class="red">*</span>:</label>
+                    {{ form.city }}</p>
+                <p><label for="id_country">Страна:</label>
+                    {{ form.country }}</p>
+                <p><label for="id_birth_date">Дата рождения<span class="red">*</span>:</label>
+                    {{ form.birth_date }}</p>
+<!-- место рождения -->
+                <p><label for="id_address_living">Адрес фактического проживания:</label>
+                    {{ form.address_living }}</p>
+                <p><label for="id_job">Место работы<span class="red">*</span>:</label>
+                    {{ form.job }}</p>
+<!-- адрес работы -->
+                <p><label for="id_position">Должность<span class="red">*</span>:</label>
+                    {{ form.position }}</p>
+                <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
+                    {{ form.phone }}</p>
+                <p><label for="id_add_email">E-mail<span class="red">*</span>:</label>
+                    {{ form.add_email }}</p>
                 <p><label for="id_leader_id">Leader ID<span class="red">*</span>:</label>
                     {{ form.leader_id }}</p>
 
                 <p><label for="id_SNILS">Номер СНИЛС<span class="red">*</span>:</label>
                     {{ form.SNILS }}</p>
-
-                <p><label for="id_sex">Пол<span class="red">*</span>:</label>
-                    {{ form.sex }}
-                </p>
-                <p><label for="id_birth_date">Дата рождения<span class="red">*</span>:</label>
-                    {{ form.birth_date }}</p>
-                <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
-                    {{ form.phone }}</p>
-                <!--                <p><label for="id_email">Email<span class="red">*</span>:</label>-->
-                <!--                    {{ form.email }}</p>-->
-                <!--                <p>ВНИМАНИЕ! Ваш адрес электронной почты должен совпадать с тем адресом, который Вы указали при-->
-                <!--                    регистрации на платформе openprofession.ru.-->
-                <!--                    В противном случае мы не сможем идентифицировать Вас и выдать документ о повышении квалификации.</p>-->
-                <p><label for="id_city">Город<span class="red">*</span>:</label>
-                    {{ form.city }}</p>
-
-                <p><label for="id_job">Место работы<span class="red">*</span>:</label>
-                    {{ form.job }}</p>
-
-                <p><label for="id_position">Должность<span class="red">*</span>:</label>
-                    {{ form.position }}</p>
-                <!--<p><label for="id_address_register">Адрес регистрации:</label>-->
-                <!--<textarea name="address_register" cols="40"-->
-                <!--rows="10" required=""-->
-                <!--id="id_address_register"></textarea>-->
-                <!--</p>-->
-                <!--<p><label for="id_address_living">Адрес проживания:</label>-->
-                <!--<textarea name="address_living" cols="40"-->
-                <!--rows="10" required=""-->
-                <!--id="id_address_living"></textarea></p>-->
-                <p><label for="id_claim_scan">Скан заявления о зачислении на обучение:</label>
-                    {{ form.claim_scan }}</p>
-                <p><a href="https://openedu.urfu.ru/files/npr_2019/{{ template_scan }}">Скачать шаблон заявления</a></p>
-
-                <p><label for="id_doc_forwarding">Скан заявления о пересылке оригинала документа почтой России:</label>
-                    {{ form.doc_forwarding }}</p>
-                <p><a href="https://openedu.urfu.ru/files/npr_2019/shipment_state.docx">Скачать шаблон
-                    заявления</a></p>
-                <p>В случае, если Вы проживаете не в Екатеринбурге, необходимо прикрепить скан заявления о почтовой
-                    пересылке оригинала документа об обучении.</p>
-
-                <p><label for="id_mail_index">Почтовый индекс:</label>
-                    {{ form.mail_index }}</p>
-
-                <p><label for="id_country">Страна:</label>
-                    {{ form.country }}</p>
-
-                <p><label for="id_address_living">Адрес для отправки оригинала документа (город, улица, дом,
-                    квартира):</label>
-                    {{ form.address_living }}</p>
             </div>
 
-            <!--<div class="subsection">-->
-            <!--<h2>Паспортные данные:</h2>-->
-            <!--<p><label for="id_series">Серия:</label>-->
-            <!--<input name="series" maxlength="8" required="" id="id_series"-->
-            <!--type="text"></p>-->
-            <!--<p><label for="id_number">Номер:</label>-->
-            <!--<input name="number" maxlength="8" required="" id="id_number"-->
-            <!--type="text"></p>-->
-            <!--<p><label for="id_issued_by">Кем выдан:</label>-->
-            <!--<textarea name="issued_by" cols="40" rows="10" required=""-->
-            <!--id="id_issued_by"></textarea></p>-->
-            <!--<p><label for="id_unit_code">Код подразделения:</label>-->
-            <!--<input name="unit_code" maxlength="16" required=""-->
-            <!--id="id_unit_code" type="text"></p>-->
-            <!--<p><label for="id_issue_date">Дата выдачи:</label>-->
-            <!--<input class="datepicker" name="issue_date" required="" id="id_issue_date"-->
-            <!--type="text"></p>-->
-            <!--<p><label for="id_passport_scan">Скан паспорта:</label>-->
-            <!--<input name="passport_scan" required=""-->
-            <!--id="id_passport_scan" type="file"></p>-->
-            <!--</div>-->
+<!-- ПАСПОРТНЫЕ ДАННЫЕ -->
+
             <div class="subsection">
                 <h2>Паспортные данные:</h2>
                 <p><label for="id_series">Серия<span class="red">*</span>:</label>
@@ -124,15 +74,17 @@
                 <p><label for="id_issue_date">Дата выдачи<span class="red">*</span>:</label>
                     {{ form.issue_date }}
                 </p>
+                <p><label for="id_address_register">Адрес регистрации:</label>
+                    {{ form.address_register }}
+                </p>
             </div>
+
+<!-- ОБРАЗОВАНИЕ -->
 
             <div class="subsection">
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
                     {{ form.education_level }}</p>
-                <!--                <p><label for="id_diploma_scan">Скан диплома:</label>-->
-                <!--                    {{ form.diploma_scan }}-->
-                <!--                </p>-->
                 <p><label for="id_series_diploma">Серия документа об образовании<span class="red">*</span>:</label>
                     {{ form.series_diploma }}
                 </p>
@@ -148,35 +100,8 @@
                 <p><label for="id_year_of_ending">Год окончания:</label>
                     {{ form.year_of_ending }}
                 </p>
-                <!--                <span class="red">*</span> -->
-                <!--                <p>ВНИМАНИЕ! В случае, если диплом был выдан не на территории РФ, необходимо предоставить подтверждение-->
-                <!--                    пройденной процедуры нострификации,-->
-                <!--                    прикрепив скан соответствующего документа в поле «Скан диплома» <strong>единым документом вместе с-->
-                <!--                        дипломом.</strong></p>-->
-                <!--                <p><label for="id_another_doc">Документ о смене персональных данных:</label>-->
-                <!--                    {{ form.diploma_scan.errors }}-->
-                <!--                    <input type="file" name="another_doc" id="id_another_doc">-->
-                <!--                </p>-->
-                <!--                <p>ВНИМАНИЕ! В случае несоответствия персональных данных в дипломе и форме заявки (ФИО) необходимо-->
-                <!--                    приложить документ о смене персональных данных, например, свидетельство о заключении брака.</p>-->
             </div>
 
-
-            {% if QA %}
-            {% if QA.is_available %}
-            <div class="subsection">
-                <h2>Запрос на бесплатное получение удостоверения о повышении квалификации</h2>
-                <p><label for="id_quote">Отправить запрос</label>
-                    {{ form.quote.errors }}
-                    <input name="quote"
-                           id="id_quote"
-                           type="checkbox"></p>
-                <p>ВНИМАНИЕ! Правом на бесплатное обучение по программе повышения квалификации Вы можете воспользоваться
-                    только один раз на одном из предложенных онлайн-курсов в период с 01.12.2017г. по 31.12.2018г.</p>
-            </div>
-
-            {% endif %}
-            {% endif %}
             <div class="subsection" style="height: 150px;font-size: 15px;">
                 <p><label for="id_terms">Я ознакомился с <a target="_blank"
                                                             href="https://ozi.urfu.ru/fileadmin/user_upload/site_15891/politika_01.pdf">политикой
@@ -194,8 +119,6 @@
 
         </form>
     </div>
-    </form>
-</div>
 </div>
 <script>
     $(function () {

@@ -10,11 +10,12 @@
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
             {{ form.non_field_errors }}
+
+<!-- ЛИЧНЫЕ ДАННЫЕ -->
             <div class="subsection">
                 <div class="subsection">
                     <h2>Редактирование анкеты</h2>
                 </div>
-<!-- ЛИЧНЫЕ ДАННЫЕ -->
                 <h2>Личные данные:</h2>
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
@@ -50,7 +51,7 @@
                     {{ form.SNILS }}</p>
             </div>
 
-            <!-- ПАСПОРТНЫЕ ДАННЫЕ -->
+<!-- ПАСПОРТНЫЕ ДАННЫЕ -->
 
             <div class="subsection">
                 <h2>Паспортные данные:</h2>
@@ -115,9 +116,8 @@
 
         </form>
     </div>
-    </form>
 </div>
-</div>
+
 <script>
     $(function () {
         $(".datepicker").datepicker({
