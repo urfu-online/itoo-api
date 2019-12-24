@@ -74,6 +74,7 @@ class Profile(models.Model):
     birth_place = models.CharField("Место рождения", max_length=355, null=True, blank=True)
     job_address = models.CharField("Адрес работы", max_length=355, null=True, blank=True)
 
+    manager = models.CharField("Ответственный", max_length=355, null=True, blank=True)
 
     mail_index = models.CharField("Почтовый индекс", max_length=255, null=True, blank=True)
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
