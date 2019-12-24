@@ -174,12 +174,13 @@ def profile_new(request):
             profile_state = True
             profile = form.save(commit=False)
             try:
-                Profile.objects.get(user=profile.user).delete()
+                o = Profile.objects.get(user=profile.user)
+                o.delete()
+                profile.save()
             except:
-                pass
+                profile.user = request.user
+                profile.save()
 
-            profile.user = request.user
-            profile.save()
             EnrollProgram.objects.get_or_create(user=profile.user, program=program)
 
             if EnrollProgram.get_enroll_program(user=profile.user, program=program):
