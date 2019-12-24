@@ -71,6 +71,8 @@ class Profile(models.Model):
     SNILS = models.CharField("Номер СНИЛС", max_length=355, null=True, blank=True)
     add_email = models.EmailField("Почта для связи", max_length=254, null=True, blank=True)
 
+    birth_place = models.CharField("Место рождения", max_length=355, null=True, blank=True)
+    job_address = models.CharField("Адрес работы", max_length=355, null=True, blank=True)
 
 
     mail_index = models.CharField("Почтовый индекс", max_length=255, null=True, blank=True)

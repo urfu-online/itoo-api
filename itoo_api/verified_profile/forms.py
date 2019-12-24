@@ -196,7 +196,11 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            # месторождение
+            'birth_place': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'address_living': forms.TextInput(
                 attrs={
                     'class': 'form-control'
@@ -213,7 +217,11 @@ class ProfileFormIPMG(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            # адресработы
+            'job_address': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
 
             'phone': forms.TextInput(
                 attrs={
