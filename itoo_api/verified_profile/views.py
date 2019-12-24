@@ -172,7 +172,12 @@ def profile_new(request):
         if form.is_valid() and program:
             profile_state = True
             profile = form.save(commit=False)
-            old_profile = Profile.objects.get(user=profile.user)
+            old_profile = None
+            try:
+                old_profile = Profile.objects.get(user=profile.user)
+            except:
+                pass
+
             if old_profile:
                 old_profile.delete()
             profile.user = request.user
