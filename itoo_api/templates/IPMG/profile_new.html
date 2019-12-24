@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if not has_program %}
+<div class="container shadow-sm p-2 mt-5">
+    <h4 class="bg-danger m-3 text-white p-2">Ошибка! неизвестная программа для записи</h4>
+</div>
+{% endif %}
+{% if not profile_state %}
+<div class="container shadow-sm p-2 mt-5">
+    <h4 class="bg-danger m-3 text-white p-2">Ошибка! Вы не заполнили все обязательные поля</h4>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col container" id="form">
+        <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="subsection">
+                <div class="subsection">
+                    <h2>Анкета</h2>
+                    <h5>Запись на программу {{ program }}</h5>
+                </div>
+                <h2>Личные данные:</h2>
+
+
+                <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
+                    {{ form.last_name }}</p>
+                <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
+                    {{ form.first_name }}</p>
+
+                <p><label for="id_second_name">Отчество:</label>
+                    {{ form.second_name }}</p>
+
+                <p><label for="id_sex">Пол<span class="red">*</span>:</label>
+                    {{ form.sex }}
+                </p>
+                <p><label for="id_birth_date">Дата рождения<span class="red">*</span>:</label>
+                    {{ form.birth_date }}</p>
+                <p><label for="id_phone">Телефон<span class="red">*</span>:</label>
+                    {{ form.phone }}</p>
+                <!--                <p><label for="id_email">Email<span class="red">*</span>:</label>-->
+                <!--                    {{ form.email }}</p>-->
+                <!--                <p>ВНИМАНИЕ! Ваш адрес электронной почты должен совпадать с тем адресом, который Вы указали при-->
+                <!--                    регистрации на платформе openprofession.ru.-->
+                <!--                    В противном случае мы не сможем идентифицировать Вас и выдать документ о повышении квалификации.</p>-->
+                <p><label for="id_city">Город<span class="red">*</span>:</label>
+                    {{ form.city }}</p>
+
+                <p><label for="id_job">Место работы<span class="red">*</span>:</label>
+                    {{ form.job }}</p>
+
+                <p><label for="id_position">Должность<span class="red">*</span>:</label>
+                    {{ form.position }}</p>
+                <!--<p><label for="id_address_register">Адрес регистрации:</label>-->
+                <!--<textarea name="address_register" cols="40"-->
+                <!--rows="10" required=""-->
+                <!--id="id_address_register"></textarea>-->
+                <!--</p>-->
+                <!--<p><label for="id_address_living">Адрес проживания:</label>-->
+                <!--<textarea name="address_living" cols="40"-->
+                <!--rows="10" required=""-->
+                <!--id="id_address_living"></textarea></p>-->
+                <p><label for="id_claim_scan">Скан заявления о зачислении на обучение:</label>
+                    {{ form.claim_scan }}</p>
+                <p><a href="https://openedu.urfu.ru/files/npr_2019/{{ template_scan }}">Скачать шаблон заявления</a></p>
+
+                <p><label for="id_doc_forwarding">Скан заявления о пересылке оригинала документа почтой России:</label>
+                    {{ form.doc_forwarding }}</p>
+                <p><a href="https://openedu.urfu.ru/files/npr_2019/shipment_state.docx">Скачать шаблон
+                    заявления</a></p>
+                <p>В случае, если Вы проживаете не в Екатеринбурге, необходимо прикрепить скан заявления о почтовой
+                    пересылке оригинала документа об обучении.</p>
+
+                <p><label for="id_mail_index">Почтовый индекс:</label>
+                    {{ form.mail_index }}</p>
+
+                <p><label for="id_country">Страна:</label>
+                    {{ form.country }}</p>
+
+                <p><label for="id_address_living">Адрес для отправки оригинала документа (город, улица, дом,
+                    квартира):</label>
+                    {{ form.address_living }}</p>
+            </div>
+
+            <!--<div class="subsection">-->
+            <!--<h2>Паспортные данные:</h2>-->
+            <!--<p><label for="id_series">Серия:</label>-->
+            <!--<input name="series" maxlength="8" required="" id="id_series"-->
+            <!--type="text"></p>-->
+            <!--<p><label for="id_number">Номер:</label>-->
+            <!--<input name="number" maxlength="8" required="" id="id_number"-->
+            <!--type="text"></p>-->
+            <!--<p><label for="id_issued_by">Кем выдан:</label>-->
+            <!--<textarea name="issued_by" cols="40" rows="10" required=""-->
+            <!--id="id_issued_by"></textarea></p>-->
+            <!--<p><label for="id_unit_code">Код подразделения:</label>-->
+            <!--<input name="unit_code" maxlength="16" required=""-->
+            <!--id="id_unit_code" type="text"></p>-->
+            <!--<p><label for="id_issue_date">Дата выдачи:</label>-->
+            <!--<input class="datepicker" name="issue_date" required="" id="id_issue_date"-->
+            <!--type="text"></p>-->
+            <!--<p><label for="id_passport_scan">Скан паспорта:</label>-->
+            <!--<input name="passport_scan" required=""-->
+            <!--id="id_passport_scan" type="file"></p>-->
+            <!--</div>-->
+            <div class="subsection">
+                <h2>Паспортные данные:</h2>
+                <p><label for="id_series">Серия<span class="red">*</span>:</label>
+                    {{ form.series }}</p>
+                <p><label for="id_number">Номер<span class="red">*</span>:</label>
+                    {{ form.number }}
+                </p>
+                <p><label for="id_issued_by">Кем выдан<span class="red">*</span>:</label>
+                    {{ form.issued_by }}</p>
+                <p><label for="id_unit_code">Код подразделения<span class="red">*</span>:</label>
+                    {{ form.unit_code }}
+                </p>
+                <p><label for="id_issue_date">Дата выдачи<span class="red">*</span>:</label>
+                    {{ form.issue_date }}
+                </p>
+            </div>
+
+            <div class="subsection">
+                <h2>Образование:</h2>
+                <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
+                    {{ form.education_level }}</p>
+                <!--                <p><label for="id_diploma_scan">Скан диплома:</label>-->
+                <!--                    {{ form.diploma_scan }}-->
+                <!--                </p>-->
+                <p><label for="id_series_diploma">Серия документа об образовании<span class="red">*</span>:</label>
+                    {{ form.series_diploma }}
+                </p>
+                <p><label for="id_number_diploma">Номер документа об образовании<span class="red">*</span>:</label>
+                    {{ form.number_diploma }}
+                </p>
+                <p><label for="id_edu_organization">Образовательное учреждение:</label>
+                    {{ form.edu_organization }}
+                </p>
+                <p><label for="id_specialty">Специальность (направление подготовки):</label>
+                    {{ form.specialty }}
+                </p>
+                <p><label for="id_year_of_ending">Год окончания:</label>
+                    {{ form.year_of_ending }}
+                </p>
+                <!--                <span class="red">*</span> -->
+                <!--                <p>ВНИМАНИЕ! В случае, если диплом был выдан не на территории РФ, необходимо предоставить подтверждение-->
+                <!--                    пройденной процедуры нострификации,-->
+                <!--                    прикрепив скан соответствующего документа в поле «Скан диплома» <strong>единым документом вместе с-->
+                <!--                        дипломом.</strong></p>-->
+                <!--                <p><label for="id_another_doc">Документ о смене персональных данных:</label>-->
+                <!--                    {{ form.diploma_scan.errors }}-->
+                <!--                    <input type="file" name="another_doc" id="id_another_doc">-->
+                <!--                </p>-->
+                <!--                <p>ВНИМАНИЕ! В случае несоответствия персональных данных в дипломе и форме заявки (ФИО) необходимо-->
+                <!--                    приложить документ о смене персональных данных, например, свидетельство о заключении брака.</p>-->
+            </div>
+
+
+            {% if QA %}
+            {% if QA.is_available %}
+            <div class="subsection">
+                <h2>Запрос на бесплатное получение удостоверения о повышении квалификации</h2>
+                <p><label for="id_quote">Отправить запрос</label>
+                    {{ form.quote.errors }}
+                    <input name="quote"
+                           id="id_quote"
+                           type="checkbox"></p>
+                <p>ВНИМАНИЕ! Правом на бесплатное обучение по программе повышения квалификации Вы можете воспользоваться
+                    только один раз на одном из предложенных онлайн-курсов в период с 01.12.2017г. по 31.12.2018г.</p>
+            </div>
+
+            {% endif %}
+            {% endif %}
+            <div class="subsection" style="height: 150px;font-size: 15px;">
+                <p><label for="id_terms">Я ознакомился с <a target="_blank"
+                                                            href="https://ozi.urfu.ru/fileadmin/user_upload/site_15891/politika_01.pdf">политикой
+                    обработки
+                    персональных данных</a> и <a target="_blank"
+                                                 href="https://openedu.urfu.ru/files/law/agreement.html">согласен на
+                    обработку персональных данных</a><span class="red">*</span></label>
+                    {{ form.terms }}</p>
+                <input value="Отправить" type="submit">
+            </div>
+
+            <div class="subsection" style="text-align: center;height: 63px;">
+                <p>По всем вопросам обращаться: +7 (919) 367-79-72, openedu@urfu.ru</p>
+            </div>
+
+        </form>
+    </div>
+    </form>
+</div>
+</div>
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            altFormat: "dd.mm.yyyy"
+        });
+    });
+</script>
+
+<style>
+    input[type=email], input[type=tel], input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+
+    /* Style the label to display next to the inputs */
+    label {
+        padding: 12px 12px 12px 0;
+        display: inline-block;
+    }
+
+    /* Style the submit button */
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        float: right;
+    }
+
+    /* Style the container */
+    .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+    /* Floating column for labels: 25% width */
+    .col-25 {
+        float: left;
+        width: 25%;
+        margin-top: 6px;
+    }
+
+    /* Floating column for inputs: 75% width */
+    .col-75 {
+        float: left;
+        width: 75%;
+        margin-top: 6px;
+    }
+
+    /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+    @media (max-width: 600px) {
+        .col-25, .col-75, input[type=submit] {
+            width: 100%;
+            margin-top: 0;
+        }
+    }
+
+    .errorlist {
+        color: red;
+        font-size: 75%;
+        list-style: none;
+    }
+
+    .subsection {
+        background: #ffffff;
+        border: 1px #e5e5e5 solid;
+        box-shadow: 0 0 1px #e5e5e5;
+        padding: 12px 15px;
+        margin-bottom: 2em;
+    }
+
+    .subsection:last-child {
+        padding-bottom: 3em;
+    }
+
+    .col#form h2 {
+        text-align: center;
+    }
+
+    .col#form p {
+        width: 810px;
+        display: block;
+        margin: 10px auto;
+    }
+
+    .col#form p label {
+        display: inline-block;
+    / / width: 350 px
+    }
+
+    .col#form p input, .col#form p select {
+        display: inline-block;
+        width: 800px;
+    }
+
+    .col#form p input[type="checkbox"] {
+        width: 20px;
+        height: 15px;
+    }
+
+    .col#form p input[type="submit"] {
+        display: block;
+        margin: 20px auto 10px;
+        height: 40px;
+    }
+
+    .col#form p input[type="submit"][disabled] {
+
+    }
+
+    .article ul li {
+        margin-top: 0px;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function () {
+            try {
+                w.yaCounter47486308 = new Ya.Metrika2({
+                    id: 47486308,
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true,
+                    webvisor: true,
+                    ut: "noindex"
+                });
+            } catch (e) {
+            }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () {
+                n.parentNode.insertBefore(s, n);
+            };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else {
+            f();
+        }
+    })(document, window, "yandex_metrika_callbacks2");
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/47486308?ut=noindex" style="position:absolute; left:-9999px;" alt=""/>
+    </div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+{% endblock %}

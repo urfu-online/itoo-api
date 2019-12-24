@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 
 from itoo_api.models import EnrollProgram, Program
-from .forms import ProfileForm
+from .forms import ProfileForm, ProfileFormIPMG
 from .models import Profile
 
 from student.models import CourseEnrollment
@@ -198,8 +198,6 @@ def profile_new(request):
         program = None
         slug = request.session.get("slug", None)
 
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", slug)
-
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
@@ -207,6 +205,8 @@ def profile_new(request):
             has_program = False
 
         form = ProfileForm()
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG()
 
         profile_state = True
         template_scan = "Listener_state_({slug}).docx".format(slug=slug)
@@ -217,7 +217,11 @@ def profile_new(request):
             "program": program,
             "template_scan": template_scan
         }
-        return render(request, '../templates/profile_new.html', context)
+
+        if slug in ["IPMG", "IPMG_test"]:
+            return render(request, '../templates/IPMG/profile_new.html', context)
+        else:
+            return render(request, '../templates/profile_new.html', context)
 
 
 def profile_edit(request):

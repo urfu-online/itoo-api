@@ -67,6 +67,9 @@ class Profile(models.Model):
                                       upload_to=generate_new_filename, null=True,
                                       blank=True)
 
+    leader_id = models.CharField("Leader ID", max_length=355, null=True, blank=True)
+    SNILS = models.CharField("Номер СНИЛС", max_length=355, null=True, blank=True)
+
     mail_index = models.CharField("Почтовый индекс", max_length=255, null=True, blank=True)
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
