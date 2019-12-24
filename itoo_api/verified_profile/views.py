@@ -159,6 +159,9 @@ def profile_new(request):
         request.session.set_test_cookie()
         form = ProfileForm(request.POST, request.FILES)
         slug = request.session.get('slug', None)
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG(request.POST, request.FILES)
+
         program = None
         if slug:
             has_program = True
@@ -182,8 +185,10 @@ def profile_new(request):
 
                         # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
                         # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
-
-            return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+            if slug in ["IPMG", "IPMG_test"]:
+                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+            else:
+                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
         else:
             profile_state = False
             context = {
@@ -234,6 +239,9 @@ def profile_edit(request):
     slug = request.session.get("slug", None)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG(request.POST, request.FILES, instance=profile)
+
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
@@ -245,46 +253,72 @@ def profile_edit(request):
                 'profile_state': False,
                 'form': form
             }
-            return render(request, '../templates/profile_edit.html', context)
+            if slug in ["IPMG", "IPMG_test"]:
+                return render(request, '../templates/IPMG/profile_edit.html', context)
+            else:
+                return render(request, '../templates/profile_edit.html', context)
             # return redirect(reverse('itoo:verified_profile:profile_detail'))
 
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
+
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG(instance=profile)
         context = {
             'profile_state': True,
             'form': form
         }
-        return render(request, '../templates/profile_edit.html', context)
+        if slug in ["IPMG", "IPMG_test"]:
+            return render(request, '../templates/IPMG/profile_edit.html', context)
+        else:
+            return render(request, '../templates/profile_edit.html', context)
 
 
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
+
     profile = Profile.get_profile(user=user)[0]
+
     slug = request.GET.get('program_slug', None)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG(request.POST, request.FILES, instance=profile)
+
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+            if slug in ["IPMG", "IPMG_test"]:
+                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+            else:
+                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
 
         else:
             context = {
                 'profile_state': False,
                 'form': form
             }
-            return render(request, '../templates/profile_edit_exist.html', context)
+            if slug in ["IPMG", "IPMG_test"]:
+                return render(request, '../templates/IPMG/profile_edit_exist.html', context)
+            else:
+                return render(request, '../templates/profile_edit_exist.html', context)
             # return redirect(reverse('itoo:verified_profile:profile_detail'))
 
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
+        if slug in ["IPMG", "IPMG_test"]:
+            form = ProfileFormIPMG(instance=profile)
+
         context = {
             'profile_state': True,
             'form': form
         }
-        return render(request, '../templates/profile_edit_exist.html', context)
+        if slug in ["IPMG", "IPMG_test"]:
+            return render(request, '../templates/IPMG/profile_edit_exist.html', context)
+        else:
+            return render(request, '../templates/profile_edit_exist.html', context)
 
 
 def profile_detail(request):
