@@ -325,7 +325,7 @@ def profile_edit_exist(request):
 def profile_detail(request):
     user = request.user
 
-    if not user:
+    if request.user.is_anonymous:
         return redirect('/login/?next={}'.format(request.get_full_path))
 
     if request.method == "GET":
