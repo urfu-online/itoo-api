@@ -145,7 +145,7 @@ class ProfileForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
-            'address_living': forms.Textarea(
+            'address_living': forms.TextInput(
                 attrs={
                     'class': 'form-control'
                 }
