@@ -164,87 +164,107 @@ class ProfileFormIPMG(forms.ModelForm):
         widgets = {
             'last_name': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'first_name': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'second_name': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'sex': forms.Select(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
 
             'city': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'country': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'birth_date': forms.DateInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 04.06.1987'
                 }
             ),
             'birth_place': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'address_living': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': '620000, г. Екатеринбург, ул. Ленина, дом 140, кв. 154'
                 }
             ),
 
             'job': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Необходимо указать институт внутри УрФУ'
                 }
             ),
             'position': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'job_address': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 620000, г. Екатеринбург, ул. Ленина, дом 140, кв. 154'
                 }
             ),
 
             'phone': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'add_email': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'leader_id': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'required': 'true'
+                    'required': 'true',
+                    'placeholder': 'Пример: ID397190',
                 }
             ),
             'SNILS': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'required': 'true'
+                    'required': 'true',
+                    'placeholder': 'Пример: 123-456-789-123 45'
                 }
             ),
 
@@ -252,64 +272,83 @@ class ProfileFormIPMG(forms.ModelForm):
 
             'series': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 7513'
                 }
             ),
             'number': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 123456'
                 }
             ),
             'issued_by': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': ''
                 }
             ),
             'unit_code': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 123-456'
                 }
             ),
             'issue_date': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 07.02.2000'
                 }
             ),
             'address_register': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
 
             # ОБРАЗОВАНИЕ
             'education_level': forms.Select(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'series_diploma': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 123456'
                 }
             ),
             'number_diploma': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true',
+                    'placeholder': 'Пример: 0012345'
                 }
             ),
             'edu_organization': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'specialty': forms.TextInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             'year_of_ending': forms.DateInput(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'required': 'true'
                 }
             ),
             # 'diploma_scan': forms.FileInput(
