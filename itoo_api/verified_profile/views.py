@@ -244,7 +244,11 @@ def profile_new(request):
 def profile_edit(request):
     # launch = dict()
     user = request.user
-    profile = Profile.get_profile(user=user)[0]
+    try:
+        profile = Profile.get_profile(user=user)[0]
+        return redirect(reverse('itoo:verified_profile:profile_new'))
+    except:
+        pass
     slug = request.session.get("slug", None)
 
     if request.method == "POST":
