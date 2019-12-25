@@ -211,10 +211,6 @@ def profile_new(request):
             if slug:
                 request.session["slug"] = slug
             return redirect('/login?next={}'.format(request.get_full_path()))
-
-        profile = Profile.get_profile(user=user)[0]
-        if not profile:
-            return redirect('https://courses.openedu.urfu.ru')
         # try:
         #     profile = user.profile
         #     print('!!!!!!!!!!!!!!!!!!!!', profile)
