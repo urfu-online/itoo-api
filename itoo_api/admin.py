@@ -111,7 +111,7 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
     list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
-    list_filter = ('active', 'owner')
+    list_filter = ('active', 'owner', 'manager')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
