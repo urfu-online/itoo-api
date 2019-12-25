@@ -206,12 +206,12 @@ def profile_new(request):
 
     elif request.method == "GET":
         user = request.user
-        try:
-            profile = user.profile
-            print('!!!!!!!!!!!!!!!!!!!!', profile)
-            return redirect(reverse('itoo:verified_profile:profile_edit'))
-        except:
-            pass
+        # try:
+        #     profile = user.profile
+        #     print('!!!!!!!!!!!!!!!!!!!!', profile)
+        #     return redirect(reverse('itoo:verified_profile:profile_edit'))
+        # except:
+        #     pass
         program = None
         slug = request.session.get("slug", None)
 
