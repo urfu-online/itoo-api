@@ -17,10 +17,10 @@
             {{ form.non_field_errors }}
 
 
-<!-- ЛИЧНЫЕ ДАННЫЕ -->
+            <!-- ЛИЧНЫЕ ДАННЫЕ -->
             <div class="subsection">
                 <div class="subsection">
-<!--                    <h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
+                    <!--                    <h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
                     <h2>Анкета</h2>
                     <h5>Запись на программу {{ program }}</h5>
                 </div>
@@ -31,10 +31,12 @@
                     {{ form.first_name }}</p>
                 <p><label for="id_second_name">Отчество<span class="red">*</span>:</label>
                     {{ form.second_name }}</p>
-                 <p><label for="id_sex">Пол<span class="red">*</span>:</label>
+                <p><label for="id_sex">Пол<span class="red">*</span>:</label>
                     {{ form.sex }}
                 </p>
-                <p><label for="id_leader_id">Leader ID<span class="red">*</span>. Пройдите по ссылке <a href="https://leader-id.ru/" target="_blank">https://leader-id.ru/</a>, зарегистрируйтесь (если еще не зарегистрированы) и впишите в поле ваш номер ID.</label>
+                <p><label for="id_leader_id">Leader ID<span class="red">*</span>. Пройдите по ссылке <a
+                        href="https://leader-id.ru/" target="_blank">https://leader-id.ru/</a>, зарегистрируйтесь (если
+                    еще не зарегистрированы) и впишите в поле ваш номер ID.</label>
                     {{ form.leader_id }}</p>
                 <p><label for="id_city">Город<span class="red">*</span>:</label>
                     {{ form.city }}</p>
@@ -60,7 +62,7 @@
 
             </div>
 
-<!-- ПАСПОРТНЫЕ ДАННЫЕ -->
+            <!-- ПАСПОРТНЫЕ ДАННЫЕ -->
 
             <div class="subsection">
                 <h2>Паспортные данные:</h2>
@@ -85,12 +87,18 @@
                     {{ form.SNILS }}</p>
             </div>
 
-<!-- ОБРАЗОВАНИЕ -->
+            <!-- ОБРАЗОВАНИЕ -->
 
             <div class="subsection">
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
-                    {{ form.education_level }}</p>
+                    <!--{{ form.education_level }}-->
+
+                    <select class="form-control" id="id_education_level" name="education_level" required="true">
+                        <option value="">---------</option>
+                        <option value="H" selected="selected">Высшее</option>
+                    </select>
+                </p>
                 <p><label for="id_series_diploma">Серия документа об образовании<span class="red">*</span>:</label>
                     {{ form.series_diploma }}
                 </p>
@@ -115,7 +123,7 @@
                     персональных данных</a> и <a target="_blank"
                                                  href="https://openedu.urfu.ru/files/law/agreement.html">согласен на
                     обработку персональных данных</a><span class="red">*</span></label>
-                                                <input checked="checked" required id="id_terms" name="terms" type="checkbox">
+                    <input checked="checked" required id="id_terms" name="terms" type="checkbox">
 
                 </p>
                 <input value="Отправить" type="submit">
