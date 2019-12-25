@@ -246,9 +246,8 @@ def profile_edit(request):
     user = request.user
     try:
         profile = Profile.get_profile(user=user)[0]
-        return redirect(reverse('itoo:verified_profile:profile_new'))
     except:
-        pass
+        return redirect(reverse('itoo:verified_profile:profile_new'))
     slug = request.session.get("slug", None)
 
     if request.method == "POST":
