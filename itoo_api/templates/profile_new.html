@@ -123,7 +123,13 @@
             <div class="subsection">
                 <h2>Образование:</h2>
                 <p><label for="id_education_level">Уровень базового образования<span class="red">*</span>:</label>
-                    {{ form.education_level }}</p>
+                    <!--{{ form.education_level }}-->
+
+                    <select class="form-control" id="id_education_level" name="education_level" required="true">
+                        <option value="">---------</option>
+                        <option value="H" selected="selected">Высшее</option>
+                    </select>
+                </p>
                 <!--                <p><label for="id_diploma_scan">Скан диплома:</label>-->
                 <!--                    {{ form.diploma_scan }}-->
                 <!--                </p>-->
@@ -164,7 +170,7 @@
                     {{ form.quote.errors }}
                     <input name="quote"
                            id="id_quote"
-                           type="checkbox"></p>
+                           type="checkbox"></p>id_education_level
                 <p>ВНИМАНИЕ! Правом на бесплатное обучение по программе повышения квалификации Вы можете воспользоваться
                     только один раз на одном из предложенных онлайн-курсов в период с 01.12.2017г. по 31.12.2018г.</p>
             </div>
