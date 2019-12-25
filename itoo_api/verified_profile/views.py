@@ -206,6 +206,15 @@ def profile_new(request):
 
     elif request.method == "GET":
         user = request.user
+        if not user.is_authenticated():
+            slug = request.GET.get('program_slug', None)
+            if slug:
+                request.session["slug"] = slug
+            return redirect('/login?next={}'.format(request.get_full_path()))
+
+        profile = Profile.get_profile(user=user)[0]
+        if not profile:
+            return redirect('https://courses.openedu.urfu.ru')
         # try:
         #     profile = user.profile
         #     print('!!!!!!!!!!!!!!!!!!!!', profile)
@@ -214,7 +223,6 @@ def profile_new(request):
         #     pass
         program = None
         slug = request.session.get("slug", None)
-
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
@@ -244,11 +252,11 @@ def profile_new(request):
 def profile_edit(request):
     # launch = dict()
     user = request.user
-    profile = Profile.get_profile(user=user)[0]
-    # try:
-    #     profile = Profile.get_profile(user=user)[0]
-    # except:
-    #     return redirect(reverse('itoo:verified_profile:profile_new'))
+    # profile = Profile.get_profile(user=user)[0]
+    try:
+        profile = Profile.get_profile(user=user)[0]
+    except:
+        return redirect(reverse('itoo:verified_profile:profile_new'))
     slug = request.session.get("slug", None)
 
     if request.method == "POST":
