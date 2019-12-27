@@ -232,7 +232,7 @@ export_csv_profile.short_description = u"Export CSV"
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid', 'manager')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city')
-    list_filter = ('all_valid', 'education_level', 'city', 'manager')
+    list_filter = ('all_valid', 'education_level', 'manager', 'city',)
     actions = [export_csv_profile]
 
 
