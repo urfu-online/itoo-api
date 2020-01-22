@@ -26,7 +26,7 @@ class CourseSerializerCatalog(serializers.ModelSerializer):  # pylint: disable=a
     class Meta:
         model = CourseOverview
         fields = (
-            'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility')  # description field ????
+            'id', 'display_name', 'course_image_url', 'start_display', 'catalog_visibility', 'org')  # description field ????
 
 
 class TextBlockSerializer(serializers.ModelSerializer):
