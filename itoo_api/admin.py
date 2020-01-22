@@ -26,7 +26,7 @@ class ProgramInline(admin.TabularInline):
     model = Program
 
 
-def export_csv_program_entoll(modeladmin, request, queryset):
+def export_csv_program_enroll(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
     from django.http import HttpResponse
@@ -48,7 +48,7 @@ def export_csv_program_entoll(modeladmin, request, queryset):
     return response
 
 
-export_csv_program_entoll.short_description = u"Export CSV"
+export_csv_program_enroll.short_description = u"Export CSV"
 
 
 @admin.register(EnrollProgram)
@@ -59,7 +59,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
     search_fields = ('user__username', 'program__slug', 'program__title')
-    actions = [export_csv_program_entoll]
+    actions = [export_csv_program_enroll]
 
 
 @admin.register(EduProject)
@@ -92,7 +92,7 @@ def export_csv_program_course_entoll(modeladmin, request, queryset):
     return response
 
 
-export_csv_program_entoll.short_description = u"Export CSV"
+export_csv_program_enroll.short_description = u"Export CSV"
 
 
 @admin.register(ProgramCourse)

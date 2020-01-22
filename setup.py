@@ -43,7 +43,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     install_requires=[
-        'django>=1.8,<1.9',
+        'django>=1.8,<2.0',
         'Pillow',
     ],
     package_data=package_data("itoo_api", ["templates"]),
