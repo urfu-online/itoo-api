@@ -6,8 +6,9 @@ offers one programmatic API -- api.py for direct Python integration.
 """
 
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
@@ -40,7 +41,7 @@ class OrganizationCustom(TimeStampedModel):
     def get_courses(self):
         return self.organizationcourse_set.all()
 
-    class Meta(object):
+    class Meta:
         """ Meta class for this Django model """
         verbose_name = 'Организация'
         verbose_name_plural = 'Организации'
@@ -70,7 +71,7 @@ class EduProject(TimeStampedModel):
     def __str__(self):
         return self.title
 
-    class Meta(object):
+    class Meta:
         verbose_name = 'Образовательный проект'
         verbose_name_plural = 'Образовательные проекты'
 
@@ -184,7 +185,7 @@ class TextBlock(TimeStampedModel):
         null=True,
     )
 
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return "TextBlock"
