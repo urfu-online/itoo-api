@@ -10,7 +10,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from django.utils.encoding import python_2_unicode_compatible
-from __future__ import unicode_literals
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 
