@@ -110,9 +110,9 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
+    list_display = ('title', 'abbreviation', 'slug', 'logo', 'active', 'owner')
     list_filter = ('active', 'owner')
-    ordering = ('title', 'short_name',)
+    ordering = ('title', 'abbreviation',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
