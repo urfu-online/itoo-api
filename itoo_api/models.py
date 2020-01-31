@@ -4,12 +4,13 @@ Database ORM models managed by this Django app
 Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
-
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from django.utils.encoding import python_2_unicode_compatible
+from __future__ import unicode_literals
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 
