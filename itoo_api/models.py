@@ -116,8 +116,8 @@ class Program(TimeStampedModel):
             return None
 
     class Meta:
-        verbose_name = "Образовательная программа"
-        verbose_name_plural = "Образовательные программы"
+        verbose_name = "Program"
+        verbose_name_plural = "Programs"
 
     def __str__(self):
         return self.title
