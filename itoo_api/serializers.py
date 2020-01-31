@@ -93,7 +93,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     class Meta:  # pylint: disable=missing-docstring
         model = Program
         fields = (
-            'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
+            'id', 'title', 'owner_slug', 'project_slug', 'abbreviation', 'slug', 'description', 'logo',
             'image_background',
             'active', 'content')
 
@@ -181,7 +181,7 @@ def serialize_program(program):
     return {
         'id': program.id,
         'title': program.title,
-        'short_name': program.short_name,
+        'short_name': program.abbreviation,
         'description': program.description,
         'logo': program.logo,
     }
