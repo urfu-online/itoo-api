@@ -82,7 +82,7 @@ class EduProject(TimeStampedModel):
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
-    short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
+    abbreviation = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)
     description = models.TextField('Описание', blank=True, null=True)

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
-      <paths name="developer@media.ls.urfu.ru:2200">
+      <paths name="root@courses.edubricks.ru:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_960" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_155" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
