@@ -79,7 +79,7 @@ class EduProject(TimeStampedModel):
         return TextBlock.objects.filter(object_id=self.id, content_type__model="EduProject")
 
 
-# @python_2_unicode_compatible
+@python_2_unicode_compatible
 class Program(TimeStampedModel):
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
     abbreviation = models.CharField('Abbreviation', blank=False, null=False, max_length=64, default="", unique=True)
