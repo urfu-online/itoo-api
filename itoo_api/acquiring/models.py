@@ -18,8 +18,8 @@ class Offer(TimeStampedModel):
     unit = models.CharField("Подразделение", max_length=255, null=False, blank=False)
     unit_account = models.CharField("Лицевой счет подразделения", max_length=255, null=False, blank=False)
     program = models.ForeignKey(Program, on_delete=models.SET_NULL)
-    edu_start_date = models.DateField("Дата начала обучения", null=True, Blank=True)
-    edu_end_date = models.DateField("Дата завершения обучения", null=True, Blank=True)
+    edu_start_date = models.DateField("Дата начала обучения", null=True, blank=True)
+    edu_end_date = models.DateField("Дата завершения обучения", null=True, blank=True)
     edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, max_length=255, null=False,
                                         blank=False)
 
