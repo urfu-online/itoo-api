@@ -12,7 +12,7 @@ class Offer(TimeStampedModel):
         ("0", "Обучение по программам ДПО"),
     )
 
-    title = models.CharField("Наименование", max_length=255, null=False, blank=False)
+    title = models.CharField("Наименование", max_length=255, null=True, blank=False)
     offer_text = models.TextField("Текст договора оферты", blank=False, null=True)
     income_item = models.CharField("Статья доходов", max_length=255, null=True, blank=False)
     unit = models.CharField("Подразделение", max_length=255, null=True, blank=False)
