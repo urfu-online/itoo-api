@@ -47,6 +47,20 @@ class OrganizationCustom(TimeStampedModel):
 
 
 @python_2_unicode_compatible
+class Direction(TimeStampedModel):
+    title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
+    identifier = models.CharField('Идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = 'Направление подготовки'
+        verbose_name_plural = 'Направления подготовки'
+
+
+@python_2_unicode_compatible
 class EduProject(TimeStampedModel):
     title = models.CharField('Название', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
@@ -100,6 +114,7 @@ class Program(TimeStampedModel):
                               on_delete=models.SET_NULL)
     project = models.ForeignKey(EduProject, related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
+    direction = models.ForeignKey(Direction, blank=True, null=True, on_delete=models.SET_NULL)
 
     def get_courses(self):
         return self.programcourse_set.all()
