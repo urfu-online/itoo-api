@@ -13,12 +13,12 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
-class Offer(models.Model):
-    content = models.TextField(verbose_name="Текст оферты")
-
-    def __str__(self):
-        return self.content
+# @python_2_unicode_compatible
+# class Offer(models.Model):
+#     content = models.TextField(verbose_name="Текст оферты")
+#
+#     def __str__(self):
+#         return self.content
 
 
 @python_2_unicode_compatible
