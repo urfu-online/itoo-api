@@ -52,7 +52,7 @@ class OfferViewSet(APIView):
         #
         # logger.warning(program_slug)
         offer = Offer.objects.filter(program__slug=program_slug, status='0').first()
-        logger.warning("Found offer: {}".format(offer.title))
+        # logger.warning("Found offer: {}".format(offer.title))
 
         serializer = self.get_serializer(offer)
 
