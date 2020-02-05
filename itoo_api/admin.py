@@ -24,6 +24,7 @@ class PaymentAdmin(admin.ModelAdmin):
     model = Payment
     list_display = ("payment_id", 'payment_date', 'verify_date', 'user', "offer", "status")
     list_filter = ('status',)
+    readonly_fields = ('payment_id',)
 
 
 class ProgramCourseInline(admin.TabularInline):
