@@ -16,6 +16,7 @@ class OfferSerializer(serializers.ModelSerializer):
     program_title = serializers.CharField(source='program.title')
     program_slug = serializers.CharField(source='program.slug')
     status = serializers.SerializerMethodField()
+    edu_service_type = serializers.SerializerMethodField()
 
     class Meta:
         model = Offer
@@ -26,6 +27,9 @@ class OfferSerializer(serializers.ModelSerializer):
 
     def get_status(self, obj):
         return obj.get_status_display()
+
+    def get_edu_service_type(self, obj):
+        return obj.get_edu_service_type_display()
 
 
 class PaymentSerializer(serializers.ModelSerializer):
