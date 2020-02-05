@@ -51,9 +51,7 @@ class OfferViewSet(APIView):
         # program_slug = launch_params['program_slug']
         #
         # logger.warning(program_slug)
-        offer = Offer.objects.filter(program__slug=program_slug, status='0')
-        if len(offer) > 1:
-            offer = offer[0]
+        offer = Offer.objects.filter(program__slug=program_slug, status='0').first()
         logger.warning("Found offer: {}".format(offer.title))
 
         serializer = self.get_serializer(offer)
