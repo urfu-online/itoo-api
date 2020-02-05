@@ -14,9 +14,9 @@ from verified_profile.models import Profile
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
     model = Offer
-    list_display = ("title", 'income_item', 'unit', 'unit_account', "program__title")
+    list_display = ("title", 'income_item', 'unit', 'unit_account',)
     list_filter = ('unit', 'income_item', 'unit_account', 'program')
-    search_fields = ("title", 'income_item', 'unit', 'unit_account', "program__title")
+    search_fields = ("title", 'income_item', 'unit', 'unit_account',)
 
 
 @admin.register(Payment)
