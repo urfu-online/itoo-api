@@ -7,6 +7,23 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 
 from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
 from itoo_api.models import Program, TextBlock, EnrollProgram
+from itoo_api.acquiring.models import Offer, Payment
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    model = Offer
+    list_display = ("title", 'income_item', 'unit', 'unit_account', "program__title")
+    list_filter = ('unit', 'income_item', 'unit_account', 'program')
+    search_fields = ("title", 'income_item', 'unit', 'unit_account', "program__title")
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    model = Payment
+    list_display = ("payment_id", 'payment_date', 'verify_date', 'user', "offer", "status")
+    list_filter = ('status',)
+    search_fields = ("payment_id", 'user__username', 'user__email', "offer__title",)
 
 
 class ProgramCourseInline(admin.TabularInline):
