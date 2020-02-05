@@ -24,7 +24,6 @@ class PaymentAdmin(admin.ModelAdmin):
     model = Payment
     list_display = ("payment_id", 'payment_date', 'verify_date', 'user', "offer", "status")
     list_filter = ('status',)
-    search_fields = ("payment_id", 'user__username', 'user__email', "offer__title",)
 
 
 class ProgramCourseInline(admin.TabularInline):
