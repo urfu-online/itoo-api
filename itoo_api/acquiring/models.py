@@ -20,8 +20,8 @@ class Offer(TimeStampedModel):
     program = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True)
     edu_start_date = models.DateField("Дата начала обучения", null=True, blank=True)
     edu_end_date = models.DateField("Дата завершения обучения", null=True, blank=True)
-    edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, max_length=255, null=False,
-                                        blank=False)
+    edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, default="0",
+                                        max_length=255, null=False, blank=False)
 
     class Meta:
         verbose_name = "Оферта"
