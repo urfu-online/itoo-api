@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 class OfferSerializer(serializers.ModelSerializer):
     program_title = serializers.CharField(source='program.title')
     program_slug = serializers.CharField(source='program.slug')
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Offer
@@ -22,6 +23,9 @@ class OfferSerializer(serializers.ModelSerializer):
             'offer_text', 'unit', 'edu_start_date', 'edu_end_date', 'edu_service_type',
             'program_title', 'program_slug', 'status'
         )
+
+        def get_status(self, obj):
+            return obj.get_status_display()
 
 
 class PaymentSerializer(serializers.ModelSerializer):
