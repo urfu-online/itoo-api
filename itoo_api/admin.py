@@ -5,9 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 from django_summernote.admin import SummernoteInlineModelAdmin
 from django.contrib.contenttypes.admin import GenericTabularInline
 
-from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
+from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
 from itoo_api.models import Program, TextBlock, EnrollProgram
 from itoo_api.acquiring.models import Offer, Payment
+from verified_profile.models import Profile
 
 
 @admin.register(Offer)
