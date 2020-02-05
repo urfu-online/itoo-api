@@ -44,13 +44,13 @@ class OfferViewSet(APIView):
     permission_classes = (AllowAny,)
     serializer_class = OfferSerializer
 
-    def get(self, request):
-        launch_params = {
-            "program_slug": request.GET.get('program_slug', None),
-        }
-        program_slug = launch_params['program_slug']
-
-        logger.warning(program_slug)
+    def get(self, request, program_slug):
+        # launch_params = {
+        #     "program_slug": request.GET.get('program_slug', None),
+        # }
+        # program_slug = launch_params['program_slug']
+        #
+        # logger.warning(program_slug)
         offer = Offer.objects.filter(program__slug=program_slug, status='0')
         if len(offer) > 1:
             offer = offer[0]
