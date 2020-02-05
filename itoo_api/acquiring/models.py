@@ -2,11 +2,12 @@ from django.db import models
 from ..models import Program
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
+from django.contrib.auth import get_user_model
 
 
 @python_2_unicode_compatible
 class Offer(TimeStampedModel):
-    SERVICE_TYPES = ((0, "Обучение по программам ДПО"),)
+    SERVICE_TYPES = (("0", "Обучение по программам ДПО"),)
     title = models.CharField("Наименование", max_length=255, null=False, blank=False)
     offer_text = models.TextField("Текст договора оферты", blank=False, null=True)
     income_item = models.CharField("Статья доходов", max_length=255, null=False, blank=False)
@@ -26,5 +27,24 @@ class Offer(TimeStampedModel):
         return self.title
 
 
-class Payment(models.Model):
-    pass
+@python_2_unicode_compatible
+class Payment(TimeStampedModel):
+    PAYMENT_STATUSES = (
+        ("0", "Created"),
+        ("1", "Waited"),
+        ("2", "Success"),
+        ("3", "Failed"),
+    )
+    payment_id = models.UUIDField(primary_key=True, unique=True)
+    payment_date = models.DateTimeField("Дата платежа", auto_now_add=True)
+    verify_date = models.DateTimeField("Дата подтверждения платежа", blank=True, null=True)
+    user = models.ForeignKey(get_user_model(), blank=False, null=False)
+    offer = models.ForeignKey(Offer, verbose_name="Оферта", on_delete=models.SET_NULL)
+    status = models.CharField("Статус платежа", choices=PAYMENT_STATUSES, default="0")
+
+    class Meta:
+        verbose_name = "Плетёж"
+        verbose_name_plural = "Платежи"
+
+    def __str__(self):
+        return self.payment_id
