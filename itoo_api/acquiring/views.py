@@ -22,20 +22,44 @@ from opaque_keys.edx.keys import CourseKey
 # models
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from itoo_api.models import PayUrfuData
+from itoo_api.models import PayUrfuData, Program
 
 # enroll api
 from enrollment import api
+from .models import Offer, Payment
+
 # from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
 
 # serializers
-from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer
+from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer, \
+    PaymentSerializer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
 # acquiring
+
+class OfferViewSet(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = OfferSerializer
+
+    def get(self, request):
+        launch_params = {
+            "program_slug": request.GET.get('program_slug', None),
+        }
+        program_slug = launch_params['program_slug']
+
+        logger.warning(program_slug)
+        offer = Offer.objects.filter(program__slug=program_slug, status='0')
+        if len(offer) > 1:
+            offer = offer[0]
+        logger.warning("Found offer: {}".format(offer.id))
+
+        serializer = self.get_serializer(offer)
+
+        return Response(serializer.data)
+
 
 class CourseModesChange(APIView):
     """

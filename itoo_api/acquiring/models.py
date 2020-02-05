@@ -11,6 +11,10 @@ class Offer(TimeStampedModel):
     SERVICE_TYPES = (
         ("0", "Обучение по программам ДПО"),
     )
+    STATUSES = (
+        ("0", "active"),
+        ("1", "disabled"),
+    )
 
     title = models.CharField("Наименование", max_length=255, null=True, blank=False)
     offer_text = models.TextField("Текст договора оферты", blank=False, null=True)
@@ -21,7 +25,9 @@ class Offer(TimeStampedModel):
     edu_start_date = models.DateField("Дата начала обучения", null=True, blank=True)
     edu_end_date = models.DateField("Дата завершения обучения", null=True, blank=True)
     edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, default="0",
-                                        max_length=255, null=False, blank=False)
+                                        max_length=1, null=False, blank=False)
+    status = models.CharField("Статус оферты", choices=STATUSES, default="0",
+                              max_length=1, null=False, blank=False)
 
     class Meta:
         verbose_name = "Оферта"

@@ -4,13 +4,33 @@ import logging
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from course_modes.models import CourseMode
 from rest_framework import serializers
+from itoo_api.acquiring.models import Payment, Offer
+
 # from enrollment import api
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
+class OfferSerializer(serializers.ModelSerializer):
+    program_title = serializers.CharField(source='program.title')
+    program_slug = serializers.CharField(source='program.slug')
 
+    class Meta:
+        model = Offer
+        fields = (
+            'offer_text', 'unit', 'edu_start_date', 'edu_end_date', 'edu_service_type',
+            'program_title', 'program_slug', 'status'
+        )
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    email = serializers.CharField(source='user.email')
+
+    class Meta:
+        model = Payment
+        fields = ('payment_id', 'payment_date', 'verify_date', 'username', 'email', 'offer', 'status')
 
 
 class CourseModeSerializer(serializers.ModelSerializer):
@@ -24,7 +44,7 @@ class CourseModeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseOverview
-        fields = ('course_id','course_name','course_image_url','catalog_visibility','start_display','course_modes')
+        fields = ('course_id', 'course_name', 'course_image_url', 'catalog_visibility', 'start_display', 'course_modes')
 
     # def get_courses(self, obj):
     #     course_keys = [CourseKey.from_string(course.course_id) for course in obj.get_courses()]
@@ -49,6 +69,7 @@ class StringListField(serializers.CharField):
     This field is designed to take a string such as "1,2,3" and turn it into an actual list
     [1,2,3]
     """
+
     def field_to_native(self, obj, field_name):
         """
         Serialize the object's class name.
