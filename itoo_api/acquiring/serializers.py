@@ -24,8 +24,8 @@ class OfferSerializer(serializers.ModelSerializer):
             'program_title', 'program_slug', 'status'
         )
 
-        def get_status(self, obj):
-            return obj.get_status_display()
+    def get_status(self, obj):
+        return obj.get_status_display()
 
 
 class PaymentSerializer(serializers.ModelSerializer):
