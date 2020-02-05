@@ -17,7 +17,7 @@ class Offer(TimeStampedModel):
     income_item = models.CharField("Статья доходов", max_length=255, null=False, blank=False)
     unit = models.CharField("Подразделение", max_length=255, null=False, blank=False)
     unit_account = models.CharField("Лицевой счет подразделения", max_length=255, null=False, blank=False)
-    program = models.ForeignKey(Program, on_delete=models.SET_NULL)
+    program = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True)
     edu_start_date = models.DateField("Дата начала обучения", null=True, blank=True)
     edu_end_date = models.DateField("Дата завершения обучения", null=True, blank=True)
     edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, max_length=255, null=False,
@@ -43,7 +43,7 @@ class Payment(TimeStampedModel):
     payment_date = models.DateTimeField("Дата платежа", auto_now_add=True)
     verify_date = models.DateTimeField("Дата подтверждения платежа", blank=True, null=True)
     user = models.ForeignKey(get_user_model(), blank=False, null=False)
-    offer = models.ForeignKey(Offer, verbose_name="Оферта", on_delete=models.SET_NULL)
+    offer = models.ForeignKey(Offer, verbose_name="Оферта", on_delete=models.SET_NULL, null=True)
     status = models.CharField("Статус платежа", choices=PAYMENT_STATUSES, max_length=1, default="0")
 
     class Meta:
