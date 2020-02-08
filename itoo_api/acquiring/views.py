@@ -265,10 +265,18 @@ class PayUrfuDataViewSet(APIView):
         return Response({"Success"})
 
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+
 class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PaymentSerializer
     lookup_field = 'payment_id'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(PaymentViewSet, self).dispatch(*args, **kwargs)
 
     def get_permissions(self):
         permission_classes = []
@@ -301,7 +309,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
             serializer = PaymentSerializer(payment)
             return Response({"status": "sucess", "payment": serializer.data})
-
 
     def retrieve(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
