@@ -270,7 +270,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     lookup_field = 'payment_id'
 
-    def get_permissions(self, request, view):
+    def get_permissions(self):
         permission_classes = []
         if self.action == 'create':
             permission_classes = IsAuthenticated
