@@ -59,3 +59,7 @@ class Payment(TimeStampedModel):
 
     def __str__(self):
         return self.payment_id
+
+    def __unicode__(self):
+        return str(self.id)
+
