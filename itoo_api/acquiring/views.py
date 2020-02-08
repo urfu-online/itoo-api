@@ -1,39 +1,21 @@
-import logging
 import json
+import logging
 
-# rest
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from rest_framework.views import APIView
-from rest_framework import viewsets, status
-from django.shortcuts import get_object_or_404
-# from rest_framework.renderers import TemplateHTMLRenderer
-
-# django
-# from django.shortcuts import render
-from django.core.exceptions import ObjectDoesNotExist
-# from django.conf import settings
+from course_modes.models import CourseMode
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
-
-# keys course
+from django.core.exceptions import ObjectDoesNotExist
+from enrollment import api
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
-
-# models
-from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from itoo_api.models import PayUrfuData, Program
+from rest_framework import viewsets, status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response as RESTResponse, Response
+from rest_framework.views import APIView
 
-# enroll api
-from enrollment import api
-from .models import Offer, Payment
-
-# from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
-
-# serializers
-from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer, \
-    PaymentSerializer
+from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer
+from itoo_api.models import PayUrfuData
+from .models import Offer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -46,17 +28,18 @@ class OfferViewSet(APIView):
     serializer_class = OfferSerializer
 
     def get(self, request, program_slug):
-        # launch_params = {
-        #     "program_slug": request.GET.get('program_slug', None),
-        # }
-        # program_slug = launch_params['program_slug']
-        #
-        # logger.warning(program_slug)
         offer = Offer.objects.filter(program__slug=program_slug, status='0').first()
-        # logger.warning("Found offer: {}".format(offer.title))
-
         serializer = OfferSerializer(offer)
+        return Response(serializer.data)
 
+
+class CreatePayment(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = OfferSerializer
+
+    def get(self, request, program_slug):
+        offer = Offer.objects.filter(program__slug=program_slug, status='0').first()
+        serializer = OfferSerializer(offer)
         return Response(serializer.data)
 
 
@@ -94,7 +77,7 @@ class CourseModesChange(APIView):
         CourseMode.objects.get_or_create(course_id=course_key, mode_slug=mode_slug, mode_display_name=mode_display_name,
                                          min_price=min_price, suggested_prices=suggested_prices, sku=sku)
 
-        return Response("Mode '{mode_slug}' created for '{course}'.".format(
+        return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
             course=course_key
         ))
@@ -110,7 +93,7 @@ class ChangeModeStateUserViewSet(APIView):
         course_key = request.GET.get('course_key')
         mode = request.GET.get('mode')
         api.update_enrollment(username, course_key, mode)
-        return Response("Mode '{mode}' on course '{course}' for user {username}.".format(
+        return RESTResponse("Mode '{mode}' on course '{course}' for user {username}.".format(
             mode=mode,
             course=course_key,
             username=username
@@ -206,7 +189,7 @@ class ChangeModeStateUserViewSet(APIView):
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
     #     course = get_course_by_id(course_key)
-    #     return Response({"course": str(course)})
+    #     return RESTResponse({"course": str(course)})
 
 
 class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
@@ -218,11 +201,6 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
-from django.core import serializers
-from django.utils import timezone
-from django.utils import six
-
-
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny,)
 
@@ -232,48 +210,32 @@ class PayUrfuDataViewSet(APIView):
         #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         #         obj = PayUrfuData.objects.create(data=qd)
         #         obj.save()
-        #         return Response({"Success"})
+        #         return RESTResponse({"Success"})
         #     except:
-        #         return Response({"Failed": "POST get query params"})
+        #         return RESTResponse({"Failed": "POST get query params"})
         # else:
         # if not request.GET:
         #     try:
         #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         #         obj = PayUrfuData.objects.create(data='{0}{1}'.format(qd, request.body))
         #         obj.save()
-        #         return Response({"Success"})
+        #         return RESTResponse({"Success"})
         #     except:
-        #         return Response({"Failed"})
+        #         return RESTResponse({"Failed"})
         # else:
         try:
             # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
             obj = PayUrfuData.objects.create(data=request.body)
             obj.save()
-            return Response({"Success"})
+            return RESTResponse({"Success"})
         except:
             logger.warning(request.body)
             logger.warning(request.data)
             logger.warning(request.GET)
-            return Response({"Failed": "POST body params"})
+            return RESTResponse({"Failed": "POST body params"})
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         obj = PayUrfuData.objects.create(data=qd)
         obj.save()
-        return Response({"Success"})
-
-
-class CreatePaymentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = PaymentSerializer
-    lookup_field = 'payment_id'
-
-    def create(self, request, *args, **kwargs):
-        payment, created = Payment.objects.get_or_create(user=request.user)
-
-    def retrieve(self, request, *args, **kwargs):
-        queryset = Payment.objects.all()
-        logger.warning(self.kwargs['payment_id'])
-        payment = get_object_or_404(queryset, payment_id=self.kwargs['payment_id'])
-        serializer = PaymentSerializer(payment)
-        return Response(serializer.data)
+        return RESTResponse({"Success"})
