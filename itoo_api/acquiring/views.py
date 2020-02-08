@@ -291,7 +291,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment, created = Payment.objects.get_or_create(user=request.user)
 
     def retrieve(self, request, *args, **kwargs):
-        if request.user and request.user.is_authenticated:
+        if request.user and request.user.is_authenticated():
             queryset = Payment.objects.filter(user=request.user)
         else:
             queryset = Payment.objects.empty()
