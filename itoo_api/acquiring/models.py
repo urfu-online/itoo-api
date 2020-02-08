@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
+import uuid
 
 from ..models import Program
 
@@ -45,7 +46,7 @@ class Payment(TimeStampedModel):
         ("2", "Success"),
         ("3", "Failed"),
     )
-    payment_id = models.UUIDField(primary_key=True, unique=True)
+    payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
     payment_date = models.DateTimeField("Дата платежа", auto_now_add=True)
     verify_date = models.DateTimeField("Дата подтверждения платежа", blank=True, null=True)
     user = models.ForeignKey(get_user_model(), null=False)
