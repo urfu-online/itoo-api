@@ -269,7 +269,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     lookup_field = 'payment_id'
 
     def list(self, request):
-        queryset = Payments.objects.all()  #  TODO: фильтровать по статусу иои активности
+        queryset = Payment.objects.all()  #  TOD: фильтровать по статусу иои активности
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
