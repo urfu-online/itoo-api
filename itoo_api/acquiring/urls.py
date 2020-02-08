@@ -5,7 +5,7 @@ from rest_framework import routers
 
 router_list = routers.DefaultRouter()
 # router_list.register(r'courses_mode_all', CourseModeListAllViewSet)
-router_list.register(r'', PaymentViewSet, base_name="payments")
+router_list.register(r'payments', PaymentViewSet, base_name="payments")
 
 app_name = 'acquiring'
 urlpatterns = [
@@ -15,5 +15,5 @@ urlpatterns = [
     url(r'check_session/', CheckSessionID.as_view(), name='check_session'),
     url(r'offer/(?P<program_slug>\w+)', OfferViewSet.as_view(), name='view_offer'),
     # url(r'paid_course_cus/', PaidCoursesCusViewSet, name='paid_course_cus')
-    url(r'^payments/', include(router_list.urls)),
+    url(r'', include(router_list.urls)),
 ]
