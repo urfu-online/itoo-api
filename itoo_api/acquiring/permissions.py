@@ -1,11 +1,8 @@
 from rest_framework import permissions
 import logging
 
-
-
 logging.basicConfig()
 logger = logging.getLogger(__name__)
-
 
 
 class OwnerPermission(permissions.BasePermission):
