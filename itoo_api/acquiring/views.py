@@ -291,7 +291,11 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment, created = Payment.objects.get_or_create(user=request.user)
 
     def retrieve(self, request, *args, **kwargs):
-        queryset = Payment.objects.filter(user=request.user)
+        if request.user and request.user.is_authenticated:
+            queryset = Payment.objects.filter(user=request.user)
+        else:
+            queryset = Payment.objects.empty()
+
         logger.warning(self.kwargs['payment_id'])
         payment = get_object_or_404(queryset, payment_id=self.kwargs['payment_id'])
         serializer = PaymentSerializer(payment)
