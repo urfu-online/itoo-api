@@ -312,7 +312,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
     #         serializer = PaymentSerializer(payment)
     #         return Response({"status": "sucess", "payment": serializer.data})
 
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
