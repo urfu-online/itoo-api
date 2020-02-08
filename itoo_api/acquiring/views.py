@@ -312,6 +312,16 @@ class PaymentViewSet(viewsets.ModelViewSet):
     #         serializer = PaymentSerializer(payment)
     #         return Response({"status": "sucess", "payment": serializer.data})
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
     def retrieve(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
             queryset = Payment.objects.filter(user=request.user)
