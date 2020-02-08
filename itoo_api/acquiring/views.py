@@ -274,9 +274,9 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     lookup_field = 'payment_id'
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, *args, **kwargs):
-        return super(PaymentViewSet, self).dispatch(*args, **kwargs)
+    # @method_decorator(csrf_exempt)
+    # def dispatch(self, *args, **kwargs):
+    #     return super(PaymentViewSet, self).dispatch(*args, **kwargs)
 
     def get_permissions(self):
         permission_classes = []
@@ -295,6 +295,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @csrf_exempt
     def create(self, request, *args, **kwargs):
         offer_id = request.data.get('offer_id', None)
         created = None
