@@ -58,8 +58,6 @@ class Payment(TimeStampedModel):
         verbose_name_plural = "Платежи"
 
     def __str__(self):
-        return self.payment_id
-
-    def __unicode__(self):
         return str(self.payment_id)
+
 
