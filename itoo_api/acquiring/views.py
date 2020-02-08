@@ -295,10 +295,11 @@ class PaymentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    @method_decorator(csrf_exempt)
+    # @method_decorator(csrf_exempt)
     def create(self, request, *args, **kwargs):
         offer_id = request.data.get('offer_id', None)
         created = None
+        payment = None
         if offer_id:
             payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(offer_id))
 
