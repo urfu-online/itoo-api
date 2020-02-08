@@ -263,10 +263,15 @@ class PayUrfuDataViewSet(APIView):
         return Response({"Success"})
 
 
-class CreatePaymentViewSet(viewsets.ModelViewSet):
+class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PaymentSerializer
     lookup_field = 'payment_id'
+
+    def list(self, request):
+        queryset = Payments.objects.all()  #  TODO: фильтровать по статусу иои активности
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         payment, created = Payment.objects.get_or_create(user=request.user)
