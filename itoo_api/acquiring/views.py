@@ -294,7 +294,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         if request.user and request.user.is_authenticated():
             queryset = Payment.objects.filter(user=request.user)
         else:
-            queryset = Payment.objects.empty()
+            queryset = Payment.objects.none()
 
         logger.warning(self.kwargs['payment_id'])
         payment = get_object_or_404(queryset, payment_id=self.kwargs['payment_id'])
