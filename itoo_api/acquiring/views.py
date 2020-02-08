@@ -288,7 +288,20 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        payment, created = Payment.objects.get_or_create(user=request.user)
+        offer_id = request.data.get('offer_id', None)
+        created = None
+        if offer_id:
+            payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(offer_id))
+
+        if created and payment:
+            logger.warn('''Payment created: 
+                    offer_id: {}
+                    payment_id: {}
+                    user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
+
+            serializer = PaymentSerializer(payment)
+            return Response({"status": "sucess", "payment": serializer.data})
+
 
     def retrieve(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
