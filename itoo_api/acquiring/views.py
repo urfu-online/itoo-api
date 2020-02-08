@@ -35,6 +35,8 @@ from .models import Offer, Payment
 from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer, \
     PaymentSerializer
 
+from .permissions import OwnerPermission
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -268,10 +270,24 @@ class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     lookup_field = 'payment_id'
 
+    def get_permissions(self, request, view):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = IsAuthenticated
+
+        elif self.action == 'retrieve':
+            permission_classes = [OwnerPermission]
+
+        elif self.action == 'list':
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
     def list(self, request):
-        queryset = Payment.objects.all()  #  TOD: фильтровать по статусу иои активности
+        queryset = Payment.objects.all()  # TOD: фильтровать по статусу иои активности
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
 
     def create(self, request, *args, **kwargs):
         payment, created = Payment.objects.get_or_create(user=request.user)
