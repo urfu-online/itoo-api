@@ -5,6 +5,7 @@ from rest_framework import routers
 
 router_list = routers.DefaultRouter()
 router_list.register(r'courses_mode_all', CourseModeListAllViewSet)
+router_list.register(r'payment', CreatePaymentViewSet)
 
 app_name = 'acquiring'
 urlpatterns = [
