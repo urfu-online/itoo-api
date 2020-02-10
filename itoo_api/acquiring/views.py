@@ -295,32 +295,32 @@ class PaymentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    # # @method_decorator(csrf_exempt)
-    # def create(self, request, *args, **kwargs):
-    #     offer_id = request.data.get('offer_id', None)
-    #     created = None
-    #     payment = None
-    #     if offer_id:
-    #         payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(offer_id))
-    #
-    #     if created and payment:
-    #         logger.warn('''Payment created:
-    #                 offer_id: {}
-    #                 payment_id: {}
-    #                 user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
-    #
-    #         serializer = PaymentSerializer(payment)
-    #         return Response({"status": "sucess", "payment": serializer.data})
-
+    # @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        offer_id = request.data.get('offer_id', None)
+        created = None
+        payment = None
+        if offer_id:
+            payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(offer_id))
 
-    def perform_create(self, serializer):
-        serializer.save()
+        if created and payment:
+            logger.warn('''Payment created:
+                    offer_id: {}
+                    payment_id: {}
+                    user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
+
+            serializer = PaymentSerializer(payment)
+            return Response({"status": "sucess", "payment": serializer.data})
+
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save()
 
     def retrieve(self, request, *args, **kwargs):
         if request.user and request.user.is_authenticated():
