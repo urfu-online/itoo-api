@@ -311,6 +311,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
             serializer = PaymentSerializer(payment)
             return Response({"status": "sucess", "payment": serializer.data})
+        else:
+            return Response({"status": "failed"})
 
     # def post(self, request, *args, **kwargs):
     #     serializer = self.get_serializer(data=request.data)
