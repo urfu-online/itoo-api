@@ -301,7 +301,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         created = None
         payment = None
         if offer_id:
-            payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(offer_id))
+            payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(pk=offer_id))
 
         if created and payment:
             logger.warn('''Payment created:
