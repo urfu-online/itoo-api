@@ -15,13 +15,14 @@ logger = logging.getLogger(__name__)
 class OfferSerializer(serializers.ModelSerializer):
     program_title = serializers.CharField(source='program.title')
     program_slug = serializers.CharField(source='program.slug')
+    offer_id = serializers.CharField(source='pk')
     status = serializers.SerializerMethodField()
     edu_service_type = serializers.SerializerMethodField()
 
     class Meta:
         model = Offer
         fields = (
-            'offer_text', 'unit', 'edu_start_date', 'edu_end_date', 'edu_service_type',
+            'offer_id', 'offer_text', 'unit', 'edu_start_date', 'edu_end_date', 'edu_service_type',
             'program_title', 'program_slug', 'status'
         )
 
