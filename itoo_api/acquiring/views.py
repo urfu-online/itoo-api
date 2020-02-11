@@ -354,6 +354,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
             logger.warning('''Response payment: {}'''.format(payment_request))
             # TODO if payment_request not status error
             # TODO arguments for redirect after receiving payment code
+            # TODO payment.status = "1"
             redirect(
                 "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
             return Response({"status": "sucess", "payment": serializer.data})
