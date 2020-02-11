@@ -304,6 +304,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment = None
         if offer_id:
             # TODO get_or_create or create ???
+            # TODO убедиться, что нет активного платежа: user=request.user, offer=Offer.objects.get(pk=offer_id), status != "3"
             payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(pk=offer_id))
 
         if created and payment:

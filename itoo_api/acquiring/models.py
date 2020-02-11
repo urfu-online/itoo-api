@@ -30,6 +30,9 @@ class Offer(TimeStampedModel):
     status = models.CharField("Статус оферты", choices=STATUSES, default="0",
                               max_length=1, null=False, blank=False)
 
+    def to_pay_urfu(self):
+        return dict()
+
     class Meta:
         verbose_name = "Оферта"
         verbose_name_plural = "Оферты"
