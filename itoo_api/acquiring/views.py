@@ -303,6 +303,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         created = None
         payment = None
         if offer_id:
+            # TODO get_or_create or create ???
             payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(pk=offer_id))
 
         if created and payment:
@@ -312,7 +313,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
 
             serializer = PaymentSerializer(payment)
-
+            # TODO get all data for payment data
             payment_data = {
                 "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
                 "params":
@@ -348,8 +349,10 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     }
             }
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
-            payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))
+            payment_request = requests.post(payment_url, data=payment_data, auth=())  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_request))
+            # TODO if payment_request not status error
+            # TODO arguments for redirect after receiving payment code
             redirect(
                 "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
             return Response({"status": "sucess", "payment": serializer.data})
