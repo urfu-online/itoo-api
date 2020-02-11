@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import logging
 import json
+import requests
 
 # rest
 from rest_framework.response import Response
@@ -10,7 +12,7 @@ from django.shortcuts import get_object_or_404
 # from rest_framework.renderers import TemplateHTMLRenderer
 
 # django
-# from django.shortcuts import render
+from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 # from django.conf import settings
 from django.contrib.auth.models import User
@@ -310,6 +312,46 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
 
             serializer = PaymentSerializer(payment)
+
+            payment_data = {
+                "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
+                "params":
+                    {
+                        "НомерДоговора": "",
+                        "ЛСПодразделения": "",
+                        "СтатьяДоходов": "",
+                        "Подразделение": "",
+                        "ИД_Openedurfu": "",
+                        "ДатаРегистрации": "",
+                        "ДатаДоговора": "",
+                        "ДатаНачалаДоговора": "",
+                        "ДатаОкончанияДоговора": "",
+                        "Программа": "",
+                        "ПрограммаНаименование": "",
+                        "ВидОбразовательнойУслуги": "",
+                        "Направление": "",
+                        "ДатаНачалаПрограммы": "",
+                        "ДатаОкончанияПрограммы": "",
+                        "ФормаОбучения": "",
+                        "СтоимостьОбразовательнойПрограммы": 20000.00,
+                        "ДатаУстановкиСтоимости": "",
+                        "КоличествоЧасов": 20,
+                        "ВыдаваемыйДокумент": "",
+                        "Слушатель": {
+                            "ФИО": "",
+                            "ДатаРождения": "",
+                            "Пол": "",
+                            "ИНН": "",
+                            "МобильныйТелефон": "",
+                            "Email": ""
+                        }
+                    }
+            }
+            payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
+            payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))
+            logger.warning('''Response payment: {}'''.format(payment_request))
+            redirect(
+                "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
             return Response({"status": "sucess", "payment": serializer.data})
         else:
             return Response({"status": "failed"})
