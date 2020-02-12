@@ -6,7 +6,7 @@ from django_summernote.admin import SummernoteInlineModelAdmin
 from django.contrib.contenttypes.admin import GenericTabularInline
 
 from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
-from itoo_api.models import Program, TextBlock, EnrollProgram
+from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.acquiring.models import Offer, Payment
 from verified_profile.models import Profile
 
@@ -124,6 +124,13 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 # @admin.register(EduProject)
 # class EduProjectAdmin(admin.ModelAdmin):
 #     inlines = [TextBlockInline]
+@admin.register(Direction)
+class DirectionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'identifier')
+    list_filter = ('title',)
+    ordering = ('title',)
+    readonly_fields = ('created',)
+    search_fields = ('title',)
 
 
 @admin.register(Program)
