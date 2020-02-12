@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
+import uuid
 
 
 @python_2_unicode_compatible
@@ -113,6 +114,12 @@ class Program(TimeStampedModel):
     project = models.ForeignKey(EduProject, related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
     direction = models.ForeignKey(Direction, blank=True, null=True, on_delete=models.SET_NULL)
+    id_unit_program = models.CharField("Программа ID", blank=True, null=True, max_length=64)
+    edu_start_date = models.DateField("Дата начала программы", null=True, blank=True)
+    edu_end_date = models.DateField("Дата завершения программы", null=True, blank=True)
+    number_of_hours = models.PositiveSmallIntegerField("Количество часов", null=True, blank=True)
+    issued_document_name = models.CharField("Выдаваемый Документ", null=True, blank=True, max_length=128)
+
 
     def get_courses(self):
         return self.programcourse_set.all()

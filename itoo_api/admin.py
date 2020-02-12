@@ -76,7 +76,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     list_filter = ('program__title',)
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
-    search_fields = ('user__username', 'program__slug', 'program__title')
+    search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
     actions = [export_csv_program_entoll]
 
 
@@ -251,7 +251,7 @@ export_csv_profile.short_description = u"Export CSV"
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid', 'manager')
-    search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city')
+    search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
     list_filter = ('all_valid', 'education_level', 'manager', 'city',)
     actions = [export_csv_profile]
 

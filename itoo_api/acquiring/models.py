@@ -23,12 +23,17 @@ class Offer(TimeStampedModel):
     unit = models.CharField("Подразделение", max_length=255, null=True, blank=False)
     unit_account = models.CharField("Лицевой счет подразделения", max_length=255, null=True, blank=False)
     program = models.ForeignKey(Program, on_delete=models.SET_NULL, null=True)
-    edu_start_date = models.DateField("Дата начала обучения", null=True, blank=True)
-    edu_end_date = models.DateField("Дата завершения обучения", null=True, blank=True)
+    edu_start_date = models.DateField("Дата начала договора", null=True, blank=True)
+    edu_end_date = models.DateField("Дата завершения договора", null=True, blank=True)
     edu_service_type = models.CharField("Вид образовательной услуги", choices=SERVICE_TYPES, default="0",
                                         max_length=1, null=False, blank=False)
     status = models.CharField("Статус оферты", choices=STATUSES, default="0",
                               max_length=1, null=False, blank=False)
+    training_form = models.CharField("Форма обучения", null=True, blank=True, max_length=128)
+    edu_program_cost = models.PositiveIntegerField("Стоимость образовательной программы", null=True, blank=True)
+    edu_program_cost_date = models.DateField("Дата установки стоимости", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def to_pay_urfu(self):
         return dict()
