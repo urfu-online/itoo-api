@@ -19,6 +19,7 @@ class Offer(TimeStampedModel):
 
     title = models.CharField("Наименование", max_length=255, null=True, blank=False)
     offer_text = models.TextField("Текст договора оферты", blank=False, null=True)
+    id_urfu = models.CharField("ИД_Openedurfu", null=True, blank=True, max_length=128)
     income_item = models.CharField("Статья доходов", max_length=255, null=True, blank=False)
     unit = models.CharField("Подразделение", max_length=255, null=True, blank=False)
     unit_account = models.CharField("Лицевой счет подразделения", max_length=255, null=True, blank=False)
