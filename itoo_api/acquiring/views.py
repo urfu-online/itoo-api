@@ -306,6 +306,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
         if offer_id:
             # TODO get_or_create or create ???
             # TODO убедиться, что нет активного платежа: user=request.user, offer=Offer.objects.get(pk=offer_id), status != "3"
+            # if Payment.objects.get(user=request.user, offer=Offer.objects.get(pk=offer_id)) or Payment.objects.get(
+            #         user=request.user, offer=Offer.objects.get(pk=offer_id)).status != "3":
             payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(pk=offer_id))
 
         if created and payment:
@@ -316,7 +318,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
             serializer = PaymentSerializer(payment)
             profile = Profile.objects.get(user=request.user)
-            logger.warning(profile)
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             payment_data = {
@@ -357,12 +358,24 @@ class PaymentViewSet(viewsets.ModelViewSet):
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
             payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_request))
+            response_dicts = json.loads(payment_request.text)
+            contract_number = None
+            for response_dict in response_dicts:
+                if response_dict['result']:
+                    contract_number = response_dict['result']['НомерДоговора']
+                    payment.status = "1"
+                    payment.save()
+                    return Response({"status": "sucess", "payment": serializer.data})
+                else:
+                    contract_number = None
+                    payment.status = "3"
+                    return Response({"status": "failed"})
+
             # TODO if payment_request not status error
             # TODO arguments for redirect after receiving payment code
             # TODO payment.status = "1"
             # redirect(
             #     "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
-            return Response({"status": "sucess", "payment": serializer.data})
         else:
             return Response({"status": "failed"})
 
