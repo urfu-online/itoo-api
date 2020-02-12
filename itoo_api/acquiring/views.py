@@ -354,7 +354,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         }
                     }
             }
-
+            logger.warning(payment_data)
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
             payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_request))
@@ -363,8 +363,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
             logger.warning("!!!!!!!!!!!!!")
             logger.warning(payment_request.text)
             logger.warning(response_dicts)
-            logger.warning(response_dicts['result'])
-            logger.warning(response_dicts['error'])
+            logger.warning(response_dicts.result)
+            logger.warning(response_dicts.error)
             for response_dict in response_dicts:
                 logger.warning(response_dict)
                 if response_dict == "result":
