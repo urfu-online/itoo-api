@@ -345,7 +345,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "КоличествоЧасов": offer.program.number_of_hours,
                         "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
-                            "ФИО": "{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
+                            "ФИО": u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
                             "ДатаРождения": profile.birth_date,
                             "Пол": profile.sex,
                             "ИНН": "",
