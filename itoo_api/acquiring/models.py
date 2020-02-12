@@ -32,8 +32,8 @@ class Offer(TimeStampedModel):
     training_form = models.CharField("Форма обучения", null=True, blank=True, max_length=128)
     edu_program_cost = models.PositiveIntegerField("Стоимость образовательной программы", null=True, blank=True)
     edu_program_cost_date = models.DateField("Дата установки стоимости", null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField("Дата создания договора", auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField("Дата обновления договора", auto_now=True, null=True, blank=True)
 
     def to_pay_urfu(self):
         return dict()
