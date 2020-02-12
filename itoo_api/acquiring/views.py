@@ -315,7 +315,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
 
             serializer = PaymentSerializer(payment)
-            profile = Profile.get_profile(user=request.user)
+            profile = Profile.objects.get(user=request.user)
             logger.warning(profile)
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
