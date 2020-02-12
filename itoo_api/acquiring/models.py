@@ -29,11 +29,11 @@ class Offer(TimeStampedModel):
                                         max_length=1, null=False, blank=False)
     status = models.CharField("Статус оферты", choices=STATUSES, default="0",
                               max_length=1, null=False, blank=False)
-    training_form = models.CharField("Форма обучения", null=True, blank=True, max_length=128)
-    edu_program_cost = models.PositiveIntegerField("Стоимость образовательной программы", null=True, blank=True)
-    edu_program_cost_date = models.DateField("Дата установки стоимости", null=True, blank=True)
-    created_at = models.DateTimeField("Дата создания договора", auto_now_add=True, null=True, blank=True)
-    updated_at = models.DateTimeField("Дата обновления договора", auto_now=True, null=True, blank=True)
+    training_form = models.CharField("Форма обучения", null=True, blank=False, max_length=128)
+    edu_program_cost = models.PositiveIntegerField("Стоимость образовательной программы", null=True, blank=False)
+    edu_program_cost_date = models.DateField("Дата установки стоимости", null=True, blank=False)
+    created_at = models.DateTimeField("Дата создания договора", auto_now_add=True)
+    updated_at = models.DateTimeField("Дата обновления договора", auto_now=True)
 
     def to_pay_urfu(self):
         return dict()
