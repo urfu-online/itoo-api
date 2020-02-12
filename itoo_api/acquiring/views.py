@@ -2,6 +2,7 @@
 import logging
 import json
 import requests
+from datetime import datetime
 
 # rest
 from rest_framework.response import Response
@@ -330,18 +331,18 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "Подразделение": offer.unit,
                         "ИД_Openedurfu": offer.id_urfu,
                         "ДатаРегистрации": request.user.date_joined,
-                        "ДатаДоговора": offer.created_at,
-                        "ДатаНачалаДоговора": offer.edu_start_date,
-                        "ДатаОкончанияДоговора": offer.edu_end_date,
+                        "ДатаДоговора": u"{}".format(str(offer.created_at)),
+                        "ДатаНачалаДоговора": u"{}".format(str(offer.edu_start_date)),
+                        "ДатаОкончанияДоговора": u"{}".format(str(offer.edu_end_date)),
                         "Программа": offer.program.id_unit_program,
                         "ПрограммаНаименование": offer.program.title,
                         "ВидОбразовательнойУслуги": offer.edu_service_type,
                         "Направление": offer.program.direction,
-                        "ДатаНачалаПрограммы": offer.program.edu_start_date,
-                        "ДатаОкончанияПрограммы": offer.program.edu_end_date,
+                        "ДатаНачалаПрограммы": u"{}".format(str(offer.program.edu_start_date)),
+                        "ДатаОкончанияПрограммы": u"{}".format(str(offer.program.edu_end_date)),
                         "ФормаОбучения": offer.training_form,
                         "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
-                        "ДатаУстановкиСтоимости": offer.edu_program_cost_date,
+                        "ДатаУстановкиСтоимости": u"{}".format(str(offer.edu_program_cost_date)),
                         "КоличествоЧасов": offer.program.number_of_hours,
                         "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
