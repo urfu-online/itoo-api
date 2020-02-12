@@ -26,6 +26,7 @@ from opaque_keys.edx.keys import CourseKey
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
 from itoo_api.models import PayUrfuData, Program
+from itoo_api.verified_profile.models import Profile
 
 # enroll api
 from enrollment import api
@@ -314,49 +315,52 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
 
             serializer = PaymentSerializer(payment)
+            profile = Profile.get_profile(user=request.user)
+            offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             payment_data = {
                 "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
                 "params":
                     {
                         "НомерДоговора": "",
-                        "ЛСПодразделения": "",
-                        "СтатьяДоходов": "",
-                        "Подразделение": "",
-                        "ИД_Openedurfu": "",
-                        "ДатаРегистрации": "",
-                        "ДатаДоговора": "",
-                        "ДатаНачалаДоговора": "",
-                        "ДатаОкончанияДоговора": "",
-                        "Программа": "",
-                        "ПрограммаНаименование": "",
-                        "ВидОбразовательнойУслуги": "",
-                        "Направление": "",
-                        "ДатаНачалаПрограммы": "",
-                        "ДатаОкончанияПрограммы": "",
-                        "ФормаОбучения": "",
-                        "СтоимостьОбразовательнойПрограммы": 20000.00,
-                        "ДатаУстановкиСтоимости": "",
-                        "КоличествоЧасов": 20,
-                        "ВыдаваемыйДокумент": "",
+                        "ЛСПодразделения": offer.unit_account,
+                        "СтатьяДоходов": offer.income_item,
+                        "Подразделение": offer.unit,
+                        "ИД_Openedurfu": offer.id_urfu,
+                        "ДатаРегистрации": request.user.date_joined,
+                        "ДатаДоговора": offer.created_at,
+                        "ДатаНачалаДоговора": offer.edu_start_date,
+                        "ДатаОкончанияДоговора": offer.edu_end_date,
+                        "Программа": offer.program.id_unit_program,
+                        "ПрограммаНаименование": offer.program.title,
+                        "ВидОбразовательнойУслуги": offer.edu_service_type,
+                        "Направление": offer.program.direction,
+                        "ДатаНачалаПрограммы": offer.program.edu_start_date,
+                        "ДатаОкончанияПрограммы": offer.program.edu_end_date,
+                        "ФормаОбучения": offer.training_form,
+                        "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
+                        "ДатаУстановкиСтоимости": offer.edu_program_cost_date,
+                        "КоличествоЧасов": offer.program.number_of_hours,
+                        "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
-                            "ФИО": "",
-                            "ДатаРождения": "",
-                            "Пол": "",
+                            "ФИО": "{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
+                            "ДатаРождения": profile.birth_date,
+                            "Пол": profile.sex,
                             "ИНН": "",
-                            "МобильныйТелефон": "",
-                            "Email": ""
+                            "МобильныйТелефон": profile.phone,
+                            "Email": request.user.email
                         }
                     }
             }
+
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
-            payment_request = requests.post(payment_url, data=payment_data, auth=())  # TODO auth ??
+            payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_request))
             # TODO if payment_request not status error
             # TODO arguments for redirect after receiving payment code
             # TODO payment.status = "1"
-            redirect(
-                "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
+            # redirect(
+            #     "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
             return Response({"status": "sucess", "payment": serializer.data})
         else:
             return Response({"status": "failed"})

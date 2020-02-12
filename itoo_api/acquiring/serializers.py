@@ -23,7 +23,8 @@ class OfferSerializer(serializers.ModelSerializer):
         model = Offer
         fields = (
             'offer_id', 'offer_text', 'unit', 'edu_start_date', 'edu_end_date', 'edu_service_type',
-            'program_title', 'program_slug', 'status'
+            'program_title', 'program_slug', 'status', 'id_urfu', 'training_form', 'edu_program_cost',
+            'edu_program_cost_date', 'created_at'
         )
 
     def get_status(self, obj):
