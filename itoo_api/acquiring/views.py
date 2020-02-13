@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 # from rest_framework.renderers import TemplateHTMLRenderer
 
 # django
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
 # from django.conf import settings
 from django.contrib.auth.models import User
@@ -416,6 +416,8 @@ def pay_redirect_view(response):
     email = response.GET.get('email', "")
     edu_program_cost = response.GET.get('edu_program_cost', "")
 
-    return redirect(
-        u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
-            3, client_name, phone, email, edu_program_cost), permanent=False)
+    payment_url = u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+        3, client_name, phone, email, edu_program_cost)
+    context = {"payment_url": payment_url}
+
+    return render("pay_redirect.html", context)
