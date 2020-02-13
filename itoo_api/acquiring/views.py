@@ -321,6 +321,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
             profile = Profile.objects.get(user=request.user)
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
+            client_name = u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name)
             payment_data = {
                 "method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
                 "params":
@@ -346,8 +347,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "КоличествоЧасов": offer.program.number_of_hours,
                         "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
-                            "ФИО": u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
-                            "ДатаРождения": "1996-07-05", #profile.birth_date,
+                            "ФИО": client_name,
+                            "ДатаРождения": "1996-07-05",  # profile.birth_date,
                             "Пол": profile.sex,
                             "ИНН": "",
                             "МобильныйТелефон": profile.phone,
@@ -363,27 +364,25 @@ class PaymentViewSet(viewsets.ModelViewSet):
             response_dicts = json.loads(payment_response.text)
             contract_number = None
             logger.warning("!!!!!!!!!!!!!")
-            logger.warning(response_dicts)
-            logger.warning(response_dicts.values())
             logger.warning(response_dicts.get('result', {}).get(u'НомерДоговора'))
-            if response_dicts['result']:
-                for response_dict in response_dicts['result']:
-                    logger.warning(response_dicts[response_dict])
-                    contract_number = response_dicts[response_dict]
-                logger.warning(contract_number)
+            if response_dicts.get('result'):
+                contract_number = response_dicts.get('result', {}).get(u'НомерДоговора')
                 payment.status = "1"
                 payment.save()
-                return Response({"status": "sucess", "payment": serializer.data})
+                return redirect(
+                    "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+                        contract_number, client_name, profile.phone, request.user.email, offer.edu_program_cost))
+                # return Response({"status": "sucess", "payment": serializer.data})
             else:
                 contract_number = None
                 payment.status = "3"
+                payment.save()
                 return Response({"status": "failed"})
 
             # TODO if payment_response not status error
             # TODO arguments for redirect after receiving payment code
             # TODO payment.status = "1"
-            # redirect(
-            #     "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format())
+
         else:
             return Response({"status": "failed"})
 
