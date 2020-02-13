@@ -373,7 +373,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 payment.save()
                 # TODO : future USED contract_number !!!1
                 return Response({"payment_url":
-                    u"/api/itoo_api/acquiring/pay_redirect_view/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+                    u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
                         3, client_name, profile.phone, request.user.email, offer.edu_program_cost)
                 })
                 # return Response({"status": "sucess", "payment": serializer.data})
