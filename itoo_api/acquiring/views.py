@@ -365,10 +365,10 @@ class PaymentViewSet(viewsets.ModelViewSet):
             logger.warning("!!!!!!!!!!!!!")
             logger.warning(payment_response.text)
             logger.warning(response_dicts['result'])
-            for response_dict in response_dicts['result']:
-                logger.warning(response_dict)
             if response_dicts['result']:
-                # contract_number = response_dict['result']['НомерДоговора']
+                for response_dict in response_dicts['result']:
+                    contract_number = response_dict['НомерДоговора']
+                logger.warning(contract_number)
                 payment.status = "1"
                 payment.save()
                 return Response({"status": "sucess", "payment": serializer.data})
