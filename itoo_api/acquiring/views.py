@@ -364,7 +364,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
             contract_number = None
             logger.warning("!!!!!!!!!!!!!")
             logger.warning(response_dicts)
-            logger.warning(response_dicts.get('result', {}).get('НомерДоговора'))
+            logger.warning(response_dicts.values())
+            logger.warning(response_dicts.get('result', {}).get(u'НомерДоговора'))
             if response_dicts['result']:
                 for response_dict in response_dicts['result']:
                     logger.warning(response_dicts[response_dict])
