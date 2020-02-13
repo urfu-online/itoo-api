@@ -374,7 +374,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 # TODO : future USED contract_number !!!1
                 return Response({"payment_url":
                     u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
-                        3, client_name, profile.phone, request.user.email, offer.edu_program_cost)
+                        contract_number, client_name, profile.phone, request.user.email, offer.edu_program_cost)
                 })
                 # return Response({"status": "sucess", "payment": serializer.data})
             else:
