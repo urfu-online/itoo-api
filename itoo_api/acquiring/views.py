@@ -322,7 +322,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             client_name = u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name)
-            client_name_ununicode = "{} {} {}".format(profile.last_name, profile.first_name, profile.second_name)
             logger.warning(client_name)
             payment_data = {
                 "method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
@@ -354,7 +353,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                             "Пол": profile.sex,
                             "ИНН": "",
                             "МобильныйТелефон": profile.phone,
-                            "Email": u"{}".format(request.user.email)
+                            "Email": request.user.email
                         }
                     }
             }
@@ -372,8 +371,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 payment.status = "1"
                 payment.save()
                 return redirect(
-                    "https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
-                        contract_number, client_name_ununicode, profile.phone, request.user.email, offer.edu_program_cost))
+                    u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+                        contract_number, client_name, profile.phone, request.user.email, offer.edu_program_cost))
                 # return Response({"status": "sucess", "payment": serializer.data})
             else:
                 contract_number = None
