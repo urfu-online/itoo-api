@@ -331,18 +331,18 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "Подразделение": offer.unit,
                         "ИД_Openedurfu": offer.id_urfu,
                         "ДатаРегистрации": request.user.date_joined,
-                        "ДатаДоговора": u"{}".format(str(offer.created_at)),
-                        "ДатаНачалаДоговора": u"{}".format(str(offer.edu_start_date)),
-                        "ДатаОкончанияДоговора": u"{}".format(str(offer.edu_end_date)),
+                        "ДатаДоговора": u"{}".format(offer.created_at.isoformat()),
+                        "ДатаНачалаДоговора": u"{}".format(offer.edu_start_date.isoformat()),
+                        "ДатаОкончанияДоговора": u"{}".format(offer.edu_end_date.isoformat()),
                         "Программа": offer.program.id_unit_program,
                         "ПрограммаНаименование": offer.program.title,
                         "ВидОбразовательнойУслуги": offer.edu_service_type,
-                        "Направление": offer.program.direction,
-                        "ДатаНачалаПрограммы": u"{}".format(str(offer.program.edu_start_date)),
-                        "ДатаОкончанияПрограммы": u"{}".format(str(offer.program.edu_end_date)),
+                        "Направление": offer.program.direction.title,
+                        "ДатаНачалаПрограммы": u"{}".format(offer.program.edu_start_date.isoformat()),
+                        "ДатаОкончанияПрограммы": u"{}".format(offer.program.edu_end_date.isoformat()),
                         "ФормаОбучения": offer.training_form,
                         "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
-                        "ДатаУстановкиСтоимости": u"{}".format(str(offer.edu_program_cost_date)),
+                        "ДатаУстановкиСтоимости": u"{}".format(offer.edu_program_cost_date.isoformat()),
                         "КоличествоЧасов": offer.program.number_of_hours,
                         "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
@@ -357,12 +357,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
             }
             logger.warning(payment_data)
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
-            payment_request = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
-            logger.warning('''Response payment: {}'''.format(payment_request))
-            response_dicts = json.loads(payment_request.text)
+            payment_response = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
+            logger.warning('''Response payment: {}'''.format(payment_response))
+            response_dicts = json.loads(payment_response.text)
             contract_number = None
             logger.warning("!!!!!!!!!!!!!")
-            logger.warning(payment_request.text)
+            logger.warning(payment_response.text)
             logger.warning(response_dicts)
             logger.warning(response_dicts.result)
             logger.warning(response_dicts.error)
@@ -378,7 +378,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     payment.status = "3"
                     return Response({"status": "failed"})
 
-            # TODO if payment_request not status error
+            # TODO if payment_response not status error
             # TODO arguments for redirect after receiving payment code
             # TODO payment.status = "1"
             # redirect(
