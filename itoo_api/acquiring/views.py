@@ -347,7 +347,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "ВыдаваемыйДокумент": offer.program.issued_document_name,
                         "Слушатель": {
                             "ФИО": u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
-                            "ДатаРождения": "", #profile.birth_date,
+                            "ДатаРождения": "1996-07-05", #profile.birth_date,
                             "Пол": profile.sex,
                             "ИНН": "",
                             "МобильныйТелефон": profile.phone,
