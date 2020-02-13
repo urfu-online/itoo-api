@@ -322,6 +322,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             client_name = u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name)
+            logger.warning(client_name)
             payment_data = {
                 "method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
                 "params":
