@@ -323,8 +323,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
             # TODO get all data for payment data
             payment_data = {
                 {
-                    "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
-                    "params":
+                    u"method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
+                    u"params":
                         {
                             u"НомерДоговора": "",
                             u"ЛСПодразделения": offer.unit_account,
