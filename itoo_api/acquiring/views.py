@@ -360,11 +360,11 @@ class PaymentViewSet(viewsets.ModelViewSet):
             payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                              auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_response))
-            response_dicts = json.loads(payment_response.text)
+            response_dicts = json.loads(payment_response.text, ensure_ascii=False)
             contract_number = None
             logger.warning("!!!!!!!!!!!!!")
             logger.warning(payment_response.text)
-            logger.warning(response_dicts[0][0])
+            logger.warning(response_dicts[0])
             if response_dicts['result']:
                 # contract_number = response_dict['result']['НомерДоговора']
                 payment.status = "1"
