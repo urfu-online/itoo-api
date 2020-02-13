@@ -410,14 +410,14 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-def pay_redirect_view(response):
-    client_name = response.GET.get('client_name', "")
-    phone = response.GET.get('phone', "")
-    email = response.GET.get('email', "")
-    edu_program_cost = response.GET.get('edu_program_cost', "")
+def pay_redirect_view(request):
+    client_name = request.GET.get('client_name', "")
+    phone = request.GET.get('phone', "")
+    email = request.GET.get('email', "")
+    edu_program_cost = request.GET.get('edu_program_cost', "")
 
     payment_url = u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
         3, client_name, phone, email, edu_program_cost)
     context = {"payment_url": payment_url}
 
-    return render(template_name="templates/pay_redirect.html", context=context)
+    return render(request, template_name="../templates/pay_redirect.html", context=context)
