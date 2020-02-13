@@ -322,7 +322,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             payment_data = {
-                u"method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
                 u"params":
                     {
                         u"НомерДоговора": "",
@@ -353,7 +352,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
                             u"МобильныйТелефон": profile.phone,
                             u"Email": u"{}".format(request.user.email)
                         }
-                    }
+                    },
+                u"method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
             }
             logger.warning(json.dumps(payment_data))
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
