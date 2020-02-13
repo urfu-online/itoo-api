@@ -370,6 +370,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 contract_number = response_dicts.get('result', {}).get(u'НомерДоговора')
                 payment.status = "1"
                 payment.save()
+                # TODO : future USED contract_number !!!1
                 return redirect(
                     u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
                         3, client_name, profile.phone, request.user.email, offer.edu_program_cost))
