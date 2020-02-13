@@ -372,7 +372,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 payment.save()
                 return redirect(
                     u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
-                        contract_number, client_name, profile.phone, request.user.email, offer.edu_program_cost))
+                        3, client_name, profile.phone, request.user.email, offer.edu_program_cost))
                 # return Response({"status": "sucess", "payment": serializer.data})
             else:
                 contract_number = None
