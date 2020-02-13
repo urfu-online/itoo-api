@@ -408,3 +408,14 @@ class PaymentViewSet(viewsets.ModelViewSet):
         payment = get_object_or_404(queryset, payment_id=self.kwargs['payment_id'])
         serializer = PaymentSerializer(payment)
         return Response(serializer.data)
+
+
+def pay_redirect_view(response):
+    client_name = response.GET.get('client_name', "")
+    phone = response.GET.get('phone', "")
+    email = response.GET.get('email', "")
+    edu_program_cost = response.GET.get('edu_program_cost', "")
+
+    return redirect(
+        u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+            3, client_name, phone, email, edu_program_cost), permanent=False)
