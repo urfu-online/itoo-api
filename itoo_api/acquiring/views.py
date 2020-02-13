@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404
 
 # django
 from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 # from django.conf import settings
 from django.contrib.auth.models import User
@@ -420,4 +421,6 @@ def pay_redirect_view(request):
         3, client_name, phone, email, edu_program_cost)
     context = {"payment_url": payment_url}
 
-    return render(request, template_name="../templates/pay_redirect.html", context=context)
+    return HttpResponseRedirect(redirect_to=payment_url)
+
+    # return render(request, template_name="../templates/pay_redirect.html", context=context)
