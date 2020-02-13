@@ -322,42 +322,45 @@ class PaymentViewSet(viewsets.ModelViewSet):
             offer = Offer.objects.get(pk=offer_id)
             # TODO get all data for payment data
             payment_data = {
-                "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
-                "params":
-                    {
-                        "НомерДоговора": "",
-                        "ЛСПодразделения": offer.unit_account,
-                        "СтатьяДоходов": offer.income_item,
-                        "Подразделение": offer.unit,
-                        "ИД_Openedurfu": offer.id_urfu,
-                        "ДатаРегистрации": u"{}".format(request.user.date_joined.isoformat()),
-                        "ДатаДоговора": u"{}".format(offer.created_at.isoformat()),
-                        "ДатаНачалаДоговора": u"{}".format(offer.edu_start_date.isoformat()),
-                        "ДатаОкончанияДоговора": u"{}".format(offer.edu_end_date.isoformat()),
-                        "Программа": offer.program.id_unit_program,
-                        "ПрограммаНаименование": offer.program.title,
-                        "ВидОбразовательнойУслуги": offer.edu_service_type,
-                        "Направление": offer.program.direction.title,
-                        "ДатаНачалаПрограммы": u"{}".format(offer.program.edu_start_date.isoformat()),
-                        "ДатаОкончанияПрограммы": u"{}".format(offer.program.edu_end_date.isoformat()),
-                        "ФормаОбучения": offer.training_form,
-                        "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
-                        "ДатаУстановкиСтоимости": u"{}".format(offer.edu_program_cost_date.isoformat()),
-                        "КоличествоЧасов": offer.program.number_of_hours,
-                        "ВыдаваемыйДокумент": offer.program.issued_document_name,
-                        "Слушатель": {
-                            "ФИО": u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
-                            "ДатаРождения": profile.birth_date,
-                            "Пол": profile.sex,
-                            "ИНН": "",
-                            "МобильныйТелефон": profile.phone,
-                            "Email": request.user.email
+                {
+                    "method": "УрФУ_СервисДоговоры.СохранитьДоговорОферты",
+                    "params":
+                        {
+                            "НомерДоговора": "",
+                            "ЛСПодразделения": offer.unit_account,
+                            "СтатьяДоходов": offer.income_item,
+                            "Подразделение": offer.unit,
+                            "ИД_Openedurfu": offer.id_urfu,
+                            "ДатаРегистрации": u"{}".format(request.user.date_joined.isoformat()),
+                            "ДатаДоговора": u"{}".format(offer.created_at.isoformat()),
+                            "ДатаНачалаДоговора": u"{}".format(offer.edu_start_date.isoformat()),
+                            "ДатаОкончанияДоговора": u"{}".format(offer.edu_end_date.isoformat()),
+                            "Программа": offer.program.id_unit_program,
+                            "ПрограммаНаименование": offer.program.title,
+                            "ВидОбразовательнойУслуги": offer.edu_service_type,
+                            "Направление": offer.program.direction.title,
+                            "ДатаНачалаПрограммы": u"{}".format(offer.program.edu_start_date.isoformat()),
+                            "ДатаОкончанияПрограммы": u"{}".format(offer.program.edu_end_date.isoformat()),
+                            "ФормаОбучения": offer.training_form,
+                            "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
+                            "ДатаУстановкиСтоимости": u"{}".format(offer.edu_program_cost_date.isoformat()),
+                            "КоличествоЧасов": offer.program.number_of_hours,
+                            "ВыдаваемыйДокумент": offer.program.issued_document_name,
+                            "Слушатель": {
+                                "ФИО": u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name),
+                                "ДатаРождения": profile.birth_date,
+                                "Пол": profile.sex,
+                                "ИНН": "",
+                                "МобильныйТелефон": profile.phone,
+                                "Email": request.user.email
+                            }
                         }
-                    }
+                }
             }
             logger.warning(json.dumps(payment_data))
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
-            payment_response = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
+            payment_response = requests.post(payment_url, data=payment_data,
+                                             auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_response))
             response_dicts = json.loads(payment_response.text)
             contract_number = None
