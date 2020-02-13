@@ -352,7 +352,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                                 "Пол": profile.sex,
                                 "ИНН": "",
                                 "МобильныйТелефон": profile.phone,
-                                "Email": request.user.email
+                                "Email": request.user.email,
                             }
                         }
                 }
