@@ -420,4 +420,4 @@ def pay_redirect_view(response):
         3, client_name, phone, email, edu_program_cost)
     context = {"payment_url": payment_url}
 
-    return render("pay_redirect.html", context)
+    return render(template_name="templates/pay_redirect.html", context=context)
