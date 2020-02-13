@@ -364,18 +364,16 @@ class PaymentViewSet(viewsets.ModelViewSet):
             contract_number = None
             logger.warning("!!!!!!!!!!!!!")
             logger.warning(payment_response.text)
-            logger.warning(response_dicts['result'])
-            for response_dict in response_dicts:
-                logger.warning(response_dict)
-                if response_dict == "result":
-                    contract_number = response_dict['result']['НомерДоговора']
-                    payment.status = "1"
-                    payment.save()
-                    return Response({"status": "sucess", "payment": serializer.data})
-                else:
-                    contract_number = None
-                    payment.status = "3"
-                    return Response({"status": "failed"})
+            logger.warning(response_dicts['НомерДоговора'])
+            if response_dicts['result']:
+                # contract_number = response_dict['result']['НомерДоговора']
+                payment.status = "1"
+                payment.save()
+                return Response({"status": "sucess", "payment": serializer.data})
+            else:
+                contract_number = None
+                payment.status = "3"
+                return Response({"status": "failed"})
 
             # TODO if payment_response not status error
             # TODO arguments for redirect after receiving payment code
