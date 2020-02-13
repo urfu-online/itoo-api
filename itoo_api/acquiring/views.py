@@ -330,7 +330,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         "СтатьяДоходов": offer.income_item,
                         "Подразделение": offer.unit,
                         "ИД_Openedurfu": offer.id_urfu,
-                        "ДатаРегистрации": request.user.date_joined,
+                        "ДатаРегистрации": u"{}".format(request.user.date_joined.isoformat()),
                         "ДатаДоговора": u"{}".format(offer.created_at.isoformat()),
                         "ДатаНачалаДоговора": u"{}".format(offer.edu_start_date.isoformat()),
                         "ДатаОкончанияДоговора": u"{}".format(offer.edu_end_date.isoformat()),
@@ -355,7 +355,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                         }
                     }
             }
-            logger.warning(payment_data)
+            logger.warning(json.dumps(payment_data))
             payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
             payment_response = requests.post(payment_url, data=payment_data, auth=('opened', 'Vra3wb7@'))  # TODO auth ??
             logger.warning('''Response payment: {}'''.format(payment_response))
