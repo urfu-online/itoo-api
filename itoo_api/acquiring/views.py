@@ -418,7 +418,7 @@ def check_payment_status(contract_number):
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
             {
-                "НомерДоговора": contract_number
+                "НомерДоговора": str(contract_number)
             }
     }
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
