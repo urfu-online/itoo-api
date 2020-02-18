@@ -416,7 +416,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 
 def check_payment_status(contract_number):
-    payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
+    payment_url = 'http://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
     payment_data = {
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
