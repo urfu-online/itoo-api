@@ -56,7 +56,7 @@ class Payment(TimeStampedModel):
         ("3", "Failed"),
     )
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
-    payment_number = models.PositiveIntegerField("Код платежа", blank=True, null=True)
+    payment_number = models.CharField("Код платежа", max_length=32, blank=True, null=True)
     payment_date = models.DateTimeField("Дата платежа", auto_now_add=True)
     verify_date = models.DateTimeField("Дата подтверждения платежа", blank=True, null=True)
     user = models.ForeignKey(get_user_model(), null=False)
