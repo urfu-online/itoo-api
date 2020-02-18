@@ -421,7 +421,7 @@ def check_payment_status(contract_number):
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
             {
-                "НомерДоговора": str(contract_number)
+                u"НомерДоговора": str(contract_number)
             }
     }
     print(payment_data)
