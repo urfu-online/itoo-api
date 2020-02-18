@@ -3,7 +3,7 @@ import logging
 import json
 import requests
 from datetime import datetime
-
+import time
 # rest
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -371,6 +371,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 contract_number = response_dicts.get('result', {}).get(u'НомерДоговора')
                 payment.status = "1"
                 payment.save()
+
+                time.sleep(10)
                 # TODO : future USED contract_number !!!1
                 return Response({"payment_url":
                     u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
