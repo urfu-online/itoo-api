@@ -369,6 +369,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
             logger.warning(response_dicts.get('result', {}).get(u'НомерДоговора'))
             if response_dicts.get('result'):
                 contract_number = response_dicts.get('result', {}).get(u'НомерДоговора')
+                payment.payment_number = int(contract_number)
                 payment.status = "1"
                 payment.save()
 
