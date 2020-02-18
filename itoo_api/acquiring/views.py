@@ -424,6 +424,7 @@ def check_payment_status(contract_number):
                 "НомерДоговора": str(contract_number)
             }
     }
+    print(payment_data)
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                      auth=('opened', 'Vra3wb7@'))
 
