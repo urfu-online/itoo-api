@@ -93,6 +93,8 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
         try:
             program = Program.get_program(slug=program_slug)
+
+            logger.warning("User: {} enrolled to program {}".format(username, program.slug))
             if program:
                 try:
                     enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)
