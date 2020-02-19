@@ -139,9 +139,13 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        flatpickr.localize(flatpickr.l10ns.ru);
-        flatpickr("#id_birth_date", {});
-        flatpickr("#id_issue_date", {});
+        // flatpickr.localize(flatpickr.l10ns.ru);
+        // flatpickr("#id_birth_date", {});
+        // flatpickr("#id_issue_date", {});
+
+        let id_leader_id_el = document.getElementById('id_leader_id');
+        let leader_id_mask = IMask(id_leader_id_el, {mask: '{ID}[0000000000]'});
+
 
         var element = document.getElementById('id_phone');
         var maskOptions = {
