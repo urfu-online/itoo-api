@@ -257,14 +257,12 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    # 'placeholder': 'Пример: ID397190',
                 }
             ),
             'SNILS': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    # 'placeholder': 'Пример: 123-456-789-123 45'
                 }
             ),
 
@@ -274,14 +272,12 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    # 'placeholder': 'Пример: 7513'
                 }
             ),
             'number': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    # 'placeholder': 'Пример: 123456'
                 }
             ),
             'issued_by': forms.TextInput(
