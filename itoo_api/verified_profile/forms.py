@@ -224,7 +224,7 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Необходимо указать институт внутри УрФУ'
+                    'placeholder': 'Необходимо указать организацию и подразделение'
                 }
             ),
             'position': forms.TextInput(
