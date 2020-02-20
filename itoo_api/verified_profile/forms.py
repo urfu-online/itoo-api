@@ -203,7 +203,7 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    # 'placeholder': 'Пример: 04.06.1987'
+                    'placeholder': 'Год-месяц-день'
                 }
             ),
             'birth_place': forms.TextInput(
