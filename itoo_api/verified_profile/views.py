@@ -217,6 +217,7 @@ def profile_new(request):
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
+            print("!!!!!!!!!!!!&&&&&&&&&&&&&&&&&&&&", program)
             profile_organization = program.organizations
         else:
             has_program = False
