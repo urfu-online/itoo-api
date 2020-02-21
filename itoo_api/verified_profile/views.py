@@ -227,7 +227,7 @@ def profile_new(request):
             form = ProfileFormIPMG()
 
         if has_program and form:
-            form.prefered_org.queryset = profile_organization
+            form.fields["prefered_org"].queryset = profile_organization
 
         profile_state = True
         template_scan = "Listener_state_({slug}).docx".format(slug=slug)
