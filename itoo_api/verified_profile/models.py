@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 #     def __str__(self):
 #         return self.content
 
+@python_2_unicode_compatible
 class ProfileOrganization(models.Model):
     title = models.CharField("Название организации", max_length=255, null=False, blank=False)
     email = models.EmailField("Почта для связи", max_length=254, null=True, blank=True)
