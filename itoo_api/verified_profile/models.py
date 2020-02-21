@@ -7,6 +7,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from ..utils import generate_new_filename
+from ..models import Program
 import logging
 
 logging.basicConfig()
@@ -19,6 +20,22 @@ logger = logging.getLogger(__name__)
 #
 #     def __str__(self):
 #         return self.content
+
+@python_2_unicode_compatible
+class ProfileOrganization(models.Model):
+    title = models.CharField("Название организации", max_length=255, null=False, blank=False)
+    email = models.EmailField("Почта для связи", max_length=254, null=True, blank=True)
+    phone = models.CharField("Телефон", max_length=255, null=True, blank=True)
+    head = models.CharField("Голова", max_length=255, null=True, blank=True)
+    program = models.ForeignKey(Program, related_name="organizations", blank=True, null=True,
+                                on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'организация для анкеты'
+        verbose_name_plural = 'организации для анкет'
 
 
 @python_2_unicode_compatible
@@ -80,7 +97,8 @@ class Profile(models.Model):
     country = models.CharField("Страна", default='Россия', max_length=255, null=True, blank=True)
     address_living = models.TextField("Адрес проживания", max_length=255, blank=True, null=True)
 
-    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности", null=False, blank=False)
+    terms = models.BooleanField("Я принимаю условия использования и соглашаюсь с политикой конфиденциальности",
+                                null=False, blank=False)
 
     user = models.OneToOneField(User, unique=True, db_index=True, related_name='verified_profile',
                                 verbose_name="Пользователь", on_delete=models.CASCADE, null=True)

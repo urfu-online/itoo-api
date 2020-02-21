@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 
 from itoo_api.models import EnrollProgram, Program
 from .forms import ProfileForm, ProfileFormIPMG
-from .models import Profile
+from .models import Profile, ProfileOrganization
 
 from student.models import CourseEnrollment
 from opaque_keys.edx.keys import CourseKey
@@ -211,17 +211,14 @@ def profile_new(request):
             if slug:
                 request.session["slug"] = slug
             return redirect('/login?next={}'.format(request.get_full_path()))
-        # try:
-        #     profile = user.profile
-        #     print('!!!!!!!!!!!!!!!!!!!!', profile)
-        #     return redirect(reverse('itoo:verified_profile:profile_edit'))
-        # except:
-        #     pass
         program = None
         slug = request.session.get("slug", None)
+        profile_organization = ProfileOrganization.objects.none()
+
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
+            profile_organization = ProfileOrganization.objects.filter(program = program)
         else:
             has_program = False
 
@@ -236,7 +233,8 @@ def profile_new(request):
             "has_program": has_program,
             'profile_state': profile_state,
             "program": program,
-            "template_scan": template_scan
+            "template_scan": template_scan,
+            "profile_organization": profile_organization
         }
 
         if slug in ["IPMG", "IPMG_test"]:

@@ -8,7 +8,7 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.acquiring.models import Offer, Payment
-from verified_profile.models import Profile
+from verified_profile.models import Profile, ProfileOrganization
 
 
 @admin.register(Offer)
@@ -133,6 +133,10 @@ class DirectionAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class ProfileOrganizationInline(admin.TabularInline):
+    model = ProfileOrganization
+
+
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
     list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
@@ -140,7 +144,7 @@ class ProgramAdmin(admin.ModelAdmin):
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
-    inlines = [ProgramCourseInline, TextBlockInline]
+    inlines = [ProfileOrganizationInline, ProgramCourseInline, TextBlockInline]
 
 
 class OrganizationCourseInline(admin.TabularInline):

@@ -186,7 +186,6 @@ class ProfileFormIPMG(forms.ModelForm):
                     'required': 'true'
                 }
             ),
-
             'city': forms.TextInput(
                 attrs={
                     'class': 'form-control',

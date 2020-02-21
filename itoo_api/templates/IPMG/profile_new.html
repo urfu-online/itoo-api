@@ -12,6 +12,7 @@
 </div>
 {% endif %}
 <div class="row">
+    {{ profile_organization }}
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
             {{ form.non_field_errors }}
@@ -25,6 +26,17 @@
                     <h5>Запись на программу {{ program }}</h5>
                 </div>
                 <h2>Личные данные:</h2>
+
+                <p>
+                <select id="id_customer" name="customer">
+                    <option value="">Я не организованный</option>
+                {% for org in profile_organization %}
+<!--                    <option value="{{ x }}"{% if form.fields.customer.value == x %} selected{% endif %}>{{ y }}</option>-->
+                    <option value="{{ org.id }}">{{ org.title }}</option>
+                {% endfor %}
+                </select>
+                </p>
+
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
                 <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
