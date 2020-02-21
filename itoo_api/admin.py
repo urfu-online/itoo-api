@@ -133,8 +133,15 @@ class DirectionAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
-class ProfileOrganizationInline(admin.TabularInline):
-    model = ProfileOrganization
+# class ProfileOrganizationInline(admin.TabularInline):
+#     model = ProfileOrganization
+
+@admin.register(ProfileOrganization)
+class ProfileOrganizationAdmin(admin.ModelAdmin):
+    list_display = ("title", "program")
+
+
+
 
 
 @admin.register(Program)
@@ -144,7 +151,7 @@ class ProgramAdmin(admin.ModelAdmin):
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
-    inlines = [ProfileOrganizationInline, ProgramCourseInline, TextBlockInline]
+    inlines = [ProgramCourseInline, TextBlockInline]
 
 
 class OrganizationCourseInline(admin.TabularInline):
