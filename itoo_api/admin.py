@@ -28,7 +28,7 @@ class ReflectionAdmin(admin.ModelAdmin):
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
     model = Answer
-    list_display = ('user__email', 'question',)
+    list_display = ('user', 'question',)
     search_fields = ('user__email', 'user__username')
 
 
