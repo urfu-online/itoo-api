@@ -226,6 +226,9 @@ def profile_new(request):
         if slug in ["IPMG", "IPMG_test"]:
             form = ProfileFormIPMG()
 
+        if has_program and form:
+            form.prefered_org.queryset = profile_organization
+
         profile_state = True
         template_scan = "Listener_state_({slug}).docx".format(slug=slug)
         context = {

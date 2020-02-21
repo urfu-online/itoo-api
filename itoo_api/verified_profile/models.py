@@ -4,6 +4,7 @@ Database ORM models for payments prerequisites
 """
 
 from django.db import models
+from django.db.models import Q
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from ..utils import generate_new_filename
