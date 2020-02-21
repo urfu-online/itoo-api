@@ -214,6 +214,9 @@ def profile_new(request):
         program = None
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
+
+        print("$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!&&&&&&&&&&&&&&&&&&&&", program)
+
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
