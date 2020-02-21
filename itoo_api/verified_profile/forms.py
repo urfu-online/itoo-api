@@ -226,6 +226,14 @@ class ProfileFormIPMG(forms.ModelForm):
                     'placeholder': 'Необходимо указать организацию и подразделение'
                 }
             ),
+
+            'prefered_org': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': 'false',
+                }
+            ),
+
             'position': forms.TextInput(
                 attrs={
                     'class': 'form-control',

@@ -24,7 +24,11 @@
                     <h5>Запись на программу {{ program }}</h5>
                 </div>
                 <h2>Личные данные:</h2>
+
+                {{form.prefered_org}}
+
                 <p>
+
                 <select class="form-control" id="id_customer" name="customer">
                     <option value=""> Организация не присутствует в списке? </option>
                 {% for org in profile_organization %}
