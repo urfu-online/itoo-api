@@ -29,6 +29,7 @@
 
                 <p>
                 <select id="id_customer" name="customer">
+                    <option value="">Я не организованный</option>
                 {% for org in profile_organization %}
 <!--                    <option value="{{ x }}"{% if form.fields.customer.value == x %} selected{% endif %}>{{ y }}</option>-->
                     <option value="{{ org.id }}">{{ org.title }}</option>
