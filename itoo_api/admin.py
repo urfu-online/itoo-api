@@ -1,14 +1,35 @@
 """ Django admin pages for organization models """
+
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
-
-from django_summernote.admin import SummernoteInlineModelAdmin
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django_summernote.admin import SummernoteInlineModelAdmin
 
+from itoo_api.acquiring.models import Offer, Payment
 from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
-from itoo_api.acquiring.models import Offer, Payment
+from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
+
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+
+
+@admin.register(Reflection)
+class ReflectionAdmin(admin.ModelAdmin):
+    model = Reflection
+    list_display = ('title', 'description', 'program',)
+    list_filter = ('program',)
+    search_fields = ('title', 'program',)
+    inlines = [QuestionInline, ]
+
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    model = Answer
+    list_display = ('user__email', 'question',)
+    search_fields = ('user__email', 'user__username')
 
 
 @admin.register(Offer)
