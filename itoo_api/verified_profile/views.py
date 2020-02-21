@@ -215,13 +215,10 @@ def profile_new(request):
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
 
-        print("$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!&&&&&&&&&&&&&&&&&&&&", program)
-
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
-            print("!!!!!!!!!!!!&&&&&&&&&&&&&&&&&&&&", program)
-            profile_organization = program.organizations
+            profile_organization = ProfileOrganization.objects.filter(program = program)
         else:
             has_program = False
 
