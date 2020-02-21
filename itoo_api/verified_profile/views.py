@@ -218,7 +218,7 @@ def profile_new(request):
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
-            profile_organization = ProfileOrganization.objects.filter(program=program)
+            profile_organization = ProfileOrganization.objects.filter(program=program.slug)
         else:
             has_program = False
 

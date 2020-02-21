@@ -141,9 +141,6 @@ class ProfileOrganizationAdmin(admin.ModelAdmin):
     list_display = ("title", "program")
 
 
-
-
-
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
     list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
