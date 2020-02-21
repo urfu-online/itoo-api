@@ -213,7 +213,7 @@ def profile_new(request):
             return redirect('/login?next={}'.format(request.get_full_path()))
         program = None
         slug = request.session.get("slug", None)
-        profile_organization = ProfileOrganization.objects.empty()
+        profile_organization = ProfileOrganization.objects.none()
         if slug:
             has_program = True
             program = Program.get_program(slug=slug)
