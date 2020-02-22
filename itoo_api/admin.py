@@ -195,15 +195,17 @@ def export_csv_program(modeladmin, request, queryset):
         head_row.append(course.course_id)
     writer.writerow(head_row)
 
-    for course in example_program.get_courses():
-        row = [smart_str(student.email)]
-        course_key = CourseKey.from_string(course.course_id)
-        course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
-        for student, course_grade, error in CourseGradeFactory().iter(program_enrollments, course_key=course_key):
-            if student in course_enrollments:
-                row.append(course_grade.summary['percent'])
-            else:
-                row.append("Not enrolled")
+    for enroll in program_enrollments:
+        row = [smart_str(enroll.user.email)]
+        for course in example_program.get_courses():
+            course_key = CourseKey.from_string(course.course_id)
+            course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
+            for student, course_grade, error in CourseGradeFactory().iter(program_enrollments, course_key=course_key):
+                # row = [smart_str(student.email)]
+                if student in course_enrollments:
+                    row.append(course_grade.summary['percent'])
+                else:
+                    row.append("Not enrolled")
         writer.writerow(row)
 
 
