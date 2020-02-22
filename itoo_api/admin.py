@@ -179,8 +179,11 @@ def export_csv_program(modeladmin, request, queryset):
     # ])
 
     example_program = queryset[0]
+    logger.warning(example_program)
 
     enrollments = EnrollProgram.objects.filter(program=example_program)
+
+    logger.warning(enrollments)
 
     for enroll in enrollments:
 
@@ -189,6 +192,7 @@ def export_csv_program(modeladmin, request, queryset):
         for course in example_program.get_courses():
             row.append(course.course_id)
 
+        logger.warning(row)
         # writer.writerow([
         #     ,
         #     # smart_str(obj.program),
