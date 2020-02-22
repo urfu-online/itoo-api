@@ -196,7 +196,7 @@ def export_csv_program(modeladmin, request, queryset):
     writer.writerow(head_row)
 
     for enroll in program_enrollments:
-        row = [smart_str(enroll.user.email)]
+        row = [smart_str(enroll.email)]
         for course in example_program.get_courses():
             course_key = CourseKey.from_string(course.course_id)
             course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
