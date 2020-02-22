@@ -10,6 +10,11 @@ from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, Organ
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
+
+from lms.djangoapps.grades.api import CourseGradeFactory
+from opaque_keys.edx.keys import CourseKey
+
+
 import logging
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -185,18 +190,21 @@ def export_csv_program(modeladmin, request, queryset):
 
     logger.warning(enrollments)
 
+    head_row = ["email"]
+
+    # writer.writerow("email")
+
+    for course in example_program.get_courses():
+        head_row.append(course.course_id)
+    writer.writerow(head_row)
+
     for enroll in enrollments:
-
         row = [smart_str(enroll.user.email)]
-
+        course_key = CourseKey.from_string(course.course_id)
         for course in example_program.get_courses():
-            row.append(course.course_id)
-
+            row.append(CourseGradeFactory().read(enroll.user, course_key).summary)
         logger.warning(row)
-        # writer.writerow([
-        #     ,
-        #     # smart_str(obj.program),
-        # ])
+        writer.writerow(row)
     return response
 
 
