@@ -204,8 +204,8 @@ def export_csv_program(modeladmin, request, queryset):
         for course in example_program.get_courses():
 
             logger.warning(course)
-            logger.warning(get_course_by_id(course.course_id))
-            row.append(CourseGradeFactory().read(enroll.user, course=get_course_by_id(course.course_id)).summary)
+            logger.warning(get_course_by_id(course))
+            row.append(CourseGradeFactory().read(enroll.user, course=get_course_by_id(course)).summary)
         logger.warning(row)
         writer.writerow(row)
     return response
