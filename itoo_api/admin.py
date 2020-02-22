@@ -186,7 +186,7 @@ def export_csv_program(modeladmin, request, queryset):
     logger.warning(example_program)
     program_enrollments = []
     for e_u in EnrollProgram.objects.filter(program=example_program):
-        current_profile = Profile.objects.get(user=e_u.user)
+        # current_profile = Profile.objects.get(user=e_u.user)
         program_enrollments.append(e_u.user)
 
     head_row = ["email"]
