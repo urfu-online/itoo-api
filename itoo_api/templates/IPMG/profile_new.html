@@ -25,18 +25,18 @@
                 </div>
                 <h2>Личные данные:</h2>
 
-                {{form.prefered_org}}
+<!--                {{form.prefered_org}}-->
 
-                <p>
+<!--                <p>-->
 
-                <select class="form-control" id="id_customer" name="customer">
-                    <option value=""> Организация не присутствует в списке? </option>
-                {% for org in profile_organization %}
-<!--                    <option value="{{ x }}"{% if form.fields.customer.value == x %} selected{% endif %}>{{ y }}</option>-->
-                    <option value="{{ org.id }}">{{ org.title }}</option>
-                {% endfor %}
-                </select>
-                </p>
+<!--                <select class="form-control" id="id_customer" name="customer">-->
+<!--                    <option value=""> Организация не присутствует в списке? </option>-->
+<!--                {% for org in profile_organization %}-->
+<!--&lt;!&ndash;                    <option value="{{ x }}"{% if form.fields.customer.value == x %} selected{% endif %}>{{ y }}</option>&ndash;&gt;-->
+<!--                    <option value="{{ org.id }}">{{ org.title }}</option>-->
+<!--                {% endfor %}-->
+<!--                </select>-->
+<!--                </p>-->
 
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
