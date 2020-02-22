@@ -179,20 +179,21 @@ def export_csv_program(modeladmin, request, queryset):
     response['Content-Disposition'] = 'attachment; filename=profile.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
-    # writer.writerow([
-    #     smart_str(u"course_id"),
-    #     smart_str(u"program"),
-    # ])
+
+    profile_fields = ["last_name", "first_name", "second_name", "sex", "birth_date", "phone", "prefered_org", "series", "number", "issued_by", "unit_code", "issue_date", "address_register", "country", "city", "address_living", "mail_index", "job", "position", "edu_organization", "education_level", "specialty", "series_diploma", "number_diploma", "year_of_ending", "leader_id", "SNILS", "add_email", "birth_place", "job_address"]
 
     example_program = queryset[0]
     logger.warning(example_program)
     program_enrollments = []
     for e_u in EnrollProgram.objects.filter(program=example_program):
+        current_profile = Profile.objects.get(user=e_u.user)
         program_enrollments.append(e_u.user)
 
     head_row = ["email"]
     for course in example_program.get_courses():
         head_row.append(course.course_id)
+        for p_f in profile_fields:
+            head_row.append(p_f)
     writer.writerow(head_row)
 
     for enroll in program_enrollments:
@@ -205,6 +206,18 @@ def export_csv_program(modeladmin, request, queryset):
                     row.append(course_grade.summary['percent'])
                 else:
                     row.append("Not enrolled")
+
+        try:
+            current_profile = Profile.objects.get(user=enroll)
+        except Profile.DoesNotExist:
+            current_profile = None
+
+        for p_f in profile_fields:
+            if current_profile is not None:
+                row.append(current_profile.__dict__[p_f])
+            else:
+                row.append("-")
+
         writer.writerow(row)
 
 
