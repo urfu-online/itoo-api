@@ -13,7 +13,7 @@ from verified_profile.models import Profile, ProfileOrganization
 
 from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
-
+from courseware.courses import get_course_by_id
 
 import logging
 logging.basicConfig()
@@ -200,9 +200,10 @@ def export_csv_program(modeladmin, request, queryset):
 
     for enroll in enrollments:
         row = [smart_str(enroll.user.email)]
-        course_key = CourseKey.from_string(course.course_id)
+        # course_key = CourseKey.from_string(course.course_id)
+        logger.warning(get_course_by_id(course.course_id))
         for course in example_program.get_courses():
-            row.append(CourseGradeFactory().read(enroll.user, course_key).summary)
+            row.append(CourseGradeFactory().read(enroll.user, course=get_course_by_id(course.course_id)).summary)
         logger.warning(row)
         writer.writerow(row)
     return response
