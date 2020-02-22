@@ -201,8 +201,8 @@ def export_csv_program(modeladmin, request, queryset):
     for enroll in enrollments:
         row = [smart_str(enroll.user.email)]
         # course_key = CourseKey.from_string(course.course_id)
-        logger.warning(get_course_by_id(course.course_id))
         for course in example_program.get_courses():
+            logger.warning(get_course_by_id(course))
             row.append(CourseGradeFactory().read(enroll.user, course=get_course_by_id(course.course_id)).summary)
         logger.warning(row)
         writer.writerow(row)
