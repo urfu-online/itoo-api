@@ -205,7 +205,7 @@ def export_csv_program(modeladmin, request, queryset):
                     row.append(course_grade.summary['percent'])
                 else:
                     row.append("Not enrolled")
-        print(row)
+        writer.writerow(row)
 
 
     #
