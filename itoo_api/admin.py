@@ -170,7 +170,28 @@ class ProgramAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
+    actions = [export_csv_program]
 
+
+def export_csv_program(modeladmin, request, queryset):
+    import csv
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    # writer.writerow([
+    #     smart_str(u"course_id"),
+    #     smart_str(u"program"),
+    # ])
+    for obj in queryset:
+        print(str(obj))
+        # writer.writerow([
+        #     smart_str(obj.course_id),
+        #     smart_str(obj.program),
+        # ])
+    return response
 
 class OrganizationCourseInline(admin.TabularInline):
     model = OrganizationCourse
