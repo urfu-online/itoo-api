@@ -184,10 +184,15 @@ def export_csv_program(modeladmin, request, queryset):
 
     for enroll in enrollments:
 
-        writer.writerow([
-            smart_str(enroll.user.email),
-            # smart_str(obj.program),
-        ])
+        row = [smart_str(enroll.user.email)]
+
+        for course in example_program.get_courses():
+            row.append(course.course_id)
+
+        # writer.writerow([
+        #     ,
+        #     # smart_str(obj.program),
+        # ])
     return response
 
 
