@@ -12,6 +12,7 @@ from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
 
 from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
+from student.models import CourseEnrollment, user_by_anonymous_id
 from opaque_keys.edx.keys import CourseKey
 from courseware.courses import get_course_by_id
 
@@ -185,29 +186,42 @@ def export_csv_program(modeladmin, request, queryset):
 
     example_program = queryset[0]
     logger.warning(example_program)
-
-    enrollments = EnrollProgram.objects.filter(program=example_program)
-
-    logger.warning(enrollments)
+    program_enrollments = []
+    for e_u in EnrollProgram.objects.filter(program=example_program):
+        program_enrollments.append(e_u.user)
 
     head_row = ["email"]
-
-    # writer.writerow("email")
-
     for course in example_program.get_courses():
         head_row.append(course.course_id)
     writer.writerow(head_row)
 
-    for enroll in enrollments:
-        row = [smart_str(enroll.user.email)]
-        # course_key = CourseKey.from_string(course.course_id)
-        for course in example_program.get_courses():
-
-            logger.warning(course)
-            logger.warning(CourseGradeFactory().read(enroll.user, course=get_course_by_id(CourseKey.from_string(str(course)))))
-            # row.append(.summary)
-        logger.warning(row)
+    for course in example_program.get_courses():
+        row = [smart_str(student.email)]
+        course_key = CourseKey.from_string(course.course_id)
+        course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
+        for student, course_grade, error in CourseGradeFactory().iter(program_enrollments, course_key=course_key):
+            if student in course_enrollments:
+                row.append(course_grade.summary['percent'])
+            else:
+                row.append("Not enrolled")
         writer.writerow(row)
+
+
+    #
+    # # writer.writerow("email")
+    #
+
+    #
+    # for enroll in enrollments:
+    #     row = [smart_str(enroll.user.email)]
+    #     # course_key = CourseKey.from_string(course.course_id)
+    #     for course in example_program.get_courses():
+    #
+    #         logger.warning(course)
+    #         logger.warning(CourseGradeFactory().read(enroll.user, course=get_course_by_id(CourseKey.from_string(str(course)))))
+    #         # row.append(.summary)
+    #     logger.warning(row)
+    #     writer.writerow(row)
     return response
 
 
