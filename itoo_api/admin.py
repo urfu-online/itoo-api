@@ -11,7 +11,7 @@ from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
 
-from lms.djangoapps.grades.api import CourseGradeFactory
+from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
 
 
