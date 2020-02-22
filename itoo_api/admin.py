@@ -10,6 +10,9 @@ from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, Organ
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
+import logging
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
 class QuestionInline(admin.TabularInline):
@@ -162,17 +165,6 @@ class ProfileOrganizationAdmin(admin.ModelAdmin):
     list_display = ("title", "program")
 
 
-@admin.register(Program)
-class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
-    list_filter = ('active', 'owner')
-    ordering = ('title', 'short_name',)
-    readonly_fields = ('created',)
-    search_fields = ('title', 'short_name', 'slug')
-    inlines = [ProgramCourseInline, TextBlockInline]
-    actions = [export_csv_program]
-
-
 def export_csv_program(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
@@ -187,11 +179,25 @@ def export_csv_program(modeladmin, request, queryset):
     # ])
     for obj in queryset:
         print(str(obj))
+        logger.warning(str(obj))
         # writer.writerow([
         #     smart_str(obj.course_id),
         #     smart_str(obj.program),
         # ])
     return response
+
+
+@admin.register(Program)
+class ProgramAdmin(admin.ModelAdmin):
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
+    list_filter = ('active', 'owner')
+    ordering = ('title', 'short_name',)
+    readonly_fields = ('created',)
+    search_fields = ('title', 'short_name', 'slug')
+    inlines = [ProgramCourseInline, TextBlockInline]
+    actions = [export_csv_program]
+
+
 
 class OrganizationCourseInline(admin.TabularInline):
     model = OrganizationCourse
