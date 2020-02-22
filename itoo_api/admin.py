@@ -177,13 +177,17 @@ def export_csv_program(modeladmin, request, queryset):
     #     smart_str(u"course_id"),
     #     smart_str(u"program"),
     # ])
-    for obj in queryset:
-        print(str(obj))
-        logger.warning(str(obj))
-        # writer.writerow([
-        #     smart_str(obj.course_id),
-        #     smart_str(obj.program),
-        # ])
+
+    example_program = queryset[0]
+
+    enrollments = EnrollProgram.objects.filter(program=example_program)
+
+    for enroll in enrollments:
+
+        writer.writerow([
+            smart_str(enroll.user.email),
+            # smart_str(obj.program),
+        ])
     return response
 
 
