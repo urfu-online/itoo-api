@@ -214,7 +214,7 @@ def export_csv_program(modeladmin, request, queryset):
 
         for p_f in profile_fields:
             if current_profile is not None:
-                row.append(current_profile.__dict__[p_f])
+                row.append(smart_str(current_profile.__dict__[p_f]))
             else:
                 row.append("-")
 
