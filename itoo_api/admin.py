@@ -200,13 +200,12 @@ def export_csv_program(modeladmin, request, queryset):
         for course in example_program.get_courses():
             course_key = CourseKey.from_string(course.course_id)
             course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
-            for student, course_grade, error in CourseGradeFactory().iter(program_enrollments, course_key=course_key):
-                # row = [smart_str(student.email)]
+            for student, course_grade, error in CourseGradeFactory().iter([enroll], course_key=course_key):
                 if student in course_enrollments:
                     row.append(course_grade.summary['percent'])
                 else:
                     row.append("Not enrolled")
-        writer.writerow(row)
+        print(row)
 
 
     #
