@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.views.generic import DetailView
 from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
@@ -38,7 +39,7 @@ class ReflectionDetail(DetailView, FormMixin):
 
     def get_success_url(self):
         from django.contrib import messages
-        messages.add_message(self.request, messages.INFO, 'form submission success')
+        messages.add_message(self.request, messages.INFO, 'Ваш ответ успешно записан')
         return reverse('itoo:reflection:reflection_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
@@ -65,7 +66,7 @@ class ReflectionDetail(DetailView, FormMixin):
         logger.warning(form.cleaned_data['answer_text'])
         for each in form.cleaned_data['answer_text']:
             # logger.warning('****', each, '****', type(each))
-            Answer.objects.create(user=self.request.user, question = question[0], answer_text=each)
+            Answer.objects.create(user=self.request.user, question=question[0], answer_text=each)
         return super(ReflectionDetail, self).form_valid(form)
 
 
