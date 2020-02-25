@@ -31,6 +31,7 @@ class ReflectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'program',)
     list_filter = ('program',)
     search_fields = ('title', 'program',)
+    list_editable = [QuestionInline, ]
     inlines = [QuestionInline, ]
 
 
