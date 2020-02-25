@@ -298,7 +298,9 @@ def profile_edit_exist(request):
     # launch = dict()
     user = request.user
 
-    logger.warning("!!!!!!!!!!!!!!!!!", user)
+    logger.warning("!!!!!!!!!!!!!!!!!")
+    logger.warning(user)
+
     profile = Profile.get_profile(user=user)[0]
 
     slug = request.GET.get('program_slug', None)
