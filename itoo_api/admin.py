@@ -365,7 +365,7 @@ export_csv_profile.short_description = u"Export CSV"
 
 class ProfileByProgramFilter(admin.SimpleListFilter):
     title = 'profile_by_program' # or use _('country') for translated title
-    parameter_name = 'profile'
+    parameter_name = 'profile_by_program'
 
     def lookups(self, request, model_admin):
         filters_program = []
@@ -374,8 +374,13 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
         return filters_program
 
     def queryset(self, request, queryset):
-        # if self.value() == 'AFRICA':
-        return queryset
+        enrollments_list = []
+        for enrollment in EnrollProgram.objects.filter(program__id=self.value()):
+            enrollments_list.append(enrollment.user)
+        return queryset.filter(user__in=enrollments_list)
+        # print(user_profiles)
+        # EnrollProgram.objects.filter(program__id == self.value())
+        # return queryset
         # if self.value():
         #     return queryset.filter(country__id__exact=self.value())
 
