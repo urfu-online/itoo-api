@@ -39,8 +39,8 @@ class Question(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
-    # def __str__(self):
-    #     return str(self.title)
+    def __str__(self):
+        return self.title
 
 
 @python_2_unicode_compatible
