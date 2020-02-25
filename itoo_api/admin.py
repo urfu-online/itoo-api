@@ -21,7 +21,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-class QuestionInline(admin.StackedInline):
+class QuestionInline(admin.TabularInline):
     model = Question
     show_change_link = True
 
@@ -33,7 +33,7 @@ class ReflectionAdmin(admin.ModelAdmin):
     list_filter = ('program',)
     search_fields = ('title', 'program',)
     show_change_link = True
-    inlines = (QuestionInline)
+    inlines = [QuestionInline, ]
 
 
 @admin.register(Answer)
