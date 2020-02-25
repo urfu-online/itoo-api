@@ -37,7 +37,7 @@ class Question(TimeStampedModel):
         verbose_name_plural = "Вопросы"
 
     def __str__(self):
-        return str(self.title.encode('utf8'))
+        return str(self.pk)
 
 
 @python_2_unicode_compatible
