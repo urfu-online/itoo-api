@@ -10,12 +10,15 @@
             <div class="subsection">
                 <div class="subsection">
                     <!--<h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
-                    {{ object.title}}
-                    {{ object.description }}
+                    {{ request.user }}
+                    {% for reflection in reflections %}
+                    <h2>{{ reflection.title}}</h2>
+                    <h5>{{ reflection.description }}</h5>
+                    {% endfor %}
                 </div>
                 {% for question in questions %}
                 <p><label for="id_last_name">{{ question.title }}<span class="red">*</span>:</label>
-                </p>
+                    {{ form.answer_text }}</p>
                 {% endfor %}
             </div>
         </form>
