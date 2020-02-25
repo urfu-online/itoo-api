@@ -21,6 +21,10 @@ import logging
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    model = Question
+
 
 class QuestionInline(admin.StackedInline):
     model = Question
