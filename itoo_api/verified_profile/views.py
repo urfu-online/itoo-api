@@ -300,7 +300,7 @@ def profile_edit_exist(request):
 
 
     logger.warning("!!!!!!!!!!!!!!!!!")
-    logger.warning(user.is_anonymous)
+    logger.warning(user.is_anonymous())
 
     profile = Profile.get_profile(user=user)[0]
 
