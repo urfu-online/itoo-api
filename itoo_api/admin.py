@@ -21,7 +21,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-class QuestionInline(admin.TabularInline):
+class QuestionInline(admin.StackedInline):
     model = Question
     show_change_link = True
 
