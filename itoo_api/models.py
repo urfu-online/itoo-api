@@ -5,6 +5,7 @@ Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
 
+from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
