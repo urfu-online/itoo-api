@@ -60,7 +60,7 @@ class ReflectionDetail(DetailView, FormMixin):
     def form_valid(self, form):
         # Here, we would record the user's interest using the message
         # passed in form.cleaned_data['message']
-        question = Question.objects.filter(id__exact=self.kwargs['pk'])
+        question = Question.objects.filter(reflection=self.get_object())
         logger.warning(question)
         logger.warning(form.cleaned_data)
         for each in form.cleaned_data['form']:
