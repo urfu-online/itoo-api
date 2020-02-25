@@ -5,6 +5,11 @@ from django.views.generic.edit import FormMixin
 from django.http import HttpResponseForbidden
 from django.core.urlresolvers import reverse
 
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
 
 class AnswerForm(forms.ModelForm):
     class Meta:
@@ -32,6 +37,8 @@ class ReflectionDetail(DetailView, FormMixin):
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
+        from django.contrib import messages
+        messages.add_message(self.request, messages.INFO, 'form submission success')
         return reverse('reflection_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
@@ -53,6 +60,11 @@ class ReflectionDetail(DetailView, FormMixin):
     def form_valid(self, form):
         # Here, we would record the user's interest using the message
         # passed in form.cleaned_data['message']
+        question = Question.objects.filter(id__exact=self.kwargs['pk'])
+        logger.warning(question)
+        for each in form.cleaned_data['form']:
+            logger.warning('****', each, '****', type(each))
+            # Answer.objects.create(user=self.request.user, question = question[0])
         return super(ReflectionDetail, self).form_valid(form)
 
 
