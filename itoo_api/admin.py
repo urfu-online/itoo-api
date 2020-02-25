@@ -375,6 +375,8 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         enrollments_list = []
+        if not self.value():
+            return queryset
         for enrollment in EnrollProgram.objects.filter(program__id=self.value()):
             enrollments_list.append(enrollment.user)
         return queryset.filter(user__in=enrollments_list)
