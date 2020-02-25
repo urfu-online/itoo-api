@@ -22,7 +22,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-class QuestionInline(admin.TabularInline):
+class QuestionInline(admin.StackedInline):
     model = Question
     fk_name = "Question"
 
