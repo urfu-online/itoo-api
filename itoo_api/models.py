@@ -243,4 +243,4 @@ class EnrollProgram(TimeStampedModel):
     class Meta(object):
         """ Meta class for this Django model """
         verbose_name = 'Запись на программу'
-        verbose_name_plural = 'Запись на прграммы'
+        verbose_name_plural = 'Запись на программы'
