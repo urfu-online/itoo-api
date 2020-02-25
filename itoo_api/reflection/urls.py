@@ -1,22 +1,20 @@
-# """
-# URLS for itoo_api end points.
-# """
-# # pylint: disable=invalid-name (?P<slug>\w+)/$
-# from itoo_api.v0.views import ProgramViewSet, ProgramCourseViewSet, \
-#     OrganizationCustomViewSet, OrganizationCourseViewSet, EduProjectViewSet, ProfileViewSet, EnrollProgramViewSet
-#
-# router = routers.SimpleRouter()
-# router.register(r'projects', EduProjectViewSet)
-# router.register(r'programs', ProgramViewSet)
-# router.register(r'link_courses_program', ProgramCourseViewSet)
-# router.register(r'organizations', OrganizationCustomViewSet)
-# router.register(r'link_courses_org', OrganizationCourseViewSet)
-# router.register(r'valid', ProfileViewSet)
-# router.register(r'enroll_program', EnrollProgramViewSet)
-# # router.register(r'paid_courses_role', PaidCoursesRoleViewSet.as_view(), base_name='paid_courses_role')
-# # router.register(r'add_enroll/(?P<user_id>\d+)&(?P<course_id>\d+)&(?P<mode>\d+)/?$', AddEnrollmentViewSet, base_name='add_enroll')
-#
-# app_name = 'v0'
-# urlpatterns = router.urls
-#
-# ReflectionDetail
+from django.conf.urls import url, include
+from itoo_api.reflection.views import *
+from itoo_api.v0.views import CheckSessionID
+from rest_framework import routers
+
+router_list = routers.DefaultRouter()
+# router_list.register(r'courses_mode_all', CourseModeListAllViewSet)
+# router_list.register(r'reflection', ReflectionDetail, base_name="reflection")
+
+app_name = 'reflection'
+urlpatterns = [
+    # url(r'user_mode_change/', ChangeModeStateUserViewSet.as_view(), name='paid_courses_role'),
+    url(r'detail/', ReflectionDetail.as_view(), name='detail'),
+    # url(r'pay_urfu/', PayUrfuDataViewSet.as_view(), name='pay_urfu'),
+    # url(r'check_session/', CheckSessionID.as_view(), name='check_session'),
+    # # url(r'pay_redirect_view/', pay_redirect_view, name='pay_redirect_view'),
+    # url(r'offer/(?P<program_slug>\w+)', OfferViewSet.as_view(), name='view_offer'),
+    # url(r'paid_course_cus/', PaidCoursesCusViewSet, name='paid_course_cus')
+    url(r'', include(router_list.urls)),
+]
