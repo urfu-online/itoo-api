@@ -298,9 +298,8 @@ def profile_edit_exist(request):
     # launch = dict()
     user = request.user
 
-
-    logger.warning("!!!!!!!!!!!!!!!!!")
-    logger.warning(user.is_anonymous())
+    if user.is_anonymous():
+        return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
 
