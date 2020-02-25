@@ -3,7 +3,7 @@ from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
 from django.views.generic.edit import FormMixin
 from django.http import HttpResponseForbidden
-from rest_framework.response import Response
+
 
 class AnswerForm(forms.ModelForm):
     class Meta:
@@ -49,7 +49,7 @@ class ReflectionDetail(DetailView, FormMixin):
     def form_valid(self, form):
         # Here, we would record the user's interest using the message
         # passed in form.cleaned_data['message']
-        return Response({"Success"})
+        return super(ReflectionDetail, self).form_valid(form)
 
 
 class AnswerDetail(DetailView):

@@ -15,11 +15,11 @@
                 </div>
                 {% for question in questions %}
                 <p><label for="id_last_name">{{ question.title }}<span class="red">*</span>:</label>
-                    {{ form.answer_text}}
                 </p>
                 {% endfor %}
+                {{ form.answer_text}}
             </div>
-            <div class="subsection" style="height: 150px;font-size: 15px;">
+            <div class="subsection" style="font-size: 15px;">
                 <input value="Отправить" type="submit">
             </div>
         </form>
