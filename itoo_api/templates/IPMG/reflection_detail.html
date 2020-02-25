@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <h2{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h2>
-    {% endfor %}
-</ul>
-{% endif %}
 
 <div class="row">
     <div class="col container" id="form">
@@ -26,8 +19,15 @@
                 {% endfor %}
                 {{ form.answer_text}}
             </div>
-            <div class="subsection" style="font-size: 15px;">
+            <div class="subsection" style="min-height: 15px;font-size: 15px;">
                 <input value="Отправить" type="submit">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <h2{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h2>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </form>
     </div>
