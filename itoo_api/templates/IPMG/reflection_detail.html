@@ -5,6 +5,8 @@
 {{ object.title}}
 {{ object.description }}
 
-{{ object.questions.title }}
+{% for question in questions %}
+    {{ question.title }}
+{% endfor %}
 
 {% endblock %}
