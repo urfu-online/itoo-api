@@ -386,7 +386,7 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid', 'manager')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
-    list_filter = ('all_valid', 'education_level', 'manager', 'city', ProfileByProgramFilter,)
+    list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'city',)
     actions = [export_csv_profile]
 
 
