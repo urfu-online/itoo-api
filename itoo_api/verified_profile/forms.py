@@ -230,7 +230,6 @@ class ProfileFormIPMG(forms.ModelForm):
             'prefered_org': forms.Select(
                 attrs={
                     'class': 'form-control',
-                    'required': 'false',
                 }
             ),
 
