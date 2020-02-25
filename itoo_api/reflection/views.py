@@ -10,6 +10,7 @@ class ReflectionDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ReflectionDetail, self).get_context_data(**kwargs)
+        context['form'] = AnswerForm()
         context['questions'] = Question.objects.filter(reflection=self.get_object())
         return context
 
@@ -41,5 +42,6 @@ class AnswerDetail(DetailView):
         context = super(AnswerDetail, self).get_context_data(**kwargs)
         context['form'] = AnswerForm()
         context['questions'] = Answer.objects.filter(question=self.get_object())
-        context['reflections'] = Answer.objects.filter(question=Question.objects.filter(reflection=self.get_object())[0])
+        context['reflections'] = Answer.objects.filter(
+            question=Question.objects.filter(reflection=self.get_object())[0])
         return context
