@@ -33,7 +33,7 @@ class ReflectionAdmin(admin.ModelAdmin):
     list_filter = ('program',)
     search_fields = ('title', 'program',)
     show_change_link = True
-    inlines = [QuestionInline, ]
+    inlines = (QuestionInline)
 
 
 @admin.register(Answer)
