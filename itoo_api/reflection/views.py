@@ -32,7 +32,7 @@ class ReflectionDetail(DetailView, FormMixin):
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
-        return reverse('reflection_success', kwargs={'pk': self.object.pk})
+        return reverse('reflection_success')
 
     def get_context_data(self, **kwargs):
         context = super(ReflectionDetail, self).get_context_data(**kwargs)
