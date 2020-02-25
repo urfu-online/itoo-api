@@ -62,6 +62,7 @@ class ReflectionDetail(DetailView, FormMixin):
         # passed in form.cleaned_data['message']
         question = Question.objects.filter(id__exact=self.kwargs['pk'])
         logger.warning(question)
+        logger.warning(form.cleaned_data)
         for each in form.cleaned_data['form']:
             logger.warning('****', each, '****', type(each))
             # Answer.objects.create(user=self.request.user, question = question[0])
