@@ -3,6 +3,7 @@ from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
 from django.views.generic.edit import FormMixin
 from django.http import HttpResponseForbidden
+from django.core.urlresolvers import reverse
 
 
 class AnswerForm(forms.ModelForm):
@@ -29,6 +30,9 @@ class ReflectionDetail(DetailView, FormMixin):
     model = Reflection
     form_class = AnswerForm
     template_name = '../templates/IPMG/reflection_detail.html'
+
+    def get_success_url(self):
+        return reverse('author-detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super(ReflectionDetail, self).get_context_data(**kwargs)
