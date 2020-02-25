@@ -22,6 +22,9 @@ class Reflection(TimeStampedModel):
         verbose_name = "Рефлексия"
         verbose_name_plural = "Рефлексии"
 
+    def __unicode__(self):
+        return self.title
+
     def __str__(self):
         return self.title
 
