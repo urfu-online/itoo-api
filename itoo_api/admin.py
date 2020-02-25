@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 class QuestionInline(admin.TabularInline):
     model = Question
+    show_change_link = True
 
 
 @admin.register(Reflection)
@@ -31,7 +32,7 @@ class ReflectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'program',)
     list_filter = ('program',)
     search_fields = ('title', 'program',)
-    list_editable = [QuestionInline, ]
+    show_change_link = True
     inlines = [QuestionInline, ]
 
 
