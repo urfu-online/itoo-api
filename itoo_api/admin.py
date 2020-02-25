@@ -370,7 +370,7 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         filters_program = []
         for program in Program.objects.filter(active=True):
-            filters_program.append((program.title, program.id))
+            filters_program.append((program.id, program.title))
         return filters_program
 
     def queryset(self, request, queryset):
