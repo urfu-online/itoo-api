@@ -388,9 +388,6 @@ class ProfileAdmin(admin.ModelAdmin):
     actions = [export_csv_profile]
 
 
-class CityAdmin(ModelAdmin):
-    list_filter = (CountryFilter,)
-
 @admin.register(TextBlock)
 class TextBlockAdmin(admin.ModelAdmin):
     list_display = ["type_slug", "content"]
