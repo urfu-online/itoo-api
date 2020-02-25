@@ -2,18 +2,8 @@ from django.views.generic import DetailView
 from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
 from django.views.generic.edit import FormMixin
-
-
-class ReflectionDetail(DetailView):
-    model = Reflection
-    template_name = '../templates/IPMG/reflection_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ReflectionDetail, self).get_context_data(**kwargs)
-        context['form'] = AnswerForm()
-        context['questions'] = Question.objects.filter(reflection=self.get_object())
-        return context
-
+from django.http import HttpResponseForbidden
+from rest_framework.response import Response
 
 class AnswerForm(forms.ModelForm):
     class Meta:
@@ -33,6 +23,33 @@ class AnswerForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class ReflectionDetail(DetailView, FormMixin):
+    model = Reflection
+    form_class = AnswerForm
+    template_name = '../templates/IPMG/reflection_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ReflectionDetail, self).get_context_data(**kwargs)
+        context['form'] = AnswerForm()
+        context['questions'] = Question.objects.filter(reflection=self.get_object())
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        # Here, we would record the user's interest using the message
+        # passed in form.cleaned_data['message']
+        return Response({"Success"})
 
 
 class AnswerDetail(DetailView):
