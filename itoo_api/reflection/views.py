@@ -14,21 +14,24 @@ class ReflectionDetail(DetailView):
         return context
 
 
-class AnswerForm(forms.Form):
-    widgets = {
-        'answer_text': forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'required': 'true'
-            }
-        ),
-        'answer_float': forms.FloatField(
-            attrs={
-                'class': 'form-control',
-                'required': 'true'
-            }
-        ),
-    }
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = '__all__'
+        widgets = {
+            'answer_text': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': 'true'
+                }
+            ),
+            'answer_float': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': 'true'
+                }
+            ),
+        }
 
 
 class AnswerDetail(DetailView):
