@@ -17,13 +17,14 @@ from opaque_keys.edx.keys import CourseKey
 from courseware.courses import get_course_by_id
 
 import logging
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
 class QuestionInline(admin.TabularInline):
     model = Question
-    show_change_link = True
+    fk_name = "Question"
 
 
 @admin.register(Reflection)
@@ -32,8 +33,7 @@ class ReflectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'program',)
     list_filter = ('program',)
     search_fields = ('title', 'program',)
-    show_change_link = True
-    inlines = (QuestionInline)
+    inlines = [QuestionInline]
 
 
 @admin.register(Answer)
@@ -182,7 +182,11 @@ def export_csv_program(modeladmin, request, queryset):
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
 
-    profile_fields = ["last_name", "first_name", "second_name", "sex", "birth_date", "phone", "series", "number", "issued_by", "unit_code", "issue_date", "address_register", "country", "city", "address_living", "mail_index", "job", "position", "edu_organization", "education_level", "specialty", "series_diploma", "number_diploma", "year_of_ending", "leader_id", "SNILS", "add_email", "birth_place", "job_address"]
+    profile_fields = ["last_name", "first_name", "second_name", "sex", "birth_date", "phone", "series", "number",
+                      "issued_by", "unit_code", "issue_date", "address_register", "country", "city", "address_living",
+                      "mail_index", "job", "position", "edu_organization", "education_level", "specialty",
+                      "series_diploma", "number_diploma", "year_of_ending", "leader_id", "SNILS", "add_email",
+                      "birth_place", "job_address"]
 
     example_program = queryset[0]
     logger.warning(example_program)
@@ -222,7 +226,6 @@ def export_csv_program(modeladmin, request, queryset):
 
         writer.writerow(row)
 
-
     #
     # # writer.writerow("email")
     #
@@ -250,7 +253,6 @@ class ProgramAdmin(admin.ModelAdmin):
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
     actions = [export_csv_program]
-
 
 
 class OrganizationCourseInline(admin.TabularInline):
