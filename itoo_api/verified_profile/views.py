@@ -113,10 +113,10 @@ def profile_new(request, slug):
     elif request.method == "GET":
         user = request.user
         if not user.is_authenticated():
-            slug = request.GET.get('program_slug', None)
+            # slug = request.GET.get('program_slug', None)
             if slug:
                 request.session["slug"] = slug
-            return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
+            return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
         program = None
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
