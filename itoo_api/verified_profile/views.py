@@ -154,7 +154,7 @@ def redirect_params(url, params=None):
     return response
 
 
-@login_required
+@login_required(redirect_field_name='/')
 def profile_new(request):
     if request.method == "POST":
         logger.warning(request)
