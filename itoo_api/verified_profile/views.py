@@ -14,134 +14,39 @@ from student.models import CourseEnrollment
 from opaque_keys.edx.keys import CourseKey
 from django.contrib.auth.decorators import login_required
 
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from itoo_api.verified_profile.permission import IsLoggedInUserOrAdmin, IsAdminUser
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from itoo_api.serializers import ProfileSerializer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-# TODO : CLASSED BASSED TURBO VIEW ::::
-# class ProfileDetail(DetailView):
-#     model = Profile
-#     has_program = None
-#     program = None
-#     slug = None
-#     profile_state = None
-#     profile = None
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProfileDetail, self).get_context_data(**kwargs)
-#         context['has_program'] = self.has_program
-#         context['profile_state'] = self.profile_state
-#         context['program'] = self.program
-#         context['profile'] = self.profile
-#         return context
-#
-#     def get_success_url(self, **kwargs):
-#         return reverse('itoo_api:verified_profile:profile_new', kwargs={'pk': kwargs['id']})
-#
-#     def get(self, request, *args, **kwargs):
-#         user = request.user
-#
-#         try:
-#             self.profile = Profile.get_profile(user=user)
-#         except:
-#             return redirect(self.get_success_url(id=user.id))
-#
-#         self.slug = request.GET.get('program_slug', None)
-#         self.program = Program.get_program(slug=self.slug)
-#         if self.program:
-#             enroll = EnrollProgram.get_enroll_program(user=user, program=self.program)
-#         else:
-#             self.has_enroll_program = False
-#             self.object = self.get_object()
-#             context = self.get_context_data(object=self.object)
-#             return self.render_to_response(context)
-#             # return render(request, '../templates/profile_detail.html',
-#             #               {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
-#         if enroll:
-#             self.has_enroll_program = True
-#             self.object = self.get_object()
-#             context = self.get_context_data(object=self.object)
-#             return self.render_to_response(context)
-#             # return render(request, '../templates/profile_detail.html',
-#             #               {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
-#         else:
-#             self.has_enroll_program = False
-#             self.object = self.get_object()
-#             context = self.get_context_data(object=self.object)
-#             return self.render_to_response(context)
-#             # return render(request, '../templates/profile_detail.html',
-#             #               {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
-#
-#
-# class ProfileCreate(CreateView):
-#     model = Profile
-#     has_program = None
-#     program = None
-#     slug = None
-#     profile_state = None
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProfileCreate, self).get_context_data(**kwargs)
-#         context['has_program'] = self.has_program
-#         context['profile_state'] = self.profile_state
-#         context['program'] = self.program
-#         return context
-#
-#     def get(self, request, *args, **kwargs):
-#         self.slug = request.session.get("slug", None)
-#         if self.slug:
-#             self.has_program = True
-#             self.program = Program.get_program(slug=self.slug)
-#         else:
-#             self.has_program = False
-#         self.profile_state = True
-#         return self.render_to_response(self.get_context_data())
-#
-#     def post(self, request, *args, **kwargs):
-#         self.request.session.set_test_cookie()
-#         self.slug = self.request.session.get('slug', None)
-#         if self.slug:
-#             self.has_program = True
-#             self.program = Program.get_program(slug=self.slug)
-#         else:
-#             self.has_program = False
-#         form = self.get_form()
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
-#
-#     def form_valid(self, form):
-#         self.profile_state = True
-#         profile = form.save(commit=False)
-#         profile.user = self.request.user
-#         profile.save()
-#         EnrollProgram.objects.get_or_create(user=profile.user, program=self.program)
-#
-#         if EnrollProgram.get_enroll_program(user=profile.user, program=self.program):
-#             course_keys = [CourseKey.from_string(course.course_id) for course in self.program.get_courses()]
-#             for course_key in course_keys:
-#                 if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
-#                     CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit',
-#                                             check_access=True)
-#         return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(self.slug))
-#
-#     def form_invalid(self, form):
-#         self.profile_state = False
-#         context = {
-#             'has_program': self.has_program,
-#             'profile_state': self.profile_state,
-#             "program": self.program,
-#             'form': form
-#         }
-#         return render(self.request, '../templates/profile_new.html', context)
-#
-#
-# class ProfileUpdate(UpdateView):
-#     model = Profile
+class ProfileDetail(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    lookup_field = 'program_slug'
+
+    def get_object(self):
+        slug = self.kwargs['program_slug']
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [AllowAny]
+        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsLoggedInUserOrAdmin]
+        elif self.action == 'list' or self.action == 'destroy':
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
 
 
 def redirect_params(url, params=None):
@@ -267,7 +172,7 @@ def profile_edit(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            return redirect("api/itoo_api/verified_profile/profile/?program_slug={}".format(slug))
+            return redirect("api/itoo_api/verified_profile/profile/{}".format(slug))
 
         else:
             context = {
@@ -363,7 +268,7 @@ def profile_detail(request):
             request.session["slug"] = slug
         if not profile:
             # return redirect(reverse('itoo:verified_profile:profile_new', args=(slug, )))
-            return redirect("api/itoo_api/verified_profile/profile/new/")
+            return redirect("api/itoo_api/verified_profile/profile/new/{}".format(slug))
         else:
             program = Program.get_program(slug=slug)
             if program:
@@ -371,7 +276,7 @@ def profile_detail(request):
             else:
                 has_enroll_program = False
                 if slug in ["IPMG", "IPMG_test"]:
-                    return redirect('/api/itoo_api/verified_profile/profile/edit_exist/?program_slug={}'.format(slug))
+                    return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
                               {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
@@ -382,7 +287,7 @@ def profile_detail(request):
             else:
                 has_enroll_program = False
                 if slug in ["IPMG", "IPMG_test"]:
-                    return redirect('/api/itoo_api/verified_profile/profile/edit_exist/?program_slug={}'.format(slug))
+                    return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
                               {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
