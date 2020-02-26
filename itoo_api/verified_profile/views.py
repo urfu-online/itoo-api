@@ -154,7 +154,7 @@ def redirect_params(url, params=None):
     return response
 
 
-@login_required(redirect_field_name='http://10.16.208.162/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
+@login_required(redirect_field_name='/npr/IPMG')
 def profile_new(request):
     if request.method == "POST":
         logger.warning(request)
