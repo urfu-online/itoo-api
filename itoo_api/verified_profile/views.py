@@ -160,7 +160,7 @@ def profile_edit(request, slug):
         profile = Profile.get_profile(user=user)[0]
     except:
         return redirect(reverse('itoo:verified_profile:profile_new'))
-    slug = request.session.get("slug", None)
+    slug = request.session.get("slug", slug)
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -204,7 +204,7 @@ def profile_edit_exist(request, slug):
     user = request.user
 
     if user.is_anonymous():
-        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
+        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
 
     profile = Profile.get_profile(user=user)[0]
 
