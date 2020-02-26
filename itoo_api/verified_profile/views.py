@@ -64,7 +64,7 @@ def profile_new(request, slug):
         logger.warning(request)
         request.session.set_test_cookie()
         form = ProfileForm(request.POST, request.FILES)
-        slug = request.session.get('slug', None)
+        slug = request.session.get('slug', slug)
         if slug in ["IPMG", "IPMG_test"]:
             form = ProfileFormIPMG(request.POST, request.FILES)
 
