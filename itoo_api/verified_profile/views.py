@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'program_slug'
 
     def get_object(self):
@@ -46,7 +46,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         elif self.action == 'list' or self.action == 'destroy':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
-
 
 
 def redirect_params(url, params=None):
@@ -200,7 +199,6 @@ def profile_edit(request, slug):
             return render(request, '../templates/profile_edit.html', context)
 
 
-
 def profile_edit_exist(request, slug):
     # launch = dict()
     user = request.user
@@ -279,7 +277,7 @@ def profile_detail(request, slug):
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                              {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
             if enroll:
                 has_enroll_program = True
                 return render(request, '../templates/profile_detail.html',
@@ -290,7 +288,7 @@ def profile_detail(request, slug):
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
 
     elif request.method == "POST":
         slug = request.session.get("slug", None)
