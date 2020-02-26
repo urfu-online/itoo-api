@@ -68,24 +68,6 @@ class EnrollProgramSerializer(serializers.ModelSerializer):
 
 
 # pylint: disable=too-few-public-methods
-class EduProjectSerializer(serializers.ModelSerializer):
-    """ Serializes the Program object."""
-    owner_slug = serializers.CharField(source='owner.slug')
-    programs = ProfileSerializer(many=True, required=False, read_only=True)
-    content = serializers.SerializerMethodField()
-
-    class Meta:  # pylint: disable=missing-docstring
-        model = EduProject
-        fields = (
-            'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'programs', 'content')
-
-    def get_content(self, obj):
-        content_serializer = TextBlockSerializer(obj.content(), many=True)
-        return content_serializer.data
-
-
-# pylint: disable=too-few-public-methods
 class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
@@ -99,6 +81,24 @@ class ProgramSerializer(serializers.ModelSerializer):
             'image_background',
             'active', 'content', 'id_unit_program', 'edu_start_date', 'edu_end_date', 'number_of_hours',
             'issued_document_name', 'direction')
+
+    def get_content(self, obj):
+        content_serializer = TextBlockSerializer(obj.content(), many=True)
+        return content_serializer.data
+
+
+# pylint: disable=too-few-public-methods
+class EduProjectSerializer(serializers.ModelSerializer):
+    """ Serializes the Program object."""
+    owner_slug = serializers.CharField(source='owner.slug')
+    programs = ProgramSerializer(many=True, required=False, read_only=True)
+    content = serializers.SerializerMethodField()
+
+    class Meta:  # pylint: disable=missing-docstring
+        model = EduProject
+        fields = (
+            'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
+            'programs', 'content')
 
     def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
