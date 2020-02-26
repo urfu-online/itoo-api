@@ -252,11 +252,12 @@ def profile_edit_exist(request):
 
 
 # @login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
-def profile_detail(request):
+def profile_detail(request, program_slug):
     user = request.user
 
     if not request.user.is_authenticated():
-        slug = request.GET.get('program_slug', None)
+        # slug = request.GET.get('program_slug', None)
+        slug = program_slug
         if slug:
             request.session["slug"] = slug
         return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
