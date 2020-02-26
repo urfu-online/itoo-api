@@ -71,13 +71,13 @@ class EnrollProgramSerializer(serializers.ModelSerializer):
 class ProgramSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
-    owner_slug = serializers.CharField(source='owner.slug')
+    # owner_slug = serializers.CharField(source='owner.slug')
     content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
         fields = (
-            'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
+            'id', 'title', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
             'active', 'content', 'id_unit_program', 'edu_start_date', 'edu_end_date', 'number_of_hours',
             'issued_document_name', 'direction')
@@ -91,7 +91,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
-    program_slug = ProgramSerializer(source='realized_programs__slug')
+    program_slug = ProgramSerializer(source='realized_programs')
     content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
