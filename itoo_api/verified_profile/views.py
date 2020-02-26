@@ -253,7 +253,8 @@ def profile_edit_exist(request, slug):
 def profile_detail(request, slug):
     user = request.user
 
-    # if not request.user.is_authenticated():
+    if user.is_anonymous():
+        return redirect('/login?next={}'.format(request.get_full_path()))
         # slug = request.GET.get('program_slug', None)
     if slug:
         request.session["slug"] = slug
