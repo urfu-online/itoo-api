@@ -90,7 +90,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 class ProgramForProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
-        fields = ('slug')
+        fields = ('slug',)
 
 
 # pylint: disable=too-few-public-methods
