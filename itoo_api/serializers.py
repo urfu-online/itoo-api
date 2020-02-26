@@ -97,7 +97,7 @@ class ProgramForProjectSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
-    program = ProgramForProjectSerializer(many=True, read_only=True, source='program.slug')
+    program = ProgramForProjectSerializer(many=True, read_only=True, source='program_set')
     # program = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
 
