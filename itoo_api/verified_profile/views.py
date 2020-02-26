@@ -211,7 +211,7 @@ def profile_new(request):
             slug = request.GET.get('program_slug', None)
             if slug:
                 request.session["slug"] = slug
-            return redirect('/login?next={}'.format(request.get_full_path()))
+            return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
         program = None
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
@@ -295,13 +295,13 @@ def profile_edit(request):
             return render(request, '../templates/profile_edit.html', context)
 
 
-@login_required(redirect_field_name='/')
+
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
 
-    # if user.is_anonymous():
-    #     return redirect('/login?next={}'.format(request.get_full_path()))
+    if user.is_anonymous():
+        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
 
     profile = Profile.get_profile(user=user)[0]
 
