@@ -85,7 +85,7 @@ class EduProjectSerializer(serializers.ModelSerializer):
 
 
 # pylint: disable=too-few-public-methods
-class ProgramSerializer(serializers.ModelSerializer):
+class ProgramSerializer(serializers.HyperlinkedModelSerializer):
     """ Serializes the Program object."""
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
