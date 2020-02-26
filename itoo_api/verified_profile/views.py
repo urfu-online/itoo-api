@@ -10,9 +10,9 @@ from itoo_api.models import EnrollProgram, Program
 from .forms import ProfileForm, ProfileFormIPMG
 from .models import Profile, ProfileOrganization
 
-
 from student.models import CourseEnrollment
 from opaque_keys.edx.keys import CourseKey
+from django.contrib.auth.decorators import login_required
 
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -154,6 +154,7 @@ def redirect_params(url, params=None):
     return response
 
 
+@login_required
 def profile_new(request):
     if request.method == "POST":
         logger.warning(request)
@@ -169,7 +170,6 @@ def profile_new(request):
             program = Program.get_program(slug=slug)
         else:
             has_program = False
-
 
         if form.is_valid() and program:
             profile_state = True
@@ -247,6 +247,7 @@ def profile_new(request):
             return render(request, '../templates/profile_new.html', context)
 
 
+@login_required
 def profile_edit(request):
     # launch = dict()
     user = request.user
@@ -294,6 +295,7 @@ def profile_edit(request):
             return render(request, '../templates/profile_edit.html', context)
 
 
+@login_required
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
@@ -344,6 +346,7 @@ def profile_edit_exist(request):
             return render(request, '../templates/profile_edit_exist.html', context)
 
 
+@login_required
 def profile_detail(request):
     user = request.user
 
