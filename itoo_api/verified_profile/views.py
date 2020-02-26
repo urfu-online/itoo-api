@@ -247,7 +247,7 @@ def profile_new(request):
             return render(request, '../templates/profile_new.html', context)
 
 
-@login_required
+@login_required(redirect_field_name='/')
 def profile_edit(request):
     # launch = dict()
     user = request.user
@@ -295,7 +295,7 @@ def profile_edit(request):
             return render(request, '../templates/profile_edit.html', context)
 
 
-@login_required
+@login_required(redirect_field_name='/')
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
@@ -346,7 +346,7 @@ def profile_edit_exist(request):
             return render(request, '../templates/profile_edit_exist.html', context)
 
 
-@login_required
+@login_required(redirect_field_name='/')
 def profile_detail(request):
     user = request.user
 
