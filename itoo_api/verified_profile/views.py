@@ -253,11 +253,11 @@ def profile_edit_exist(request, slug):
 def profile_detail(request, slug):
     user = request.user
 
-    if not request.user.is_authenticated():
+    # if not request.user.is_authenticated():
         # slug = request.GET.get('program_slug', None)
-        if slug:
-            request.session["slug"] = slug
-        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
+    if slug:
+        request.session["slug"] = slug
+        # return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
