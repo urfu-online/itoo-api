@@ -154,7 +154,7 @@ def redirect_params(url, params=None):
     return response
 
 
-@login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
+# @login_required(redirect_field_name='api/itoo_api/verified_profile/profile/?program_slug=IPMG')
 def profile_new(request):
     if request.method == "POST":
         logger.warning(request)
@@ -211,7 +211,7 @@ def profile_new(request):
             slug = request.GET.get('program_slug', None)
             if slug:
                 request.session["slug"] = slug
-            # return redirect('/login?next={}'.format(request.get_full_path()))
+            return redirect('/login?next={}'.format(request.get_full_path()))
         program = None
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
