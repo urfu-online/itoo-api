@@ -60,7 +60,7 @@ def redirect_params(url, params=None):
 
 
 # @login_required(redirect_field_name='api/itoo_api/verified_profile/profile/?program_slug=IPMG')
-def profile_new(request):
+def profile_new(request, slug):
     if request.method == "POST":
         logger.warning(request)
         request.session.set_test_cookie()
@@ -153,7 +153,7 @@ def profile_new(request):
 
 
 @login_required(redirect_field_name='/')
-def profile_edit(request):
+def profile_edit(request, slug):
     # launch = dict()
     user = request.user
     # profile = Profile.get_profile(user=user)[0]
@@ -201,7 +201,7 @@ def profile_edit(request):
 
 
 
-def profile_edit_exist(request):
+def profile_edit_exist(request, slug):
     # launch = dict()
     user = request.user
 
@@ -210,7 +210,7 @@ def profile_edit_exist(request):
 
     profile = Profile.get_profile(user=user)[0]
 
-    slug = request.GET.get('program_slug', None)
+    # slug = request.GET.get('program_slug', None)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if slug in ["IPMG", "IPMG_test"]:
@@ -252,12 +252,11 @@ def profile_edit_exist(request):
 
 
 # @login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
-def profile_detail(request, program_slug):
+def profile_detail(request, slug):
     user = request.user
 
     if not request.user.is_authenticated():
         # slug = request.GET.get('program_slug', None)
-        slug = program_slug
         if slug:
             request.session["slug"] = slug
         return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
