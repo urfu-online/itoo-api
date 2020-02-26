@@ -154,7 +154,7 @@ def redirect_params(url, params=None):
     return response
 
 
-@login_required(redirect_field_name='/npr/IPMG')
+@login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
 def profile_new(request):
     if request.method == "POST":
         logger.warning(request)
@@ -247,7 +247,7 @@ def profile_new(request):
             return render(request, '../templates/profile_new.html', context)
 
 
-# @login_required(redirect_field_name='/')
+@login_required(redirect_field_name='/')
 def profile_edit(request):
     # launch = dict()
     user = request.user
@@ -295,10 +295,13 @@ def profile_edit(request):
             return render(request, '../templates/profile_edit.html', context)
 
 
-# @login_required(redirect_field_name='/')
+@login_required(redirect_field_name='/')
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
+
+    # if user.is_anonymous():
+    #     return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
 
@@ -343,6 +346,7 @@ def profile_edit_exist(request):
             return render(request, '../templates/profile_edit_exist.html', context)
 
 
+@login_required(redirect_field_name='/')
 def profile_detail(request):
     user = request.user
 
