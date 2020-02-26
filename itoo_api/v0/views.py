@@ -133,7 +133,7 @@ class ProgramViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Program.objects.filter(active=True)  # pylint: disable=no-member
     serializer_class = ProgramSerializer
-    lookup_field = 'project'
+    lookup_field = 'project_slug'
 
 
 class ProgramCourseViewSet(viewsets.ReadOnlyModelViewSet):
