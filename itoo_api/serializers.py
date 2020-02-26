@@ -97,8 +97,8 @@ class ProgramForProjectSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
-    # program_slug = ProgramSerializer(source='realized_programs')
-    program = serializers.SerializerMethodField()
+    program = ProgramForProjectSerializer(source='program.slug')
+    # program = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
@@ -107,9 +107,9 @@ class EduProjectSerializer(serializers.ModelSerializer):
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
             'content', 'program')
 
-    def get_program(self, obj):
-        program_serializer = ProgramForProjectSerializer(obj.content(), many=True)
-        return program_serializer.data
+    # def get_program(self, obj):
+    #     program_serializer = ProgramForProjectSerializer(obj.content(), many=True)
+    #     return program_serializer.data
 
     def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
