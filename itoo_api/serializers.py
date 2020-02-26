@@ -91,14 +91,14 @@ class ProgramSerializer(serializers.ModelSerializer):
 class EduProjectSerializer(serializers.ModelSerializer):
     """ Serializes the Program object."""
     owner_slug = serializers.CharField(source='owner.slug')
-    programs = ProgramSerializer(many=True, required=False, read_only=True)
+    program_slug = ProgramSerializer(many=True, required=False, read_only=True, source='program.slug')
     content = serializers.SerializerMethodField()
 
     class Meta:  # pylint: disable=missing-docstring
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'programs', 'content')
+            'program_slug', 'content')
 
     def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
