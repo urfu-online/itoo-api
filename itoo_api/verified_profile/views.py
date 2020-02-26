@@ -286,7 +286,10 @@ def profile_detail(request, slug):
                                   {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
             if enroll:
                 has_enroll_program = True
-                return render(request, '../templates/profile_detail.html',
+                if slug in ["IPMG", "IPMG_test"]:
+                    return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
+                else:
+                    return render(request, '../templates/profile_detail.html',
                               {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
             else:
                 has_enroll_program = False
@@ -297,7 +300,7 @@ def profile_detail(request, slug):
                                   {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
 
     elif request.method == "POST":
-        slug = request.session.get("slug", None)
+        slug = request.session.get("slug", slug)
         program = Program.get_program(slug=slug)
         if slug and program:
             EnrollProgram.objects.get_or_create(user=user, program=program)
