@@ -346,7 +346,7 @@ def profile_edit_exist(request):
             return render(request, '../templates/profile_edit_exist.html', context)
 
 
-@login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
+# @login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
 def profile_detail(request):
     user = request.user
 
