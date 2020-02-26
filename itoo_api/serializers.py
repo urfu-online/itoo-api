@@ -78,8 +78,7 @@ class EduProjectSerializer(serializers.ModelSerializer):
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'programs'
-            'content')
+            'programs', 'content')
 
     def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
