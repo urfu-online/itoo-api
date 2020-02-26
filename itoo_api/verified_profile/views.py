@@ -111,6 +111,9 @@ def profile_new(request, slug):
 
     elif request.method == "GET":
         user = request.user
+
+        if user.is_anonymous():
+          return redirect('/login?next={}'.format(request.get_full_path()))
         # if not user.is_authenticated():
         #     # slug = request.GET.get('program_slug', None)
         #     if slug:
@@ -151,11 +154,14 @@ def profile_new(request, slug):
             return render(request, '../templates/profile_new.html', context)
 
 
-@login_required(redirect_field_name='/')
+# @login_required(redirect_field_name='/')
 def profile_edit(request, slug):
     # launch = dict()
     user = request.user
     # profile = Profile.get_profile(user=user)[0]
+    if user.is_anonymous():
+        return redirect('/login?next={}'.format(request.get_full_path()))
+
     try:
         profile = Profile.get_profile(user=user)[0]
     except:
@@ -204,7 +210,7 @@ def profile_edit_exist(request, slug):
     user = request.user
 
     if user.is_anonymous():
-        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
+        return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
 
