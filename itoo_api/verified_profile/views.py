@@ -354,7 +354,7 @@ def profile_detail(request):
         slug = request.GET.get('program_slug', None)
         if slug:
             request.session["slug"] = slug
-        return redirect('/login?next={}'.format(request.get_full_path()))
+        # return redirect('/login?next={}'.format(request.get_full_path()))
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
