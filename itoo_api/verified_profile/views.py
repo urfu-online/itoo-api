@@ -111,13 +111,13 @@ def profile_new(request, slug):
 
     elif request.method == "GET":
         user = request.user
-        if not user.is_authenticated():
-            # slug = request.GET.get('program_slug', None)
-            if slug:
-                request.session["slug"] = slug
-            return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
+        # if not user.is_authenticated():
+        #     # slug = request.GET.get('program_slug', None)
+        #     if slug:
+        #         request.session["slug"] = slug
+        #     return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
         program = None
-        slug = request.session.get("slug", None)
+        slug = request.session.get("slug", slug)
         profile_organization = ProfileOrganization.objects.none()
 
         if slug:
@@ -257,11 +257,10 @@ def profile_detail(request, slug):
         # slug = request.GET.get('program_slug', None)
         if slug:
             request.session["slug"] = slug
-        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/?program_slug=IPMG'))
+        return redirect('/login?next={}'.format('/api/itoo_api/verified_profile/profile/{}'.format(slug)))
 
     if request.method == "GET":
         profile = Profile.get_profile(user=user)
-        slug = request.GET.get('program_slug', None)
         if slug:
             request.session["slug"] = slug
         if not profile:
