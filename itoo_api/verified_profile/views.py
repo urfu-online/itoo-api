@@ -211,7 +211,7 @@ def profile_new(request):
             slug = request.GET.get('program_slug', None)
             if slug:
                 request.session["slug"] = slug
-            return redirect('/login?next={}'.format(request.get_full_path()))
+            # return redirect('/login?next={}'.format(request.get_full_path()))
         program = None
         slug = request.session.get("slug", None)
         profile_organization = ProfileOrganization.objects.none()
@@ -247,7 +247,7 @@ def profile_new(request):
             return render(request, '../templates/profile_new.html', context)
 
 
-@login_required(redirect_field_name='/')
+# @login_required(redirect_field_name='/')
 def profile_edit(request):
     # launch = dict()
     user = request.user
@@ -295,13 +295,10 @@ def profile_edit(request):
             return render(request, '../templates/profile_edit.html', context)
 
 
-@login_required(redirect_field_name='/')
+# @login_required(redirect_field_name='/')
 def profile_edit_exist(request):
     # launch = dict()
     user = request.user
-
-    # if user.is_anonymous():
-    #     return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
 
@@ -346,7 +343,6 @@ def profile_edit_exist(request):
             return render(request, '../templates/profile_edit_exist.html', context)
 
 
-@login_required(redirect_field_name='/')
 def profile_detail(request):
     user = request.user
 
