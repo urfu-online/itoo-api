@@ -220,6 +220,8 @@ def profile_edit_exist(request, slug):
             if slug in ["IPMG", "IPMG_test"]:
                 if enroll_program(user=request.user, program=program):
                     return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                else:
+                    return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
 
             else:
                 return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
