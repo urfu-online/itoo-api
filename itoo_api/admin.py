@@ -1,6 +1,5 @@
+# coding=utf-8
 """ Django admin pages for organization models """
-
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django_summernote.admin import SummernoteInlineModelAdmin
@@ -426,7 +425,6 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
     list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'admin_diagnostics')
     actions = [export_csv_profile]
-    radio_fields = ("sex",)
 
 
 @admin.register(TextBlock)
