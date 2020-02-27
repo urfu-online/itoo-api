@@ -308,6 +308,8 @@ def profile_detail(request, slug):
         program = Program.get_program(slug=slug)
         if enroll_program(user=request.user, program=program):
             return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+        else:
+            return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
 
 
 def enroll_program(user, program):
