@@ -93,9 +93,9 @@ def profile_new(request, slug):
                         # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
                         # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
             if slug in ["IPMG", "IPMG_test"]:
-                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+                return redirect('projects/')
             else:
-                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+                return redirect('projects/')
         else:
             profile_state = False
             context = {
@@ -113,7 +113,7 @@ def profile_new(request, slug):
         user = request.user
 
         if user.is_anonymous():
-          return redirect('/login?next={}'.format(request.get_full_path()))
+            return redirect('/login?next={}'.format(request.get_full_path()))
         # if not user.is_authenticated():
         #     # slug = request.GET.get('program_slug', None)
         #     if slug:
@@ -225,9 +225,17 @@ def profile_edit_exist(request, slug):
             profile.user = request.user
             profile.save()
             if slug in ["IPMG", "IPMG_test"]:
-                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+                program = Program.get_program(slug=slug)
+                if program:
+                    enroll = EnrollProgram.get_enroll_program(user=user, program=program)
+                    if not enroll:
+                        redirect('api/itoo_api/verified_profile/profile/{}'.format(slug))
+                    else:
+                        return redirect('projects/')
+                else:
+                    return redirect('projects/')
             else:
-                return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+                return redirect('projects/')
 
         else:
             context = {
@@ -283,21 +291,24 @@ def profile_detail(request, slug):
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                                  {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None, 'program_slug': slug})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None,
+                                   'program_slug': slug})
             if enroll:
                 has_enroll_program = True
                 if slug in ["IPMG", "IPMG_test"]:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program, 'program_slug': slug})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program,
+                                   'program_slug': slug})
             else:
                 has_enroll_program = False
                 if slug in ["IPMG", "IPMG_test"]:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program, 'program_slug': slug})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program,
+                                   'program_slug': slug})
 
     elif request.method == "POST":
         slug = request.session.get("slug", slug)
@@ -314,4 +325,4 @@ def profile_detail(request, slug):
         # TODO: Что то придумать с этими с ифками
         else:
             slug = ''
-        return redirect('https://courses.openedu.urfu.ru/npr/{}'.format(slug))
+        return redirect('projects/')
