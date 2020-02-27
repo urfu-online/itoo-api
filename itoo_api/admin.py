@@ -1,21 +1,21 @@
 # coding=utf-8
 """ Django admin pages for organization models """
+import logging
+
 from django.contrib import admin
+from django.forms import Textarea
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.db import models
 from django_summernote.admin import SummernoteInlineModelAdmin
+from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
+from opaque_keys.edx.keys import CourseKey
+from student.models import CourseEnrollment
 
 from itoo_api.acquiring.models import Offer, Payment
 from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
-
-from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
-from student.models import CourseEnrollment, user_by_anonymous_id
-from opaque_keys.edx.keys import CourseKey
-from courseware.courses import get_course_by_id
-
-import logging
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -442,6 +442,9 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'admin_diagnostics')
     actions = [export_csv_profile]
     readonly_fields = ["terms"]
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 3, 'cols': 40})},
+    }
 
 
 @admin.register(TextBlock)
