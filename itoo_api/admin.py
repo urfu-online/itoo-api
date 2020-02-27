@@ -443,7 +443,7 @@ class ProfileAdmin(admin.ModelAdmin):
     actions = [export_csv_profile]
     readonly_fields = ["terms"]
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 3, 'cols': 40})},
+        models.TextField: {'widget': Textarea(attrs={'rows': 2})},
     }
 
 
