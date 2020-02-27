@@ -414,7 +414,6 @@ class ProfileAdmin(admin.ModelAdmin):
             )
         }),
         ("Адрес", {
-            'classes': ('collapse',),
             'fields': (
                 ("country", "mail_index"),
                 ("address_living",),
@@ -422,7 +421,6 @@ class ProfileAdmin(admin.ModelAdmin):
             )
         }),
         ("Паспортные данные", {
-            'classes': ('collapse',),
             'fields': (
                 ("series", "number"),
                 ("issued_by",),
@@ -430,7 +428,6 @@ class ProfileAdmin(admin.ModelAdmin):
             )
         }),
         ("Образование", {
-            'classes': ('collapse',),
             'fields': (
                 ("education_level",),
                 ("series_diploma", 'number_diploma'),
