@@ -80,22 +80,14 @@ def profile_new(request, slug):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
+            enroll_program(user=profile.user, program=program)
 
-            EnrollProgram.objects.get_or_create(user=profile.user, program=program)
-
-            if EnrollProgram.get_enroll_program(user=profile.user, program=program):
-                course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
-                for course_key in course_keys:
-                    if not CourseEnrollment.is_enrolled(user=profile.user, course_key=course_key):
-                        CourseEnrollment.enroll(user=profile.user, course_key=course_key, mode='audit',
-                                                check_access=True)
-
-                        # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
-                        # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
+            # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
+            # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
             if slug in ["IPMG", "IPMG_test"]:
-                return redirect('projects/')
+                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
             else:
-                return redirect('projects/')
+                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
         else:
             profile_state = False
             context = {
@@ -224,18 +216,13 @@ def profile_edit_exist(request, slug):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
+            program = Program.get_program(slug=slug)
             if slug in ["IPMG", "IPMG_test"]:
-                program = Program.get_program(slug=slug)
-                if program:
-                    enroll = EnrollProgram.get_enroll_program(user=user, program=program)
-                    if not enroll:
-                        redirect('api/itoo_api/verified_profile/profile/{}'.format(slug))
-                    else:
-                        return redirect('projects/')
-                else:
-                    return redirect('projects/')
+                if enroll_program(user=request.user, program=program):
+                    return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+
             else:
-                return redirect('projects/')
+                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
 
         else:
             context = {
@@ -313,16 +300,19 @@ def profile_detail(request, slug):
     elif request.method == "POST":
         slug = request.session.get("slug", slug)
         program = Program.get_program(slug=slug)
-        if slug and program:
-            EnrollProgram.objects.get_or_create(user=user, program=program)
+        if enroll_program(user=request.user, program=program):
+            return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
 
-        if EnrollProgram.get_enroll_program(user=user, program=program):
-            course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
-            for course_key in course_keys:
-                if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
-                    CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
 
-        # TODO: Что то придумать с этими с ифками
-        else:
-            slug = ''
-        return redirect('projects/')
+def enroll_program(user, program):
+    if program:
+        EnrollProgram.objects.get_or_create(user=user, program=program)
+
+    if EnrollProgram.get_enroll_program(user=user, program=program):
+        course_keys = [CourseKey.from_string(course.course_id) for course in program.get_courses()]
+        for course_key in course_keys:
+            if not CourseEnrollment.is_enrolled(user=user, course_key=course_key):
+                CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
+                return True
+    else:
+        return False
