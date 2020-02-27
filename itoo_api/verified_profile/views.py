@@ -61,6 +61,7 @@ def redirect_params(url, params=None):
 
 # @login_required(redirect_field_name='api/itoo_api/verified_profile/profile/?program_slug=IPMG')
 def profile_new(request, slug):
+    url = urlparse(request.get_full_path())
     if request.method == "POST":
         logger.warning(request)
         request.session.set_test_cookie()
@@ -86,9 +87,9 @@ def profile_new(request, slug):
             # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
             # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
             if slug in ["IPMG", "IPMG_test"]:
-                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
             else:
-                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
         else:
             profile_state = False
             context = {
@@ -206,8 +207,7 @@ def profile_edit_exist(request, slug):
         return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
-    url = request.get_full_path()
-    url = urlparse(url)
+    url = urlparse(request.get_full_path())
 
     # slug = request.GET.get('program_slug', None)
     if request.method == "POST":
@@ -258,6 +258,7 @@ def profile_edit_exist(request, slug):
 # @login_required(redirect_field_name='/api/itoo_api/verified_profile/profile/?program_slug=IPMG')
 def profile_detail(request, slug):
     user = request.user
+    url = urlparse(request.get_full_path())
 
     if user.is_anonymous():
         return redirect('/login?next={}'.format(request.get_full_path()))
@@ -306,7 +307,7 @@ def profile_detail(request, slug):
         slug = request.session.get("slug", slug)
         program = Program.get_program(slug=slug)
         if enroll_program(user=request.user, program=program):
-            return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+            return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
 
 
 def enroll_program(user, program):
