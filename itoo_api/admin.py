@@ -396,10 +396,29 @@ class ProfileAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
+                ("manager",),
+                ('terms', 'user', 'doc_forwarding'),
+                ("prefered_org",),
+                ('created_at', 'updated_at'),
+                ("admin_number", "admin_diagnostics")
+            )
+        }),
+        (None, {
+            'fields': (
                 ('last_name', 'last_name', 'second_name'),
-                ("sex",),
-                ('birth_date', 'phone',),
-                ('city', 'job', 'position')
+                ("sex", "SNILS", "leader_id"),
+                ('birth_date', 'birth_place', 'phone',),
+                ('city', 'job', 'position'),
+                ('job_address',),
+                ('add_email',)
+            )
+        }),
+        ("Адрес", {
+            'classes': ('collapse',),
+            'fields': (
+                ("country", "mail_index"),
+                ("address_living",),
+                ("unit_code", "issue_date")
             )
         }),
         ("Паспортные данные", {
@@ -415,7 +434,7 @@ class ProfileAdmin(admin.ModelAdmin):
             'fields': (
                 ("education_level",),
                 ("series_diploma", 'number_diploma'),
-                ("edu_organization", ),
+                ("edu_organization",),
                 ("specialty", "year_of_ending")
             )
         })
@@ -425,6 +444,7 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
     list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'admin_diagnostics')
     actions = [export_csv_profile]
+    readonly_fields = ["terms"]
 
 
 @admin.register(TextBlock)
