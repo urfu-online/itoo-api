@@ -396,8 +396,8 @@ class ProfileAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                ("manager",),
-                ('terms', 'user', 'doc_forwarding'),
+                ("manager", 'user',),
+                ('terms', 'doc_forwarding'),
                 ("prefered_org",),
                 # ('created_at', 'updated_at'), ? unknown fields
                 ("admin_number", "admin_diagnostics", "all_valid")
@@ -406,8 +406,8 @@ class ProfileAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 ('last_name', 'last_name', 'second_name'),
-                ("sex", "SNILS", "leader_id"),
-                ('birth_date', 'birth_place', 'phone',),
+                ("SNILS", "leader_id", "sex"),
+                ('birth_date', 'birth_place', 'phone'),
                 ('city', 'job', 'position'),
                 ('job_address',),
                 ('add_email',)
