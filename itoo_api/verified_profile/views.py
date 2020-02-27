@@ -67,7 +67,7 @@ def profile_new(request, slug):
         request.session.set_test_cookie()
         form = ProfileForm(request.POST, request.FILES)
         slug = request.session.get('slug', slug)
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG(request.POST, request.FILES)
 
         program = None
@@ -86,7 +86,7 @@ def profile_new(request, slug):
 
             # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
             # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
-            if slug in ["IPMG", "IPMG_test"]:
+            if "IPMG" in slug:
                 return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
             else:
                 return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
@@ -98,7 +98,7 @@ def profile_new(request, slug):
                 "program": program,
                 'form': form
             }
-            if slug in ["IPMG", "IPMG_test"]:
+            if "IPMG" in slug:
                 return render(request, '../templates/IPMG/profile_new.html', context)
             else:
                 return render(request, '../templates/profile_new.html', context)
@@ -125,7 +125,7 @@ def profile_new(request, slug):
             has_program = False
 
         form = ProfileForm()
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG()
 
         if has_program and form:
@@ -142,7 +142,7 @@ def profile_new(request, slug):
             "profile_organization": profile_organization
         }
 
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             return render(request, '../templates/IPMG/profile_new.html', context)
         else:
             return render(request, '../templates/profile_new.html', context)
@@ -164,7 +164,7 @@ def profile_edit(request, slug):
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG(request.POST, request.FILES, instance=profile)
 
         if form.is_valid():
@@ -178,7 +178,7 @@ def profile_edit(request, slug):
                 'profile_state': False,
                 'form': form
             }
-            if slug in ["IPMG", "IPMG_test"]:
+            if "IPMG" in slug:
                 return render(request, '../templates/IPMG/profile_edit.html', context)
             else:
                 return render(request, '../templates/profile_edit.html', context)
@@ -187,13 +187,13 @@ def profile_edit(request, slug):
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
 
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG(instance=profile)
         context = {
             'profile_state': True,
             'form': form
         }
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             return render(request, '../templates/IPMG/profile_edit.html', context)
         else:
             return render(request, '../templates/profile_edit.html', context)
@@ -212,7 +212,7 @@ def profile_edit_exist(request, slug):
     # slug = request.GET.get('program_slug', None)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG(request.POST, request.FILES, instance=profile)
 
         if form.is_valid():
@@ -220,7 +220,7 @@ def profile_edit_exist(request, slug):
             profile.user = request.user
             profile.save()
             program = Program.get_program(slug=slug)
-            if slug in ["IPMG", "IPMG_test"]:
+            if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
                     return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
                 else:
@@ -234,7 +234,7 @@ def profile_edit_exist(request, slug):
                 'profile_state': False,
                 'form': form
             }
-            if slug in ["IPMG", "IPMG_test"]:
+            if "IPMG" in slug:
                 return render(request, '../templates/IPMG/profile_edit_exist.html', context)
             else:
                 return render(request, '../templates/profile_edit_exist.html', context)
@@ -242,14 +242,14 @@ def profile_edit_exist(request, slug):
 
     elif request.method == "GET":
         form = ProfileForm(instance=profile)
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             form = ProfileFormIPMG(instance=profile)
 
         context = {
             'profile_state': True,
             'form': form
         }
-        if slug in ["IPMG", "IPMG_test"]:
+        if "IPMG" in slug:
             return render(request, '../templates/IPMG/profile_edit_exist.html', context)
         else:
             return render(request, '../templates/profile_edit_exist.html', context)
@@ -280,7 +280,7 @@ def profile_detail(request, slug):
                 enroll = EnrollProgram.get_enroll_program(user=user, program=program)
             else:
                 has_enroll_program = False
-                if slug in ["IPMG", "IPMG_test"]:
+                if "IPMG" in slug:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
@@ -288,7 +288,7 @@ def profile_detail(request, slug):
                                    'program_slug': slug})
             if enroll:
                 has_enroll_program = True
-                if slug in ["IPMG", "IPMG_test"]:
+                if "IPMG" in slug:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
@@ -296,7 +296,7 @@ def profile_detail(request, slug):
                                    'program_slug': slug})
             else:
                 has_enroll_program = False
-                if slug in ["IPMG", "IPMG_test"]:
+                if "IPMG" in slug:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
