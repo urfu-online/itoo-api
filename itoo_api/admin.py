@@ -400,7 +400,7 @@ class ProfileAdmin(admin.ModelAdmin):
                 ('terms', 'user', 'doc_forwarding'),
                 ("prefered_org",),
                 # ('created_at', 'updated_at'), ? unknown fields
-                ("admin_number", "admin_diagnostics")
+                ("admin_number", "admin_diagnostics", "all_valid")
             )
         }),
         (None, {
