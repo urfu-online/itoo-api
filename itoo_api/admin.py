@@ -399,7 +399,7 @@ class ProfileAdmin(admin.ModelAdmin):
                 ("manager",),
                 ('terms', 'user', 'doc_forwarding'),
                 ("prefered_org",),
-                ('created_at', 'updated_at'),
+                # ('created_at', 'updated_at'), ? unknown fields
                 ("admin_number", "admin_diagnostics")
             )
         }),
