@@ -405,7 +405,7 @@ class ProfileAdmin(admin.ModelAdmin):
         }),
         (None, {
             'fields': (
-                ('last_name', 'last_name', 'second_name'),
+                ('last_name', 'first_name', 'second_name'),
                 ("SNILS", "leader_id", "sex"),
                 ('birth_date', 'birth_place', 'phone'),
                 ('city', 'job', 'position'),
