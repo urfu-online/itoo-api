@@ -2,6 +2,7 @@
 import logging
 # import json
 import urllib
+from urlparse import urlparse
 
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
@@ -205,6 +206,8 @@ def profile_edit_exist(request, slug):
         return redirect('/login?next={}'.format(request.get_full_path()))
 
     profile = Profile.get_profile(user=user)[0]
+    url = request.get_full_path()
+    url = urlparse(url)
 
     # slug = request.GET.get('program_slug', None)
     if request.method == "POST":
@@ -219,12 +222,12 @@ def profile_edit_exist(request, slug):
             program = Program.get_program(slug=slug)
             if slug in ["IPMG", "IPMG_test"]:
                 if enroll_program(user=request.user, program=program):
-                    return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                    return redirect('{}://{}/projects/{}/{}'.format(url.scheme, url.netloc, program.project.slug, program.slug))
                 else:
-                    return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                    return redirect('{}://{}/projects/{}/{}'.format(url.scheme, url.netloc, program.project.slug, program.slug))
 
             else:
-                return redirect('projects/{}/{}'.format(program.project.slug, program.slug))
+                return redirect('{}://{}/projects/{}/{}'.format(url.scheme, url.netloc, program.project.slug, program.slug))
 
         else:
             context = {
