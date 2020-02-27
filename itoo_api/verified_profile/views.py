@@ -283,21 +283,21 @@ def profile_detail(request, slug):
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                                  {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, "program": None, 'program_slug': slug})
             if enroll:
                 has_enroll_program = True
                 if slug in ["IPMG", "IPMG_test"]:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
+                              {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program, 'program_slug': slug})
             else:
                 has_enroll_program = False
                 if slug in ["IPMG", "IPMG_test"]:
                     return redirect('/api/itoo_api/verified_profile/profile/edit_exist/{}'.format(slug))
                 else:
                     return render(request, '../templates/profile_detail.html',
-                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program})
+                                  {'profile': profile, 'has_enroll_program': has_enroll_program, 'program': program, 'program_slug': slug})
 
     elif request.method == "POST":
         slug = request.session.get("slug", slug)
