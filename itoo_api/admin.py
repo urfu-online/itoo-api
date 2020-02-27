@@ -394,11 +394,39 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': (
+                ('last_name', 'last_name', 'second_name'),
+                ("sex",),
+                ('birth_date', 'phone',),
+                ('city', 'job', 'position')
+            )
+        }),
+        ("Паспортные данные", {
+            'classes': ('collapse',),
+            'fields': (
+                ("series", "number"),
+                ("issued_by",),
+                ("unit_code", "issue_date")
+            )
+        }),
+        ("Образование", {
+            'classes': ('collapse',),
+            'fields': (
+                ("education_level",),
+                ("series_diploma", 'number_diploma'),
+                ("edu_organization", ),
+                ("specialty", "year_of_ending")
+            )
+        })
+    )
     list_display = ('admin_number', 'user', 'first_name', 'last_name', 'second_name', 'phone', 'leader_id', 'all_valid',
                     'admin_diagnostics', 'manager')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
     list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'admin_diagnostics')
     actions = [export_csv_profile]
+    radio_fields = ("sex",)
 
 
 @admin.register(TextBlock)
