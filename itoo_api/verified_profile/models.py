@@ -108,6 +108,9 @@ class Profile(models.Model):
 
     prefered_org = models.ForeignKey(ProfileOrganization, blank=True, null=True, on_delete=models.PROTECT)
 
+    admin_number = models.CharField("Номер согласия", max_length=355, null=True, blank=True)
+    admin_diagnostics = models.BooleanField("Диагностики пройдены", default=False)
+
 
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
