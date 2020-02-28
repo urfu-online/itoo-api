@@ -63,15 +63,13 @@ class ReflectionDetail(DetailView, FormMixin):
         # Here, we would record the user's interest using the message
         # passed in form.cleaned_data['message']
         question = Question.objects.filter(reflection=self.get_object())
-        logger.warning(self.get_object())
-        question_test = get_object_or_404(Question, reflection_id=self.get_object().pk)
         logger.warning('!!!!!!!!!!!!!!!!')
-        logger.warning(question_test)
         logger.warning(form.cleaned_data['answer_text'])
-        for each in form.cleaned_data['answer_text']:
-            # logger.warning('****', each, '****', type(each))
-            # TODO question=question[N] === pk answer !!!!!
-            Answer.objects.create(user=self.request.user, question=question[0], answer_text=each)
+        for item_question in question:
+            for each in form.cleaned_data['answer_text']:
+                # logger.warning('****', each, '****', type(each))
+                # TODO question=question[N] === pk answer !!!!!
+                Answer.objects.create(user=self.request.user, question=question[item_question], answer_text=each)
         return super(ReflectionDetail, self).form_valid(form)
 
 
