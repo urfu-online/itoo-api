@@ -45,7 +45,7 @@ class ReflectionDetail(DetailView, FormMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ReflectionDetail, self).get_context_data(**kwargs)
-        context['form'] = AnswerForm()
+        context['form'] = self.get_form()
         context['questions'] = Question.objects.filter(reflection=self.get_object())
         return context
 
