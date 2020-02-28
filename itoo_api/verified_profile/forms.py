@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'diploma_scan']
+        exclude = ['all_valid', 'user', 'diploma_scan', 'manager']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -159,7 +159,7 @@ class ProfileFormIPMG(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user']
+        exclude = ['all_valid', 'user', 'manager']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
