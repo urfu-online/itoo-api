@@ -54,6 +54,7 @@ class ReflectionDetail(DetailView, FormMixin):
             return HttpResponseForbidden()
         self.object = self.get_object()
         form = self.get_form()
+        logger.warning(form)
         if form.is_valid():
             return self.form_valid(form)
         else:
@@ -70,7 +71,7 @@ class ReflectionDetail(DetailView, FormMixin):
                 # logger.warning('****', each, '****', type(each))
                 logger.warning(item_question)
                 # TODO question=question[N] === pk answer !!!!!
-                Answer.objects.create(user=self.request.user, question=question[item_question.pk], answer_text=each)
+                Answer.objects.create(user=self.request.user, question=question[item_question.id], answer_text=each)
         return super(ReflectionDetail, self).form_valid(form)
 
 
