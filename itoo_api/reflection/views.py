@@ -35,7 +35,6 @@ class AnswerForm(forms.ModelForm):
 
 class ReflectionDetail(DetailView, FormMixin):
     model = Reflection
-    form_class = AnswerForm
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
