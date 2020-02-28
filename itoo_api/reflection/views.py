@@ -68,8 +68,9 @@ class ReflectionDetail(DetailView, FormMixin):
         for item_question in question:
             for each in form.cleaned_data['answer_text']:
                 # logger.warning('****', each, '****', type(each))
+                logger.warning(item_question)
                 # TODO question=question[N] === pk answer !!!!!
-                Answer.objects.create(user=self.request.user, question=question[item_question], answer_text=each)
+                Answer.objects.create(user=self.request.user, question=question[item_question.pk], answer_text=each)
         return super(ReflectionDetail, self).form_valid(form)
 
 
