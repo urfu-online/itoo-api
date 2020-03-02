@@ -8,9 +8,9 @@
         // $(".inline.{{ question_form.prefix }}").formset({
         //     prefix: "{{ question_form.prefix }}",
         // })
-        $('.inline').formset({
-            prefix: '{{ answer_form.prefix }}'
-        })
+        // $('.inline').formset({
+        //     prefix: '{{ answer_form.prefix }}'
+        // })
         // $(".inline.{{ answer_form.prefix }}").formset({
         //     prefix: "{{ answer_form.prefix }}",
         // })
@@ -29,21 +29,13 @@
                 </div>
 
                 <fieldset>
-                    <legend>Question</legend>
-                    {{ question_form.management_form }}
-                    {{ question_form.non_form_errors }}
-                    {% for form in question_form %}
-                    {{ form.id }}
-                    <div class="{{ question_form.prefix }}">
-                        {{ form.description.errors }}
-                        {{ form.description.label_tag }}
-                        {{ form.title }}
-                    </div>
-                    {% endfor %}
-                </fieldset>
-                <fieldset>
                     <legend>Answer</legend>
                     {{ answer_from }}
+                    {{ answer_from.as_p }}
+                    {% if answer_from.question.pk === 0 %}
+                    {{answer_form.question.title}}
+                    {% endif %}
+                    {{ answer_from.answer_text }}
                     {% for form in answer_from %}
                     {{ form.id }}
                     <div class="inline">
