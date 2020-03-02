@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<script src="http://openedu.urfu.ru/files/js/jquery.formset.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".inline.{{ question_form.prefix }}").formset({
+            prefix: "{{ question_form.prefix }}",
+        })
+        $(".inline.{{ answer_form.prefix }}").formset({
+            prefix: "{{ answer_form.prefix }}",
+        })
+    })
+</script>
 <div class="row">
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
@@ -10,14 +20,38 @@
             <div class="subsection">
                 <div class="subsection">
                     <!--<h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
-                    <h2>{{ reflections.title}}</h2>
-                    <h5>{{ reflections.description }}</h5>
+                    <h2>{{ form.title}}</h2>
+                    <h5>{{ form.description }}</h5>
                 </div>
-                <p><label for="id_last_name">{{ questions }}<span class="red">*</span>:</label>
-                    {{ form.answer_text}}
-                </p>
-                <p><label for="id_last_name">{{ questions.title }}<span class="red">*</span>:</label>
-                </p>
+
+                <fieldset>
+                    <legend>Question</legend>
+                    {{ question_form.management_form }}
+                    {{ question_form.non_form_errors }}
+                    {% for form in question_form %}
+                    {{ form.id }}
+                    <div class="inline {{ question_form.prefix }}">
+                        {{ form.description.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.title }}
+                    </div>
+                    {% endfor %}
+                </fieldset>
+                <fieldset>
+                    <legend>Answer</legend>
+                    {{ answer_from.management_form }}
+                    {{ answer_from.non_form_errors }}
+                    {% for form in answer_from %}
+                    {{ form.id }}
+                    <div class="inline {{ answer_from.prefix }}">
+                        {{ form.answer_text }}
+<!--                        {{ form.description.errors }}-->
+<!--                        {{ form.description.label_tag }}-->
+<!--                        {{ form.description }}-->
+                    </div>
+                    {% endfor %}
+                </fieldset>
+
             </div>
             <div class="subsection" style="min-height: 70px;font-size: 15px;">
                 <input value="Отправить" type="submit">
@@ -34,7 +68,7 @@
 </div>
 
 <script type="text/javascript">
-    console.log({ questions });
+    console.log({questions});
 </script>
 
 <style>

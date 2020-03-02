@@ -1,16 +1,27 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView
 from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
 from django.views.generic.edit import FormMixin
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.models import inlineformset_factory
 
 import logging
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
+
+
+class ReflectionForm(forms.ModelForm):
+    class Meta:
+        model = Reflection
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
 
 
 class AnswerForm(forms.ModelForm):
@@ -33,9 +44,13 @@ class AnswerForm(forms.ModelForm):
         }
 
 
-class ReflectionDetail(DetailView, FormMixin):
+QuestionFormSet = inlineformset_factory(Reflection, Question)
+AnswerFormSet = inlineformset_factory(Reflection, Answer)
+
+
+class ReflectionDetail(CreateView):
     model = Reflection
-    form_class = AnswerForm
+    form_class = ReflectionForm
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
@@ -43,37 +58,56 @@ class ReflectionDetail(DetailView, FormMixin):
         messages.add_message(self.request, messages.INFO, 'Ваш ответ успешно записан')
         return reverse('itoo:reflection:reflection_detail', kwargs={'pk': self.object.pk})
 
-    def get_context_data(self, **kwargs):
-        context = super(ReflectionDetail, self).get_context_data(**kwargs)
-        context['form'] = AnswerForm()
-        context['questions'] = Question.objects.filter(reflection=self.get_object())
-        return context
+    def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests and instantiates blank versions of the form
+        and its inline formsets.
+        """
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        question_form = QuestionFormSet()
+        answer_form = AnswerFormSet()
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  question_form=question_form,
+                                  answer_form=answer_form))
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
-        self.object = self.get_object()
-        form = self.get_form()
-        logger.warning(form)
-        if form.is_valid():
-            return self.form_valid(form)
+        """
+        Handles POST requests, instantiating a form instance and its inline
+        formsets with the passed POST variables and then checking them for
+        validity.
+        """
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        question_form = QuestionFormSet(self.request.POST)
+        answer_form = AnswerFormSet(self.request.POST)
+        if (form.is_valid() and answer_form.is_valid()):
+            return self.form_valid(form, answer_form)
         else:
-            return self.form_invalid(form)
+            return self.form_invalid(form, answer_form)
 
-    def form_valid(self, form):
-        # Here, we would record the user's interest using the message
-        # passed in form.cleaned_data['message']
-        question = Question.objects.filter(reflection=self.get_object())
-        logger.warning('!!!!!!!!!!!!!!!!')
-        logger.warning(form.cleaned_data['answer_text'])
-        logger.warning(question)
-        logger.warning(type(question))
-        for obj in question:
-            for each in form.cleaned_data['answer_text']:
-                # logger.warning('****', each, '****', type(each))
+    def form_valid(self, form, answer_form):
+        """
+        Called if all forms are valid. Creates a Recipe instance along with
+        associated Ingredients and Instructions and then redirects to a
+        success page.
+        """
+        self.object = form.save()
+        answer_form.instance = self.object
+        answer_form.save()
+        return HttpResponseRedirect(self.get_success_url())
 
-                Answer.objects.create(user=self.request.user, question=obj, answer_text=each)
-        return super(ReflectionDetail, self).form_valid(form)
+    def form_invalid(self, form, answer_form):
+        """
+        Called if a form is invalid. Re-renders the context data with the
+        data-filled forms and errors.
+        """
+        return self.render_to_response(
+            self.get_context_data(form=form,
+                                  answer_form=answer_form))
 
 
 class AnswerDetail(DetailView, FormMixin):
