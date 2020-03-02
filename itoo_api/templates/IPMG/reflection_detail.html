@@ -30,13 +30,13 @@
 
                 <div>
                     <h2>Answer</h2>
-                    {{ answer_from }}
-                    {{ answer_from.as_p }}
-                    {% if answer_from.question.pk == 0 %}
+                    {{ answer_form }}
+                    {{ answer_form.as_p }}
+                    {% if answer_form.question.pk == 0 %}
                     {{answer_form.question.title}}
                     {% endif %}
-                    {{ answer_from.answer_text }}
-                    {% for form in answer_from %}
+                    {{ answer_form.answer_text }}
+                    {% for form in answer_form %}
                     {{ form.id }}
                     <div class="inline">
                         {{ form }}
