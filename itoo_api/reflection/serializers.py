@@ -20,7 +20,7 @@ class ReflectionSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    reflection = ReflectionSerializer(many=False, read_only=True, source='reflection.id')
+    reflection = ReflectionSerializer(many=False, read_only=True, source='reflection.pk')
 
     class Meta:
         model = Question
@@ -29,7 +29,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(many=False, required=True)
-    reflection = ReflectionSerializer(many=False, required=False, source='reflection.id')
+    reflection = ReflectionSerializer(many=False, required=False, source='reflection.pk')
 
     class Meta:
         model = Answer
