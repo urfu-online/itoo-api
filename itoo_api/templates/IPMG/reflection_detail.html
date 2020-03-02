@@ -31,7 +31,7 @@
                 <div>
                     <h2>Answer</h2>
                     {% if question.pk == 0 %}
-                    {{answer_form.question.title}}
+                    {{ question.title}}
                     {% endif %}
                     {{ answer_form.answer_text }}
 <!--                    {% for form in answer_form %}-->
