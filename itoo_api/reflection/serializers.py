@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class ReflectionSerializer(serializers.ModelSerializer):
-    program_slug = ProgramSerializer(read_only=True, source='program.slug')
+    program_slug = ProgramSerializer(read_only=True, source='program.program_slug')
 
     class Meta:
         model = Reflection
