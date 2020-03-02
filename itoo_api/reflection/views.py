@@ -68,10 +68,11 @@ class ReflectionDetail(DetailView, FormMixin):
         logger.warning(form.cleaned_data['answer_text'])
         logger.warning(question)
         logger.warning(type(question))
-        for each in form.cleaned_data['answer_text']:
-            # logger.warning('****', each, '****', type(each))
+        for obj in question:
+            for each in form.cleaned_data['answer_text']:
+                # logger.warning('****', each, '****', type(each))
 
-            Answer.objects.create(user=self.request.user, question=question[0], answer_text=each)
+                Answer.objects.create(user=self.request.user, question=obj, answer_text=each)
         return super(ReflectionDetail, self).form_valid(form)
 
 
