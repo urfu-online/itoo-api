@@ -48,7 +48,7 @@ class AnswerForm(forms.ModelForm):
 
 
 QuestionFormSet = inlineformset_factory(Reflection, Question, QuestionForm)
-AnswerFormSet = inlineformset_factory(Question, Answer, AnswerForm)
+AnswerFormSet = inlineformset_factory(Question, Answer, AnswerForm, extra=1)
 
 
 class ReflectionDetail(CreateView):
