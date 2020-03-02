@@ -47,13 +47,13 @@ class AnswerForm(forms.ModelForm):
         }
 
 
-ReflectionFormSet = inlineformset_factory(Answer, Reflection, ReflectionForm)
-QuestionFormSet = inlineformset_factory(Answer, Question, QuestionForm)
+QuestionFormSet = inlineformset_factory(Reflection, Question, QuestionForm)
+AnswerFormSet = inlineformset_factory(Reflection, Answer, ReflectionForm)
 
 
-class AnswerDetail(CreateView):
-    model = Answer
-    form_class = AnswerForm
+class ReflectionDetail(CreateView):
+    model = Reflection
+    form_class = ReflectionForm
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
@@ -68,11 +68,11 @@ class AnswerDetail(CreateView):
         """
         self.object = None
         form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        question_form = ReflectionFormSet()
-        answer_form = QuestionFormSet()
+        # form = self.get_form(form_class)
+        question_form = QuestionFormSet()
+        answer_form = AnswerFormSet()
         return self.render_to_response(
-            self.get_context_data(form=form,
+            self.get_context_data(form=self.get_object(),
                                   question_form=question_form,
                                   answer_form=answer_form))
 
@@ -84,33 +84,31 @@ class AnswerDetail(CreateView):
         """
         self.object = None
         form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        question_form = ReflectionFormSet(self.request.POST)
-        answer_form = QuestionFormSet(self.request.POST)
-        if (form.is_valid() and answer_form.is_valid()):
-            return self.form_valid(form, answer_form)
+        # form = self.get_form(form_class)
+        question_form = QuestionFormSet(self.request.POST)
+        answer_form = AnswerFormSet(self.request.POST)
+        if (answer_form.is_valid()):
+            return self.form_valid(answer_form)
         else:
-            return self.form_invalid(form, answer_form)
+            return self.form_invalid(answer_form)
 
-    def form_valid(self, form, answer_form):
+    def form_valid(self, answer_form):
         """
         Called if all forms are valid. Creates a Recipe instance along with
         associated Ingredients and Instructions and then redirects to a
         success page.
         """
-        self.object = form.save()
         answer_form.instance = self.object
         answer_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
-    def form_invalid(self, form, answer_form):
+    def form_invalid(self, answer_form):
         """
         Called if a form is invalid. Re-renders the context data with the
         data-filled forms and errors.
         """
         return self.render_to_response(
-            self.get_context_data(form=form,
-                                  answer_form=answer_form))
+            self.get_context_data(answer_form=answer_form))
 
 
 class AnswerDetail(DetailView, FormMixin):
