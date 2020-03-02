@@ -67,6 +67,7 @@ class ReflectionDetail(DetailView, FormMixin):
         logger.warning('!!!!!!!!!!!!!!!!')
         logger.warning(form.cleaned_data['answer_text'])
         logger.warning(question)
+        logger.warning(type(question))
         for each in form.cleaned_data['answer_text']:
             # logger.warning('****', each, '****', type(each))
 
