@@ -30,21 +30,19 @@
 
                 <div>
                     <h2>Answer</h2>
-                    {{ answer_form }}
-                    {{ answer_form.as_p }}
-                    {% if answer_form.question.pk == 0 %}
+                    {% if question.pk == 0 %}
                     {{answer_form.question.title}}
                     {% endif %}
                     {{ answer_form.answer_text }}
-                    {% for form in answer_form %}
-                    {{ form.id }}
-                    <div class="inline">
-                        {{ form }}
-                        <!--                        {{ form.description.errors }}-->
-                        <!--                        {{ form.description.label_tag }}-->
-                        <!--                        {{ form.description }}-->
-                    </div>
-                    {% endfor %}
+<!--                    {% for form in answer_form %}-->
+<!--                    {{ form.id }}-->
+<!--                    <div class="inline">-->
+<!--                        {{ form }}-->
+<!--                        &lt;!&ndash;                        {{ form.description.errors }}&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        {{ form.description.label_tag }}&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        {{ form.description }}&ndash;&gt;-->
+<!--                    </div>-->
+<!--                    {% endfor %}-->
                 </div>
 
             </div>

@@ -75,12 +75,13 @@ class ReflectionDetail(CreateView):
         form_class = self.get_form_class()
         # form = self.get_form(form_class)
         # question_form = QuestionFormSet()
+        question = Question.objects.filter(reflection=self.get_object())
         answer_form = AnswerFormSet()
         logger.warning(answer_form)
 
         return self.render_to_response(
             self.get_context_data(form=self.get_object(),
-                                  answer_form=answer_form))
+                                  answer_form=answer_form, question=question))
 
     def post(self, request, *args, **kwargs):
         """
@@ -91,7 +92,7 @@ class ReflectionDetail(CreateView):
         self.object = None
         form_class = self.get_form_class()
         # form = self.get_form(form_class)
-        answer_form = AnswerFormSet(self.request.POST)
+        answer_form = AnswerFormSet(self.request.POST, request.user)
         if (answer_form.is_valid()):
             return self.form_valid(answer_form)
         else:
@@ -104,6 +105,7 @@ class ReflectionDetail(CreateView):
         success page.
         """
         answer_form.instance = self.object
+        answer_form.instance.user = self.request.user
         answer_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
