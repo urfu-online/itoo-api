@@ -32,7 +32,7 @@
                     <legend>Answer</legend>
                     {{ answer_from }}
                     {{ answer_from.as_p }}
-                    {% if answer_from.question.pk === 0 %}
+                    {% if answer_from.question.pk == 0 %}
                     {{answer_form.question.title}}
                     {% endif %}
                     {{ answer_from.answer_text }}
