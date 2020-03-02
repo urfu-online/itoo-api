@@ -8,9 +8,12 @@
         // $(".inline.{{ question_form.prefix }}").formset({
         //     prefix: "{{ question_form.prefix }}",
         // })
-        $(".inline.{{ answer_form.prefix }}").formset({
-            prefix: "{{ answer_form.prefix }}",
+        $('.inline').formset({
+            prefix: '{{ answer_form.prefix }}'
         })
+        // $(".inline.{{ answer_form.prefix }}").formset({
+        //     prefix: "{{ answer_form.prefix }}",
+        // })
     })
 </script>
 <div class="row">
@@ -31,7 +34,7 @@
                     {{ question_form.non_form_errors }}
                     {% for form in question_form %}
                     {{ form.id }}
-                    <div class="inline {{ question_form.prefix }}">
+                    <div class="{{ question_form.prefix }}">
                         {{ form.description.errors }}
                         {{ form.description.label_tag }}
                         {{ form.title }}
@@ -43,7 +46,7 @@
                     {{ answer_from }}
                     {% for form in answer_from %}
                     {{ form.id }}
-                    <div class="inline {{ answer_from.prefix }}">
+                    <div class="inline">
                         {{ form }}
                         <!--                        {{ form.description.errors }}-->
                         <!--                        {{ form.description.label_tag }}-->
