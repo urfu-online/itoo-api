@@ -30,21 +30,10 @@
 
                 <div>
                     <h2>Answer</h2>
-                    {% for form in question_form %}
-                    {{ form.id }}
-                    <div class="inline {{ ingredient_form.prefix }}">
-                        {{ form.title.label_tag }}
-                        {{ form }}
-                    </div>
-                    {% endfor %}
-
-                    {% for item in question %}
-                    {% if item.pk == 6 %}
+                    {{ }}
                     {{ item.title}}
                     {% for form in answer_form %}
-                    {{ form.answer_text }}
-                    {% endfor %}
-                    {% endif %}
+                    {{ form }}
                     {% endfor %}
                     <!--                    {% for form in answer_form %}-->
                     <!--                    {{ form.id }}-->
