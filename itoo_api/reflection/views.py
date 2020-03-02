@@ -18,13 +18,13 @@ class ReflectionForm(forms.ModelForm):
     class Meta:
         model = Reflection
         fields = '__all__'
-        exclude = 'program'
+        exclude = ('program',)
 
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = 'order'
+        fields = ('order',)
 
 
 class AnswerForm(forms.ModelForm):
