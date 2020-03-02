@@ -33,7 +33,9 @@
                     {% if question.pk == 0 %}
                     {{ question.title}}
                     {% endif %}
-                    {{ answer_form.answer_text }}
+                    {% for form in answer_form %}
+                         {{ form.answer_text }}
+                    {% endfor %}
 <!--                    {% for form in answer_form %}-->
 <!--                    {{ form.id }}-->
 <!--                    <div class="inline">-->
