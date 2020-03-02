@@ -30,7 +30,12 @@
 
                 <div>
                     <h2>Answer</h2>
-                    {% if question.pk == 0 %}
+                    {% for item in question %}
+                        {{ item.pk }}
+                        {{ item.id }}
+                    {% endfor %}
+                    {{ question.id }}
+                    {% if question.id == 0 %}
                     {{ question.title}}
                     {% endif %}
                     {% for form in answer_form %}
