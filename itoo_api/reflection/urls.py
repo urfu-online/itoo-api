@@ -3,10 +3,12 @@ from itoo_api.reflection.views import *
 from itoo_api.v0.views import CheckSessionID
 from rest_framework import routers
 from django.views.generic import TemplateView
+from itoo_api.reflection.views import AnswerViewSet, QuestionViewSet, ReflectionViewSet
 
 router_list = routers.DefaultRouter()
-# router_list.register(r'courses_mode_all', CourseModeListAllViewSet)
-# router_list.register(r'reflection', ReflectionDetail, base_name="reflection")
+router_list.register(r'quiz', ReflectionViewSet)
+router_list.register(r'answer', AnswerViewSet)
+router_list.register(r'question', QuestionViewSet)
 
 app_name = 'reflection'
 urlpatterns = [

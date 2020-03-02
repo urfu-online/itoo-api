@@ -117,6 +117,7 @@ class ReflectionDetail(CreateView):
         return self.render_to_response(
             self.get_context_data(answer_form=answer_form))
 
+
 # class AnswerDetail(DetailView, FormMixin):
 #     model = Answer
 #     template_name = '../templates/IPMG/reflection_detail.html'
@@ -159,3 +160,35 @@ class ReflectionDetail(CreateView):
 #
 #                 Answer.objects.create(user=self.request.user, question=obj, answer_text=each)
 #         return super(AnswerDetail, self).form_valid(form)
+
+from rest_framework import viewsets
+from itoo_api.reflection.serializers import AnswerSerializer, ReflectionSerializer, QuestionSerializer
+from itoo_api.reflection.models import Answer, Reflection, Question
+from rest_framework.permissions import AllowAny
+from itoo_api.verified_profile.permission import IsAdminUser
+
+
+class AnswerViewSet(viewsets.ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    lookup_field = 'id'
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create' or self.action == 'retrieve':
+            permission_classes = [AllowAny]
+        elif self.action == 'list' or self.action == 'destroy' or self.action == 'update' or self.action == 'partial_update':
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+
+class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Reflection.objects.all().order_by('id')
+    serializer_class = ReflectionSerializer
+    lookup_field = 'id'
+
+
+class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Question.objects.all().order_by('id')
+    serializer_class = QuestionSerializer
+    lookup_field = 'id'
