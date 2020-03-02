@@ -28,8 +28,8 @@
                     <h5>{{ form.description }}</h5>
                 </div>
 
-                <fieldset>
-                    <legend>Answer</legend>
+                <div>
+                    <h2>Answer</h2>
                     {{ answer_from }}
                     {{ answer_from.as_p }}
                     {% if answer_from.question.pk == 0 %}
@@ -45,7 +45,7 @@
                         <!--                        {{ form.description }}-->
                     </div>
                     {% endfor %}
-                </fieldset>
+                </div>
 
             </div>
             <div class="subsection" style="min-height: 70px;font-size: 15px;">

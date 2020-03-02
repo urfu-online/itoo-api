@@ -61,10 +61,10 @@ class ReflectionDetail(CreateView):
         messages.add_message(self.request, messages.INFO, 'Ваш ответ успешно записан')
         return reverse('itoo:reflection:reflection_detail', kwargs={'pk': self.object.pk})
 
-    def get_context_data(self, **kwargs):
-        context = super(ReflectionDetail, self).get_context_data(**kwargs)
-        context['answer_form'] = kwargs['answer_form']
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(ReflectionDetail, self).get_context_data(**kwargs)
+    #     context['answer_form'] = kwargs['answer_form']
+    #     return context
 
     def get(self, request, *args, **kwargs):
         """
