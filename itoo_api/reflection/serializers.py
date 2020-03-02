@@ -11,20 +11,19 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['id', 'title']
+
+
 class ReflectionSerializer(serializers.ModelSerializer):
     program_slug = ProgramSerializer(read_only=True, source='program.program_slug')
+    question = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Reflection
-        fields = ['id', 'title', 'description', 'program_slug']
-
-
-class QuestionSerializer(serializers.ModelSerializer):
-    reflection = ReflectionSerializer(many=False, read_only=True, source='reflection.pk')
-
-    class Meta:
-        model = Question
-        fields = ['id', 'title', 'reflection']
+        fields = ['id', 'title', 'description', 'program_slug', 'question']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
