@@ -11,7 +11,7 @@ router_list = routers.DefaultRouter()
 app_name = 'reflection'
 urlpatterns = [
     # url(r'user_mode_change/', ChangeModeStateUserViewSet.as_view(), name='paid_courses_role'),
-    url(r'detail/(?P<pk>\d+)/', ReflectionDetail.as_view(), name='reflection_detail'),
+    url(r'detail/(?P<pk>\d+)/', AnswerDetail.as_view(), name='answer_detail'),
     url(r'success/', TemplateView.as_view(template_name='../templates/IPMG/reflection_success.html'), name='reflection_success'),
     # url(r'pay_urfu/', PayUrfuDataViewSet.as_view(), name='pay_urfu'),
     # url(r'check_session/', CheckSessionID.as_view(), name='check_session'),
