@@ -50,6 +50,7 @@ class Question(TimeStampedModel):
 class Answer(TimeStampedModel):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
+    reflection = models.ForeignKey(Reflection, null=True, blank=True, on_delete=models.CASCADE)
     answer_text = models.TextField("Ответ в формате текст", blank=True, null=True)
     answer_float = models.FloatField("Ответ в формате числа", blank=True, null=True)
 
