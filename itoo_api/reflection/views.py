@@ -71,6 +71,7 @@ class ReflectionDetail(CreateView):
         # form = self.get_form(form_class)
         # question_form = QuestionFormSet()
         answer_form = AnswerFormSet()
+        logger.warning(answer_form)
         return self.render_to_response(
             self.get_context_data(form=self.get_object(),
                                   answer_form=answer_form))
