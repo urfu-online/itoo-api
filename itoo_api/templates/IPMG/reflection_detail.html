@@ -45,7 +45,7 @@
                     {% for form in answer_from %}
                     {{ form.id }}
                     <div class="inline {{ answer_from.prefix }}">
-                        {{ form.answer_text }}
+                        {{ form.as_p }}
                         <!--                        {{ form.description.errors }}-->
                         <!--                        {{ form.description.label_tag }}-->
                         <!--                        {{ form.description }}-->
