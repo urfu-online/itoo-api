@@ -5,9 +5,9 @@
 <script src="http://openedu.urfu.ru/files/js/jquery.formset.js"></script>
 <script type="text/javascript">
     $(function () {
-        $(".inline.{{ question_form.prefix }}").formset({
-            prefix: "{{ question_form.prefix }}",
-        })
+        // $(".inline.{{ question_form.prefix }}").formset({
+        //     prefix: "{{ question_form.prefix }}",
+        // })
         $(".inline.{{ answer_form.prefix }}").formset({
             prefix: "{{ answer_form.prefix }}",
         })
@@ -44,7 +44,7 @@
                     {% for form in answer_from %}
                     {{ form.id }}
                     <div class="inline {{ answer_from.prefix }}">
-                        {{ form.as_p }}
+                        {{ form }}
                         <!--                        {{ form.description.errors }}-->
                         <!--                        {{ form.description.label_tag }}-->
                         <!--                        {{ form.description }}-->
