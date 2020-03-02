@@ -83,7 +83,7 @@ class AnswerDetail(DetailView, FormMixin):
     def get_success_url(self):
         from django.contrib import messages
         messages.add_message(self.request, messages.INFO, 'Ваш ответ успешно записан')
-        return reverse('itoo:reflection:reflection_detail', kwargs={'pk': self.object.pk})
+        return reverse('itoo:reflection:answer_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super(AnswerDetail, self).get_context_data(**kwargs)
