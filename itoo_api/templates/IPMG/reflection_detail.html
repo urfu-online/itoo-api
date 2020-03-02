@@ -13,7 +13,7 @@
                     <h2>{{ object.title}}</h2>
                     <h5>{{ object.description }}</h5>
                 </div>
-                <p><label for="id_last_name">{{ questions.title }}<span class="red">*</span>:</label>
+                <p><label for="id_last_name">{{ questions }}<span class="red">*</span>:</label>
                     {{ form.answer_text}}
                 </p>
                 <p><label for="id_last_name">{{ questions.title }}<span class="red">*</span>:</label>
@@ -34,7 +34,7 @@
 </div>
 
 <script type="text/javascript">
-    console.log({{ questions }});
+    console.log({ questions });
 </script>
 
 <style>
