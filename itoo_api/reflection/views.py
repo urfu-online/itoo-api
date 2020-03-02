@@ -47,13 +47,13 @@ class AnswerForm(forms.ModelForm):
         }
 
 
-QuestionFormSet = inlineformset_factory(Reflection, Question, QuestionForm)
-AnswerFormSet = inlineformset_factory(Reflection, Answer, AnswerForm)
+ReflectionFormSet = inlineformset_factory(Answer, Reflection, ReflectionForm)
+QuestionFormSet = inlineformset_factory(Answer, Question, QuestionForm)
 
 
-class ReflectionDetail(CreateView):
-    model = Reflection
-    form_class = ReflectionForm
+class AnswerDetail(CreateView):
+    model = Answer
+    form_class = AnswerForm
     template_name = '../templates/IPMG/reflection_detail.html'
 
     def get_success_url(self):
@@ -69,8 +69,8 @@ class ReflectionDetail(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        question_form = QuestionFormSet()
-        answer_form = AnswerFormSet()
+        question_form = ReflectionFormSet()
+        answer_form = QuestionFormSet()
         return self.render_to_response(
             self.get_context_data(form=form,
                                   question_form=question_form,
@@ -85,8 +85,8 @@ class ReflectionDetail(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        question_form = QuestionFormSet(self.request.POST)
-        answer_form = AnswerFormSet(self.request.POST)
+        question_form = ReflectionFormSet(self.request.POST)
+        answer_form = QuestionFormSet(self.request.POST)
         if (form.is_valid() and answer_form.is_valid()):
             return self.form_valid(form, answer_form)
         else:
