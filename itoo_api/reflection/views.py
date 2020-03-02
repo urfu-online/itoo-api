@@ -74,14 +74,14 @@ class ReflectionDetail(CreateView):
         self.object = None
         form_class = self.get_form_class()
         # form = self.get_form(form_class)
-        # question_form = QuestionFormSet()
-        question = Question.objects.filter(reflection=self.get_object())
+        question_form = QuestionFormSet()
+        # question = Question.objects.filter(reflection=self.get_object())
         answer_form = AnswerFormSet()
         logger.warning(answer_form)
 
         return self.render_to_response(
             self.get_context_data(form=self.get_object(),
-                                  answer_form=answer_form, question=question))
+                                  answer_form=answer_form, question_form=question_form))
 
     def post(self, request, *args, **kwargs):
         """
