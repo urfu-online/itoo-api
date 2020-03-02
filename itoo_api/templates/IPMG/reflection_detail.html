@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<script>
-    console.log(questions)
-</script>
+
 <div class="row">
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
@@ -35,6 +33,9 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    console.log({{ questions }});
+</script>
 
 <style>
     input[type=email], input[type=tel], input[type=text], select, textarea {
