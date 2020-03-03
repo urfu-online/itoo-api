@@ -18,7 +18,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class ReflectionSerializer(serializers.ModelSerializer):
-    program = ProgramSerializer(source='slug')
+    program = ProgramSerializer(source='program.slug')
     question = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
