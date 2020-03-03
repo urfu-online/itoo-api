@@ -29,25 +29,13 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer(many=False, required=True)
+    question = QuestionSerializer(many=False, read_only=True)
     # reflection = ReflectionSerializer(many=False, required=False)
-    username = serializers.CharField(source="user.username")
-
-    def __init__(self, *args, **kwargs):
-        many = kwargs.pop('many', True)
-        super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
+    username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Answer
         fields = ['answer_text', 'answer_float', 'username', 'question']
-        many = True
-
-    def create(self, validated_data):
-        serializer = self.get_serializer(data=self.request.data, many=isinstance(self.request.data,list))
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=self.status.HTTP_201_CREATED, headers=headers)
         # answer_data = validated_data.pop('answer')
         # try:
         #     for obj in answer_data['question']:
