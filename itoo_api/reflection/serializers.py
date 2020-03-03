@@ -23,7 +23,7 @@ class ReflectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reflection
-        fields = ['id', 'title', 'description', 'program_slug', 'question']
+        fields = ['id', 'title', 'description', 'program', 'question']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
