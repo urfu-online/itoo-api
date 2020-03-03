@@ -35,7 +35,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ['answer_text', 'answer_float', 'username', 'question', 'reflection']
+        fields = ['answer_text', 'answer_float', 'username', 'question']
 
     def create(self, validated_data):
         answer_data = validated_data.pop('answer')
