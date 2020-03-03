@@ -168,6 +168,7 @@ from rest_framework.permissions import AllowAny
 from itoo_api.verified_profile.permission import IsAdminUser
 from rest_framework.response import Response
 
+
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
@@ -182,7 +183,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=isinstance(request.data,list))
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
