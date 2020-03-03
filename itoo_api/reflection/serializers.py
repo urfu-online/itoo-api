@@ -20,16 +20,15 @@ class QuestionSerializer(serializers.ModelSerializer):
 class ReflectionSerializer(serializers.ModelSerializer):
     # program = ProgramSerializer(source='program.slug')
     program_slug = serializers.CharField(source='program.slug')
-    question = QuestionSerializer()
 
     class Meta:
         model = Reflection
-        fields = ['id', 'title', 'description', 'program_slug', 'question']
+        fields = ['id', 'title', 'description', 'program_slug']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(many=False, required=True)
-    reflection = ReflectionSerializer(many=False, required=False, source='reflection.pk')
+    reflection = ReflectionSerializer(many=False, required=False)
 
     class Meta:
         model = Answer
