@@ -11,6 +11,7 @@ from itoo_api.verified_profile.views import *
 app_name = 'verified_profile'
 urlpatterns = [
     url(r'profile/(?P<slug>\w+)/$', profile_detail, name='profile_detail'),
+    url(r'profile/', profile_detail, name='profile_redirect'),
     url(r'profile/new/(?P<slug>\w+)/$', profile_new, name='profile_new'),
     url(r'profile/edit/(?P<slug>\w+)/$', profile_edit, name='profile_edit'),
     url(r'profile/edit_exist/(?P<slug>\w+)/$', profile_edit_exist, name='profile_edit_exist')
