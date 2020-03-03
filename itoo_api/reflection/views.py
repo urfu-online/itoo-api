@@ -166,7 +166,7 @@ from itoo_api.reflection.serializers import AnswerSerializer, ReflectionSerializ
 from itoo_api.reflection.models import Answer, Reflection, Question
 from rest_framework.permissions import AllowAny
 from itoo_api.verified_profile.permission import IsAdminUser
-
+from rest_framework.response import Response
 
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
@@ -180,6 +180,13 @@ class AnswerViewSet(viewsets.ModelViewSet):
         elif self.action == 'list' or self.action == 'destroy' or self.action == 'update' or self.action == 'partial_update':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data,list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=request.status.HTTP_201_CREATED, headers=headers)
 
 
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
