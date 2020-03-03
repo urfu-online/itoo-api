@@ -30,7 +30,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(many=False, required=True)
-    reflection = ReflectionSerializer(many=False, required=False)
+    # reflection = ReflectionSerializer(many=False, required=False)
     username = serializers.CharField(source="user.username")
 
     class Meta:
