@@ -121,7 +121,6 @@ class Program(TimeStampedModel):
     number_of_hours = models.PositiveSmallIntegerField("Количество часов", null=True, blank=True)
     issued_document_name = models.CharField("Выдаваемый Документ", null=True, blank=True, max_length=128)
 
-
     def get_courses(self):
         return self.programcourse_set.all()
 
@@ -141,6 +140,10 @@ class Program(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    def export_students(self):
+        """TODO: implement method from admin"""
+        return None
 
 
 @python_2_unicode_compatible
