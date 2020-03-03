@@ -32,8 +32,9 @@ def profile_redirect(request):
     :param request:
     :return:
     """
+    url = urlparse(request.get_full_path())
     program_slug = request.GET.get('program_slug', None)
-    print(request.META, request.path, request.path_info, "!!!!!!!!!!!!!!!!!!!!!")
+    print(url, "!!!!!!!!!!!!!!!!!!!!!")
     if program_slug:
         print(program_slug, '!!!!!!!!!!!!!!!!!')
         return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
