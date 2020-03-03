@@ -3,15 +3,18 @@ from itoo_api.reflection.views import *
 from itoo_api.v0.views import CheckSessionID
 from rest_framework import routers
 from django.views.generic import TemplateView
+from itoo_api.reflection.views import AnswerViewSet, QuestionViewSet, ReflectionViewSet
 
 router_list = routers.DefaultRouter()
-# router_list.register(r'courses_mode_all', CourseModeListAllViewSet)
-# router_list.register(r'reflection', ReflectionDetail, base_name="reflection")
+router_list.register(r'quiz', ReflectionViewSet)
+router_list.register(r'answer', AnswerViewSet)
+router_list.register(r'question', QuestionViewSet)
 
 app_name = 'reflection'
 urlpatterns = [
     # url(r'user_mode_change/', ChangeModeStateUserViewSet.as_view(), name='paid_courses_role'),
     url(r'detail/(?P<pk>\d+)/', ReflectionDetail.as_view(), name='reflection_detail'),
+    # url(r'detail/(?P<pk>\d+)/', AnswerDetail.as_view(), name='answer_detail'),
     url(r'success/', TemplateView.as_view(template_name='../templates/IPMG/reflection_success.html'), name='reflection_success'),
     # url(r'pay_urfu/', PayUrfuDataViewSet.as_view(), name='pay_urfu'),
     # url(r'check_session/', CheckSessionID.as_view(), name='check_session'),

@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://openedu.urfu.ru/files/js/jquery.formset.js"></script>
+<script type="text/javascript">
+    $(function () {
+        // $(".inline.{{ question_form.prefix }}").formset({
+        //     prefix: "{{ question_form.prefix }}",
+        // })
+        // $('.inline').formset({
+        //     prefix: '{{ answer_form.prefix }}'
+        // })
+        // $(".inline.{{ answer_form.prefix }}").formset({
+        //     prefix: "{{ answer_form.prefix }}",
+        // })
+    })
+</script>
 <div class="row">
     <div class="col container" id="form">
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
@@ -10,14 +24,26 @@
             <div class="subsection">
                 <div class="subsection">
                     <!--<h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
-                    <h2>{{ object.title}}</h2>
-                    <h5>{{ object.description }}</h5>
+                    <h2>{{ form.title}}</h2>
+                    <h5>{{ form.description }}</h5>
                 </div>
-                {% for question in questions %}
-                <p><label for="id_last_name">{{ question.title }}<span class="red">*</span>:</label>
-                </p>
-                {% endfor %}
-                {{ form.answer_text}}
+
+                <div>
+                    <h2>Answer</h2>
+                    {% for form in answer_form %}
+                    {{ form }}
+                    {% endfor %}
+                    <!--                    {% for form in answer_form %}-->
+                    <!--                    {{ form.id }}-->
+                    <!--                    <div class="inline">-->
+                    <!--                        {{ form }}-->
+                    <!--                        &lt;!&ndash;                        {{ form.description.errors }}&ndash;&gt;-->
+                    <!--                        &lt;!&ndash;                        {{ form.description.label_tag }}&ndash;&gt;-->
+                    <!--                        &lt;!&ndash;                        {{ form.description }}&ndash;&gt;-->
+                    <!--                    </div>-->
+                    <!--                    {% endfor %}-->
+                </div>
+
             </div>
             <div class="subsection" style="min-height: 70px;font-size: 15px;">
                 <input value="Отправить" type="submit">
@@ -32,7 +58,6 @@
         </form>
     </div>
 </div>
-
 
 <style>
     input[type=email], input[type=tel], input[type=text], select, textarea {
