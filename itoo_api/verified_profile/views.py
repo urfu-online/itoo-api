@@ -34,7 +34,7 @@ def profile_redirect(request):
     """
     url = urlparse(request.get_full_path())
     program_slug = request.GET.get('program_slug', None)
-    print(url, "!!!!!!!!!!!!!!!!!!!!!")
+    logger.warning(url, "!!!!!!!!!!!!!!!!!!!!!")
     if program_slug:
         print(program_slug, '!!!!!!!!!!!!!!!!!')
         return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
