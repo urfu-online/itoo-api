@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 def profile_redirect(request):
     program_slug = request.GET.get('program_slug', None)
     if program_slug:
-        return redirect(reverse('itoo:verified_profile:profile_detail') + program_slug)
+        return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
 
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
