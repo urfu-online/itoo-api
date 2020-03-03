@@ -29,9 +29,9 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer(many=False, required=True)
+    question = QuestionSerializer(many=False, required=True, read_only=True)
     # reflection = ReflectionSerializer(many=False, required=False)
-    username = serializers.CharField(source="user.username")
+    username = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Answer
