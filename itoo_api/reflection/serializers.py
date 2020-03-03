@@ -18,12 +18,13 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class ReflectionSerializer(serializers.ModelSerializer):
-    program = ProgramSerializer(source='program.slug')
+    # program = ProgramSerializer(source='program.slug')
+    program_slug = serializers.CharField(source='program.slug')
     question = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Reflection
-        fields = ['id', 'title', 'description', 'program', 'question']
+        fields = ['id', 'title', 'description', 'program_slug', 'question']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
