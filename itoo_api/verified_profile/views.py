@@ -33,10 +33,13 @@ def profile_redirect(request):
     :return:
     """
     url = urlparse(request.get_full_path())
-    program_slug = request.GET.get('program_slug', None)
-    logger.warning(str(url))
+    if url.query != "":
+        program_slug = request.GET.get('program_slug', None)
+    else:
+        program_slug = url.rsplit('/', 1)[-1]
+
+    logger.warning(program_slug + "!!!!!!!!!!!!!!!!!!!!!!!!!1")
     if program_slug:
-        print(program_slug, '!!!!!!!!!!!!!!!!!')
         return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
 
 
