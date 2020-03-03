@@ -10,7 +10,7 @@ from itoo_api.verified_profile.views import *
 
 app_name = 'verified_profile'
 urlpatterns = [
-    url(r'profile/$', profile_detail, name='profile_redirect'),
+    url(r'profile/', profile_redirect, name='profile_redirect'),
     url(r'profile/(?P<slug>\w+)/$', profile_detail, name='profile_detail'),
 
     url(r'profile/new/(?P<slug>\w+)/$', profile_new, name='profile_new'),
