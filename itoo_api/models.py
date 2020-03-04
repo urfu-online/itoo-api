@@ -94,7 +94,7 @@ class EduProject(TimeStampedModel):
 
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
-    ENROLLMENT_STATUSES = ((0, "Недоступна"), (1, "Доступна"), (2, "По датам (в разработке)"))
+    ENROLLMENT_STATUSES = (("0", "Недоступна"), ("1", "Доступна"), ("2", "По датам (в разработке)"))
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
     short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
@@ -116,7 +116,7 @@ class Program(TimeStampedModel):
     project = models.ForeignKey(EduProject, related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
     direction = models.ForeignKey(Direction, blank=True, null=True, on_delete=models.SET_NULL)
-    enrollment_allowed = models.CharField("Доступность записи", choices=ENROLLMENT_STATUSES, max_length=1, default=2)
+    enrollment_allowed = models.CharField("Доступность записи", choices=ENROLLMENT_STATUSES, max_length=1, default="2")
     id_unit_program = models.CharField("Программа ID", blank=True, null=True, max_length=64)
     edu_start_date = models.DateField("Дата начала программы", null=True, blank=True)
     edu_end_date = models.DateField("Дата завершения программы", null=True, blank=True)
