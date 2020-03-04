@@ -46,6 +46,9 @@ class AnswerSerializer(serializers.ModelSerializer):
         # serializer.is_valid(raise_exception=True)
         # self.perform_create(serializer)
         # headers = self.get_success_headers(serializer.data)
+        logger.warning(**validate_data)
+
+        user = User.objects.get(username=validate_data.pop['username'])
         try:
             for obj in validate_data.pop['question']:
                 logger.warning(obj)
@@ -55,6 +58,6 @@ class AnswerSerializer(serializers.ModelSerializer):
             # if User.objects.get(username=answer_data['username']) and Reflection.objects.get(
             #         id=answer_data['reflection']) and Question.objects.get(id=answer_data['question']):
             #     answer = Answer.objects.create(user=user, **answer_data)
-                return Response({'detail': 'failed'})
+                return Response({'detail': 'failed', 'user': user})
         except:
             return Response({'detail': 'failed'})
