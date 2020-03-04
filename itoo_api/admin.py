@@ -109,13 +109,24 @@ export_csv_program_entoll.short_description = u"Export CSV"
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user', 'program', 'program.slug')
+    list_display = ('user', 'program', 'get_program_slug')
     list_filter = ('program__title',)
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
-    search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
+    search_fields = ('get_username', 'get_program_slug', 'get_program_title', 'get_email')
     actions = [export_csv_program_entoll]
 
+    def get_program_slug(self, obj):
+        return obj.program.slug
+
+    def get_username(self, obj):
+        return obj.user.username
+
+    def get_email(self, obj):
+        return obj.user.email
+
+    def get_program_title(self, obj):
+        return obj.program.title
 
 @admin.register(EduProject)
 class EduProjectAdmin(admin.ModelAdmin):
