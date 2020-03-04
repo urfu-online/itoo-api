@@ -56,7 +56,5 @@ class AnswerSerializer(serializers.ModelSerializer):
             #         id=answer_data['reflection']) and Question.objects.get(id=answer_data['question']):
             #     answer = Answer.objects.create(user=user, **answer_data)
                 return Response({'detail': 'failed'})
-            else:
-                Response({'detail': 'failed'})
         except:
             return Response({'detail': 'failed'})
