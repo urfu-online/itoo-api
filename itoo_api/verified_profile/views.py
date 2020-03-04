@@ -36,7 +36,7 @@ def profile_redirect(request):
     if url.query != "":
         program_slug = request.GET.get('program_slug', None)
     else:
-        program_slug = url.rsplit('/', 1)[-1]
+        program_slug = url.path.rsplit('/', 1)[-1]
 
     logger.warning(program_slug + "!!!!!!!!!!!!!!!!!!!!!!!!!1")
     if program_slug:
