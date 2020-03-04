@@ -46,7 +46,7 @@ class AnswerSerializer(serializers.ModelSerializer):
         # serializer.is_valid(raise_exception=True)
         # self.perform_create(serializer)
         # headers = self.get_success_headers(serializer.data)
-        logger.warning(**validate_data)
+        logger.warning(validate_data)
 
         user = User.objects.get(username=validate_data.pop['username'])
         try:
