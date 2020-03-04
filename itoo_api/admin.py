@@ -128,6 +128,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     def get_program_title(self, obj):
         return obj.program.title
 
+
 @admin.register(EduProject)
 class EduProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
