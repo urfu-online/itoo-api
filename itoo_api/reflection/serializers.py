@@ -42,10 +42,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ['answer_text', 'answer_float', 'username', 'question']
 
     def create(self, validate_data):
-        serializer = self.get_serializer()
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
+        # serializer = self.get_serializer()
+        # serializer.is_valid(raise_exception=True)
+        # self.perform_create(serializer)
+        # headers = self.get_success_headers(serializer.data)
         try:
             for obj in validate_data.pop['question']:
                 logger.warning(obj)
