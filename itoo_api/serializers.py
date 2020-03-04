@@ -73,6 +73,7 @@ class ProgramSerializer(serializers.ModelSerializer):
     project_slug = serializers.CharField(source='project.slug')
     owner_slug = serializers.CharField(source='owner.slug')
     content = serializers.SerializerMethodField()
+    direction = serializers.CharField(source='direction.title')
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program

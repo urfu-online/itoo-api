@@ -109,7 +109,7 @@ export_csv_program_entoll.short_description = u"Export CSV"
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user', 'program',)
+    list_display = ('user', 'program', 'program.slug')
     list_filter = ('program__title',)
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
@@ -256,7 +256,6 @@ class ProgramAdmin(admin.ModelAdmin):
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
-    radio_fields = {"enrollment_allowed": admin.HORIZONTAL}
     inlines = [ProgramCourseInline, TextBlockInline]
     actions = [export_csv_program]
 
