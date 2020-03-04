@@ -182,12 +182,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, headers=headers)
+    def get_serializer(self, instance=None, data=None, many=False, partial=False):
+        return super(AnswerViewSet, self).get_serializer(instance=instance, data=data, many=True, partial=partial)
 
 
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):

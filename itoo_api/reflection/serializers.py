@@ -29,6 +29,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
+
     question = QuestionSerializer(many=False)
     # reflection = ReflectionSerializer(many=False, required=False)
     username = serializers.CharField(source="user.username")
@@ -36,6 +40,13 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ['answer_text', 'answer_float', 'username', 'question']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, headers=headers)
         # answer_data = validated_data.pop('answer')
         # try:
         #     for obj in answer_data['question']:
