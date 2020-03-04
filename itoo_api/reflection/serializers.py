@@ -41,24 +41,22 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ['answer_text', 'answer_float', 'username', 'question']
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+    def create(self, validate_data):
+        serializer = self.get_serializer()
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, headers=headers)
-        # answer_data = validated_data.pop('answer')
-        # try:
-        #     for obj in answer_data['question']:
-        #         logger.warning(obj)
-        #     User.objects.get(username=answer_data['username']) and Reflection.objects.get(
-        #         id=answer_data['reflection']) and Question.objects.get(id=answer_data['question'])
-        #     user = User.objects.get(username=answer_data['username'])
-        #     if User.objects.get(username=answer_data['username']) and Reflection.objects.get(
-        #             id=answer_data['reflection']) and Question.objects.get(id=answer_data['question']):
-        #         answer = Answer.objects.create(user=user, **answer_data)
-        #         return answer
-        #     else:
-        #         Response({'detail': 'failed'})
-        # except:
-        #     return Response({'detail': 'failed'})
+        try:
+            for obj in validate_data.pop['question']:
+                logger.warning(obj)
+            # User.objects.get(username=answer_data['username']) and Reflection.objects.get(
+            #     id=answer_data['reflection']) and Question.objects.get(id=answer_data['question'])
+            # user = User.objects.get(username=answer_data['username'])
+            # if User.objects.get(username=answer_data['username']) and Reflection.objects.get(
+            #         id=answer_data['reflection']) and Question.objects.get(id=answer_data['question']):
+            #     answer = Answer.objects.create(user=user, **answer_data)
+                return Response({'detail': 'failed'})
+            else:
+                Response({'detail': 'failed'})
+        except:
+            return Response({'detail': 'failed'})
