@@ -331,6 +331,7 @@ def profile_detail(request, slug):
 
 def enroll_program(user, program):
     if program:
+        # TODO: check enrollment_allowed
         EnrollProgram.objects.get_or_create(user=user, program=program)
 
     if EnrollProgram.get_enroll_program(user=user, program=program):

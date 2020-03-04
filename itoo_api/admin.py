@@ -251,8 +251,8 @@ def export_csv_program(modeladmin, request, queryset):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner')
-    list_filter = ('active', 'owner')
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed')
+    list_filter = ('active', 'owner', 'enrollment_allowed')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')

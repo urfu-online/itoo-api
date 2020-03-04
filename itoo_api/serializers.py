@@ -80,7 +80,7 @@ class ProgramSerializer(serializers.ModelSerializer):
             'id', 'title', 'owner_slug', 'project_slug', 'short_name', 'slug', 'description', 'logo',
             'image_background',
             'active', 'content', 'id_unit_program', 'edu_start_date', 'edu_end_date', 'number_of_hours',
-            'issued_document_name', 'direction')
+            'issued_document_name', 'direction', 'enrollment_allowed')
 
     def get_content(self, obj):
         content_serializer = TextBlockSerializer(obj.content(), many=True)
