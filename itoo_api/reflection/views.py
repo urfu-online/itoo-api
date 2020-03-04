@@ -182,7 +182,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    def get_serializer(self, instance=None, data=None, many=False, partial=False):
+    from rest_framework.fields import empty
+    def get_serializer(self, instance=None, data=empty, many=False, partial=False):
         return super(AnswerViewSet, self).get_serializer(instance=instance, data=data, many=True, partial=partial)
 
 
