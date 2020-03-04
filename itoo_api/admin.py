@@ -436,8 +436,8 @@ class ProfileAdmin(admin.ModelAdmin):
             )
         })
     )
-    list_display = ('user', 'admin_number', 'first_name', 'last_name', 'second_name', 'phone', 'leader_id', 'all_valid',
-                    'admin_diagnostics', 'manager')
+    list_display = ('user', 'first_name', 'last_name', 'second_name', 'phone', 'leader_id', 'all_valid',
+                    'admin_diagnostics', 'manager', 'admin_number')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
     list_filter = ('all_valid', ProfileByProgramFilter, 'manager', 'admin_diagnostics')
     actions = [export_csv_profile]
