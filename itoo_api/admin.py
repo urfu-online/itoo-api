@@ -256,7 +256,7 @@ class ProgramAdmin(admin.ModelAdmin):
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
-    radio_fields = ('enrollment_allowed',)
+    radio_fields = {"enrollment_allowed": admin.HORIZONTAL}
     inlines = [ProgramCourseInline, TextBlockInline]
     actions = [export_csv_program]
 
