@@ -44,7 +44,7 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ['answer_text', 'answer_float', 'username', 'question', 'reflection']
 
     def to_representation(self, instance):
-        data = super(AnswerSerializer).to_representation(instance)
+        data = super(AnswerSerializer, self).to_representation(instance)
         data['question'] = QuestionSerializer(
             Question.objects.get(id=data['question'])).data
         data['username'] = UserSerializer(
