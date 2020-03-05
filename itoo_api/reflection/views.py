@@ -189,7 +189,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
         logger.warning(request.data)
-        logger.warning(request.data[0])
+        logger.warning(request.data[0].get('username'))
         is_many = isinstance(request.data, list)
         if not is_many:
             return super(AnswerViewSet, self).create(request, *args, **kwargs)
