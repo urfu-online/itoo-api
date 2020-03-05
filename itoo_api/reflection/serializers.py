@@ -43,6 +43,16 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ['answer_text', 'answer_float', 'username', 'question', 'reflection']
 
+    def to_representation(self, instance):
+        data = super(AnswerSerializer).to_representation(instance)
+        data['question'] = QuestionSerializer(
+            Question.objects.get(id=data['question'])).data
+        data['username'] = UserSerializer(
+            User.objects.get(username=data['username'])).data
+        data['reflection'] = ReflectionSerializer(
+            Reflection.objects.get(id=data['reflection'])).data
+        return data
+
     # def create(self, validate_data):
     #     # serializer = self.get_serializer()
     #     # serializer.is_valid(raise_exception=True)
