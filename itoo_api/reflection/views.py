@@ -192,15 +192,14 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
-        for item in request.data:
-            question = get_object_or_404(Question, id=item.get('question'))
-            user = get_object_or_404(User, username=item.get('username'))
-            reflection = get_object_or_404(Reflection, id=item.get('reflection'))
-            # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))  many=isinstance(request.data, list)
-            logger.warning(user)
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save(question=question, user=user, reflection=reflection)
+        question = get_object_or_404(Question, id=request.data.get('question'))
+        user = get_object_or_404(User, username=request.data.get('username'))
+        reflection = get_object_or_404(Reflection, id=request.data.get('reflection'))
+        # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
+        logger.warning(user)
+        serializer = self.get_serializer(data=request.data,  many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        serializer.save(question=question, user=user, reflection=reflection)
         # logger.warning(serializer.data)
         # headers = self.get_success_headers(serializer.data)
         # headers = self.get_success_headers(serializer.data)
