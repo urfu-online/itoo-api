@@ -183,7 +183,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    def create(self, request, *args, **kwargs ):
+    def create(self, request, *args, **kwargs):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
@@ -200,9 +200,9 @@ class AnswerViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=request.data, many=True)
             serializer.is_valid(raise_exception=True)
             serializer.save(question=question, user=user, reflection=reflection)
-            headers = self.get_success_headers(serializer.data)
+            # headers = self.get_success_headers(serializer.data)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     # def create(self, request, *args, **kwargs):
     #     data = request.DATA

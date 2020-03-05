@@ -23,10 +23,10 @@ class Reflection(TimeStampedModel):
         verbose_name_plural = "Рефлексии"
 
     def __unicode__(self):
-        return self.pk
+        return self.title
 
     def __str__(self):
-        return self.pk
+        return self.title
 
 
 @python_2_unicode_compatible
@@ -40,10 +40,10 @@ class Question(TimeStampedModel):
         verbose_name_plural = "Вопросы"
 
     def __unicode__(self):
-        return self.pk
+        return self.title
 
     def __str__(self):
-        return self.pk
+        return self.title
 
 
 @python_2_unicode_compatible
@@ -58,11 +58,8 @@ class Answer(TimeStampedModel):
         verbose_name = "Ответ"
         verbose_name_plural = "Ответы"
 
-    def __unicode__(self):
-        return self.pk
-
     def __str__(self):
-        return self.pk
+        return str(self.user.email)
 
 # @python_2_unicode_compatible
 # class ResultAnswer(TimeStampedModel):
