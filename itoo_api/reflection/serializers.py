@@ -35,39 +35,9 @@ class AnswerSerializer(serializers.ModelSerializer):
     #     super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
 
     question = QuestionSerializer(source='question.id', many=False, read_only=True)
-    # reflection = ReflectionSerializer(many=False, required=False)
     username = UserSerializer(source="user.username", read_only=True, required=False)
     reflection = ReflectionSerializer(source='reflection.id', many=False, required=False, read_only=True)
 
     class Meta:
         model = Answer
         fields = ['answer_text', 'answer_float', 'username', 'question', 'reflection']
-
-    # def to_representation(self, instance):
-    #     data = super(AnswerSerializer, self).to_representation(instance)
-    #     logger.warning(data)
-    #     data['question'] = QuestionSerializer(Question.objects.get(id=data['question'])).data
-    #     data['username'] = UserSerializer(User.objects.get(username=data['username'])).data
-    #     data['reflection'] = ReflectionSerializer(Reflection.objects.get(id=data['reflection'])).data
-    #     return data
-
-    # def create(self, validate_data):
-    #     # serializer = self.get_serializer()
-    #     # serializer.is_valid(raise_exception=True)
-    #     # self.perform_create(serializer)
-    #     # headers = self.get_success_headers(serializer.data)
-    #     logger.warning(validate_data)
-    #     logger.warning(validate_data.pop['user'])
-    #     user = User.objects.get(username=validate_data.pop['username'])
-    #     try:
-    #         for obj in validate_data.pop['question']:
-    #             logger.warning(obj)
-    #         # User.objects.get(username=answer_data['username']) and Reflection.objects.get(
-    #         #     id=answer_data['reflection']) and Question.objects.get(id=answer_data['question'])
-    #         # user = User.objects.get(username=answer_data['username'])
-    #         # if User.objects.get(username=answer_data['username']) and Reflection.objects.get(
-    #         #         id=answer_data['reflection']) and Question.objects.get(id=answer_data['question']):
-    #         #     answer = Answer.objects.create(user=user, **answer_data)
-    #             return Response({'detail': 'failed', 'user': user})
-    #     except:
-    #         return Response({'detail': 'failed'})
