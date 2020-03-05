@@ -41,7 +41,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ['id', 'answer_text', 'answer_float', 'username', 'question', 'reflection']
+        fields = ['answer_text', 'answer_float', 'username', 'question', 'reflection']
 
     # def create(self, validate_data):
     #     # serializer = self.get_serializer()
