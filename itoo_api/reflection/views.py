@@ -161,15 +161,17 @@ class ReflectionDetail(CreateView):
 #                 Answer.objects.create(user=self.request.user, question=obj, answer_text=each)
 #         return super(AnswerDetail, self).form_valid(form)
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from itoo_api.reflection.serializers import AnswerSerializer, ReflectionSerializer, QuestionSerializer
 from itoo_api.reflection.models import Answer, Reflection, Question
 from rest_framework.permissions import AllowAny
 from itoo_api.verified_profile.permission import IsAdminUser
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
+    model = Answer
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     lookup_field = 'id'
@@ -182,9 +184,44 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    from rest_framework.fields import empty
-    def get_serializer(self, instance=None, data=empty, many=False, partial=False):
-        return super(AnswerViewSet, self).get_serializer(instance=instance, data=data, many=True, partial=partial)
+    def create(self, request, *args, **kwargs ):
+        # Look up objects by arbitrary attributes.
+        # You can check here if your students are participating
+        # the classes and have taken the subjects they sign up for.
+        logger.warning(request.data)
+        question = get_object_or_404(Question, id=request.data.get('id'))
+        username = get_object_or_404(User, username=request.data.get('username'))
+        reflection = get_object_or_404(Reflection, id=request.data.get('id'))
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(question=question, username=username, reflection=reflection)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def create(self, request, *args, **kwargs):
+    #     data = request.DATA
+    #
+    #     # note transaction.atomic was introduced in Django 1.6
+    #     with transaction.atomic():
+    #         component = Answer(
+    #             profit_and_loss=data['component_comments'],
+    #             name=data['name']
+    #         )
+    #         component.clean()
+    #         component.save()
+    #
+    #         for volume in data['volumes']:
+    #             Answer.objects.create(
+    #                 component=component,
+    #                 offset=volume['offset'],
+    #                 volume=volume['volume']
+    #             )
+    #     serializer = AnswerSerializer(component)
+    #     headers = self.get_success_headers(serializer.data)
+    #
+    #     return Response(serializer.data, headers=headers)
 
 
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
