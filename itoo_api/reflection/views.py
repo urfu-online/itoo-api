@@ -194,9 +194,9 @@ class AnswerViewSet(viewsets.ModelViewSet):
         if not is_many:
             return super(AnswerViewSet, self).create(request, *args, **kwargs)
         else:
-            question = get_object_or_404(Question, id=request.data['question'].get('id'))
-            username = get_object_or_404(User, username=request.data['username'])
-            reflection = get_object_or_404(Reflection, id=request.data['question'].get('reflection').get('id'))
+            question = get_object_or_404(Question, id=request.data[0].get('question').get('id'))
+            username = get_object_or_404(User, username=request.data[0].get('username'))
+            reflection = get_object_or_404(Reflection, id=request.data[0].get('question').get('reflection').get('id'))
 
             serializer = self.get_serializer(data=request.data, many=True)
             serializer.is_valid(raise_exception=True)
