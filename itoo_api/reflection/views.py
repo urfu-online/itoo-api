@@ -189,16 +189,21 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
         logger.warning(request.data)
-        question = get_object_or_404(Question, id=request.data.get('id'))
-        username = get_object_or_404(User, username=request.data.get('username'))
-        reflection = get_object_or_404(Reflection, id=request.data.get('id'))
+        logger.warning(request.data['question'])
+        is_many = isinstance(request.data, list)
+        if not is_many:
+            return super(AnswerViewSet, self).create(request, *args, **kwargs)
+        else:
+            question = get_object_or_404(Question, id=request.data['question'].get('id'))
+            username = get_object_or_404(User, username=request.data['username'])
+            reflection = get_object_or_404(Reflection, id=request.data['question'].get('reflection').get('id'))
 
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(question=question, username=username, reflection=reflection)
-        headers = self.get_success_headers(serializer.data)
+            serializer = self.get_serializer(data=request.data, many=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(question=question, username=username, reflection=reflection)
+            headers = self.get_success_headers(serializer.data)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     # def create(self, request, *args, **kwargs):
     #     data = request.DATA
