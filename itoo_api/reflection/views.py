@@ -184,7 +184,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
-
     def create(self, request, *args, **kwargs):
         try:
             for item in request.data:
@@ -198,6 +197,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response({'detail': 'Error in AnswerViewSet.create()'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Reflection.objects.all().order_by('id')
