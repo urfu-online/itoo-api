@@ -171,6 +171,7 @@ from django.contrib.auth.models import User
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
+    model = Answer
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     lookup_field = 'id'
@@ -192,31 +193,32 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
-        # question = get_object_or_404(Question, id=request.data.get('question'))
-        # user = get_object_or_404(User, username=request.data.get('username'))
-        # reflection = get_object_or_404(Reflection, id=request.data.get('reflection'))
-        # # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
-        # logger.warning(user)
-        # serializer = self.get_serializer(data=request.data,  many=isinstance(request.data, list))
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save(question=question, user=user, reflection=reflection)
-        # # logger.warning(serializer.data)
-        # # headers = self.get_success_headers(serializer.data)
-        # # headers = self.get_success_headers(serializer.data)
-        # return Response(status=status.HTTP_201_CREATED)
-
-        is_many = isinstance(request.data, list)
-        if not is_many:
-            return super(AnswerViewSet, self).create(request, *args, **kwargs)
-        else:
-            serializer = self.get_serializer(data=request.data, many=True)
+        for item in request.data:
+            question = get_object_or_404(Question, id=item.get('question'))
+            user = get_object_or_404(User, username=item.get('username'))
+            reflection = get_object_or_404(Reflection, id=item.get('reflection'))
+            # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
+            logger.warning(user)
+            serializer = self.get_serializer(data=item, many=isinstance(item, list))
             serializer.is_valid(raise_exception=True)
-            logger.warning(serializer)
-            serializer.save()
-            logger.warning(serializer.data)
-            # self.perform_create(serializer)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            serializer.save(question=question, user=user, reflection=reflection)
+        # logger.warning(serializer.data)
+        # headers = self.get_success_headers(serializer.data)
+        # headers = self.get_success_headers(serializer.data)
+        return Response(status=status.HTTP_201_CREATED)
+
+        # is_many = isinstance(request.data, list)
+        # if not is_many:
+        #     return super(AnswerViewSet, self).create(request, *args, **kwargs)
+        # else:
+        #     serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        #     serializer.is_valid(raise_exception=True)
+        #     logger.warning(serializer)
+        #     serializer.save()
+        #     logger.warning(serializer.data)
+        #     # self.perform_create(serializer)
+        #     headers = self.get_success_headers(serializer.data)
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     # def create(self, request, *args, **kwargs):
     #     data = request.DATA
