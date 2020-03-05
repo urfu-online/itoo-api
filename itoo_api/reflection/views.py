@@ -183,6 +183,11 @@ class AnswerViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
+    # def get_serializer(self, instance=None, data=None, many=False, *args, **kwargs):
+    #     return super(AnswerSerializer, self).get_serializer(
+    #         instance=instance, data=data, many=isinstance(instance, list) or isinstance(data, list),
+    #         *args, **kwargs)
+
     def create(self, request, *args, **kwargs):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
@@ -190,19 +195,16 @@ class AnswerViewSet(viewsets.ModelViewSet):
         logger.warning(request.data)
         logger.warning(request.data[0].get('username'))
         is_many = isinstance(request.data, list)
-        if not is_many:
-            return super(AnswerViewSet, self).create(request, *args, **kwargs)
-        else:
-            question = get_object_or_404(Question, id=request.data[0].get('question').get('id'))
-            user = get_object_or_404(User, username=request.data[0].get('username'))
-            reflection = get_object_or_404(Reflection, id=request.data[0].get('question').get('reflection').get('id'))
+        question = get_object_or_404(Question, id=request.data[0].get('question').get('id'))
+        user = get_object_or_404(User, username=request.data[0].get('username'))
+        reflection = get_object_or_404(Reflection, id=request.data[0].get('question').get('reflection').get('id'))
 
-            serializer = self.get_serializer(data=request.data, many=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save(question=question, user=user, reflection=reflection)
-            # headers = self.get_success_headers(serializer.data)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        serializer.save(question=question, user=user, reflection=reflection)
+        # headers = self.get_success_headers(serializer.data)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     # def create(self, request, *args, **kwargs):
     #     data = request.DATA
