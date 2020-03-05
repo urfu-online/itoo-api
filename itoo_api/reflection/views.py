@@ -192,6 +192,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             reflection = get_object_or_404(Reflection, id=item.get('reflection'))
             serializer = self.get_serializer(data=item, many=isinstance(item, list))
             serializer.is_valid(raise_exception=True)
+            logger.warning(serializer)
             serializer.save(question=question, user=user, reflection=reflection)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
