@@ -171,7 +171,6 @@ from django.contrib.auth.models import User
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
-    model = Answer
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     lookup_field = 'id'
