@@ -197,7 +197,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
         logger.warning(user)
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
-        logger.warning(serializer)
+        logger.warning(serializer.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(question=question, user=user)
         # headers = self.get_success_headers(serializer.data)
