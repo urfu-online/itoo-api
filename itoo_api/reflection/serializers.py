@@ -5,6 +5,7 @@ from itoo_api.reflection.models import Reflection, Question, Answer
 from itoo_api.serializers import ProgramSerializer
 
 from django.contrib.auth.models import User
+from openedx.core.djangoapps.user_api.serializers import UserSerializer
 from rest_framework.response import Response
 
 logging.basicConfig()
@@ -35,7 +36,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     question = QuestionSerializer(many=False, read_only=True)
     # reflection = ReflectionSerializer(many=False, required=False)
-    username = serializers.CharField(source="user.username", read_only=True)
+    username = UserSerializer(source="user.username", read_only=True)
 
     class Meta:
         model = Answer
