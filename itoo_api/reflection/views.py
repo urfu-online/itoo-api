@@ -192,14 +192,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
-        logger.warning(request.data)
-        logger.warning(request.data[0].get('username'))
-        is_many = isinstance(request.data, list)
-        question = get_object_or_404(Question, id=request.data[0].get('question').get('id'))
+        question = get_object_or_404(Question, pk=request.data[0].get('question').get('id'))
         user = get_object_or_404(User, username=request.data[0].get('username'))
-        reflection = get_object_or_404(Reflection, id=request.data[0].get('question').get('reflection').get('id'))
-
+        reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
+        logger.warning(user)
         serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        logger.warning(serializer)
         serializer.is_valid(raise_exception=True)
         serializer.save(question=question, user=user, reflection=reflection)
         # headers = self.get_success_headers(serializer.data)
