@@ -34,13 +34,14 @@ class AnswerSerializer(serializers.ModelSerializer):
         many = kwargs.pop('many', True)
         super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
 
-    question = QuestionSerializer(many=False, read_only=True)
+    question = QuestionSerializer(source='question.id', many=False, read_only=True)
     # reflection = ReflectionSerializer(many=False, required=False)
-    username = UserSerializer(source="user.username", read_only=True)
+    username = UserSerializer(source="user.username", read_only=True, required=False)
+    reflection = ReflectionSerializer(source='reflection.id', many=False, required=False, read_only=True)
 
     class Meta:
         model = Answer
-        fields = ['answer_text', 'answer_float', 'username', 'question']
+        fields = ['id', 'answer_text', 'answer_float', 'username', 'question', 'reflection']
 
     # def create(self, validate_data):
     #     # serializer = self.get_serializer()
