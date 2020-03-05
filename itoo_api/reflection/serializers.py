@@ -30,9 +30,9 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    def __init__(self, *args, **kwargs):
-        many = kwargs.pop('many', True)
-        super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     many = kwargs.pop('many', True)
+    #     super(AnswerSerializer, self).__init__(many=many, *args, **kwargs)
 
     question = QuestionSerializer(source='question.id', many=False, read_only=True)
     # reflection = ReflectionSerializer(many=False, required=False)
