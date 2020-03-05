@@ -45,12 +45,10 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(AnswerSerializer, self).to_representation(instance)
-        data['question'] = QuestionSerializer(
-            Question.objects.get(id=data['question'])).data
-        data['username'] = UserSerializer(
-            User.objects.get(username=data['username'])).data
-        data['reflection'] = ReflectionSerializer(
-            Reflection.objects.get(id=data['reflection'])).data
+        logger.warning(data)
+        data['question'] = QuestionSerializer(Question.objects.get(id=data['question'])).data
+        data['username'] = UserSerializer(User.objects.get(username=data['username'])).data
+        data['reflection'] = ReflectionSerializer(Reflection.objects.get(id=data['reflection'])).data
         return data
 
     # def create(self, validate_data):
