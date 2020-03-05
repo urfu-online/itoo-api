@@ -185,7 +185,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
-        if request.data and isinstance(request.data, list):
+        if request.data and isinstance(request.data, dict):
             try:
                 for item in request.data:
                     question = get_object_or_404(Question, id=item.get('question'))
@@ -199,7 +199,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             except:
                 return Response({'detail': 'Error in AnswerViewSet.create()'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            Response({'detail': 'Empty answer'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Empty answer'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
