@@ -195,7 +195,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
             logger.warning(serializer.data)
             serializer.save(question=question, user=user, reflection=reflection)
             # headers = self.get_success_headers(serializer.data)
-            return Response(status=status.HTTP_201_CREATED)
+
+        return Response(status=status.HTTP_201_CREATED)
         # except:
         #     return Response({'detail': 'Error in AnswerViewSet.create()'}, status=status.HTTP_400_BAD_REQUEST)
 
