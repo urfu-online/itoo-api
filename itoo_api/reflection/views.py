@@ -194,12 +194,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
             return super(AnswerViewSet, self).create(request, *args, **kwargs)
         else:
             question = get_object_or_404(Question, id=request.data[0].get('question').get('id'))
-            username = get_object_or_404(User, username=request.data[0].get('username'))
+            user = get_object_or_404(User, username=request.data[0].get('username'))
             reflection = get_object_or_404(Reflection, id=request.data[0].get('question').get('reflection').get('id'))
 
             serializer = self.get_serializer(data=request.data, many=True)
             serializer.is_valid(raise_exception=True)
-            serializer.save(question=question, username=username, reflection=reflection)
+            serializer.save(question=question, user=user, reflection=reflection)
             headers = self.get_success_headers(serializer.data)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
