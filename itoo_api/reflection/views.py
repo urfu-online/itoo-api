@@ -192,7 +192,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # Look up objects by arbitrary attributes.
         # You can check here if your students are participating
         # the classes and have taken the subjects they sign up for.
-        logger.warning(len(request.data))
+        for item in request.data:
+            logger.warning(item)
         question = get_object_or_404(Question, id=request.data[0].get('question'))
         user = get_object_or_404(User, username=request.data[0].get('username'))
         # reflection = get_object_or_404(Reflection, pk=request.data[0].get('question').get('reflection').get('id'))
