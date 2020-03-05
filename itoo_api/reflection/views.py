@@ -185,7 +185,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
-        if request.data and isinstance(request.data, dict):
+        if request.data and isinstance(request.data, list):
             try:
                 for item in request.data:
                     question = get_object_or_404(Question, id=item.get('question'))
