@@ -97,8 +97,10 @@ def profile_new(request, slug):
         if form.is_valid() and program:
             profile_state = True
             profile = form.save(commit=False)
-            profile.user = request.user
             profile.save()
+            p = Profile.objects.get(user=request.user.id)
+            p.save()
+            profile.user = request.user
             enroll_program(user=profile.user, program=program)
 
             # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
