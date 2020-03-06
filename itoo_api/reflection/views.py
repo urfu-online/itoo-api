@@ -206,11 +206,17 @@ class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ReflectionSerializer
     lookup_field = 'id'
 
+    # def get_queryset(self):
+    #     return Reflection.objects.filter(program=self.kwargs['program_slug'])
+
 
 class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all().order_by('id')
     serializer_class = QuestionSerializer
     lookup_field = 'id'
+
+    # def get_queryset(self):
+    #     return Question.objects.filter(reflection=self.kwargs['id'])
 
 
 class ReflectionTemplate(TemplateView):
