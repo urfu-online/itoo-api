@@ -185,6 +185,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
+        logger.warning(request.user)
         if request.data and isinstance(request.data, list):
             try:
                 for item in request.data:
