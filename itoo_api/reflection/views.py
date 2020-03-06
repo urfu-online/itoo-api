@@ -185,17 +185,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):
-        logger.warning(request.user)
         if request.data and isinstance(request.data, list):
             try:
                 for item in request.data:
                     question = get_object_or_404(Question, id=item.get('question'))
-                    # user = get_object_or_404(User, user=request.user)
-                    # logger.warning(user)
-                    logger.warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                     reflection = get_object_or_404(Reflection, id=item.get('reflection'))
                     serializer = self.get_serializer(data=item, many=isinstance(item, list))
-                    logger.warning(serializer)
                     serializer.is_valid(raise_exception=True)
                     serializer.save(question=question, user=request.user, reflection=reflection)
 
