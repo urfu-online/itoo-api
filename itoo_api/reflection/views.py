@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, TemplateView
 from itoo_api.reflection.models import Reflection, Question, Answer
 from django import forms
 from django.views.generic.edit import FormMixin
@@ -212,3 +212,7 @@ class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all().order_by('id')
     serializer_class = QuestionSerializer
     lookup_field = 'id'
+
+
+class ReflectionTemplate(TemplateView):
+    template_name = '../templates/IPMG/reflection.html'
