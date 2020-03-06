@@ -36,7 +36,7 @@ def profile_redirect(request):
         if program_slug:
             return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
 
-    return Http404
+    return Http404("Program slug does not exist")
 
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
