@@ -234,8 +234,10 @@ def profile_edit_exist(request, slug):
 
         if form.is_valid():
             profile = form.save(commit=False)
-            profile.user = request.user
             profile.save()
+            p = Profile.objects.get(user=request.user.id)
+            p.save()
+            profile.user = request.user
             program = Program.get_program(slug=slug)
             if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
