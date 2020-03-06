@@ -204,7 +204,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 class ReflectionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Reflection.objects.all().order_by('id')
     serializer_class = ReflectionSerializer
-    lookup_field = 'id'
+    lookup_field = 'program_slug'
 
 
 class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
