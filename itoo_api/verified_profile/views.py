@@ -97,10 +97,8 @@ def profile_new(request, slug):
         if form.is_valid() and program:
             profile_state = True
             profile = form.save(commit=False)
-            profile.save()
-            p = Profile.objects.get(user=request.user.id)
-            p.save()
             profile.user = request.user
+            profile.save()
             enroll_program(user=profile.user, program=program)
 
             # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
@@ -236,10 +234,8 @@ def profile_edit_exist(request, slug):
 
         if form.is_valid():
             profile = form.save(commit=False)
-            profile.save()
-            p = Profile.objects.get(user=request.user.id)
-            p.save()
             profile.user = request.user
+            profile.save()
             program = Program.get_program(slug=slug)
             if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
