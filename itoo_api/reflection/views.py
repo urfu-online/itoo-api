@@ -189,7 +189,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             try:
                 for item in request.data:
                     question = get_object_or_404(Question, id=item.get('question'))
-                    user = get_object_or_404(User, username=item.get('username'))
+                    user = get_object_or_404(User, user=request.user)
                     reflection = get_object_or_404(Reflection, id=item.get('reflection'))
                     serializer = self.get_serializer(data=item, many=isinstance(item, list))
                     serializer.is_valid(raise_exception=True)
