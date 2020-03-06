@@ -195,7 +195,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
                     serializer.is_valid(raise_exception=True)
                     serializer.save(question=question, user=user, reflection=reflection)
 
-                return Response(status=status.HTTP_201_CREATED)
+                return Response({'detail': 'success'}, status=status.HTTP_201_CREATED)
             except:
                 return Response({'detail': 'Error in AnswerViewSet.create()'}, status=status.HTTP_400_BAD_REQUEST)
         else:
