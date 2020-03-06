@@ -2,25 +2,23 @@
 import logging
 # import json
 import urllib
-from urlparse import urlparse
-
-from django.core.urlresolvers import reverse
-from django.shortcuts import render, redirect
-
-from itoo_api.models import EnrollProgram, Program
-from .forms import ProfileForm, ProfileFormIPMG
-from .models import Profile, ProfileOrganization
-
-from student.models import CourseEnrollment
-from opaque_keys.edx.keys import CourseKey
 from django.contrib.auth.decorators import login_required
-
-from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from itoo_api.verified_profile.permission import IsLoggedInUserOrAdmin, IsAdminUser
+from django.core.urlresolvers import reverse
+from django.http import Http404
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from opaque_keys.edx.keys import CourseKey
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from student.models import CourseEnrollment
+from urlparse import urlparse
+
+from itoo_api.models import EnrollProgram, Program
 from itoo_api.serializers import ProfileSerializer
+from itoo_api.verified_profile.permission import IsLoggedInUserOrAdmin, IsAdminUser
+from .forms import ProfileForm, ProfileFormIPMG
+from .models import Profile, ProfileOrganization
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -35,12 +33,10 @@ def profile_redirect(request):
     url = urlparse(request.get_full_path())
     if url.query != "":
         program_slug = request.GET.get('program_slug', None)
-    # else:
-    #     program_slug = url.path.rsplit('/', 2)[1]
-
-        logger.warning(program_slug + "!!!!!!!!!!!!!!!!!!!!!!!!!1")
         if program_slug:
             return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
+
+    return Http404
 
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
