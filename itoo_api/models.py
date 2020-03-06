@@ -141,7 +141,7 @@ class Program(TimeStampedModel):
         verbose_name_plural = "Образовательные программы"
 
     def __str__(self):
-        return self.slug
+        return self.title
 
     def export_students(self):
         """TODO: implement method from admin"""
