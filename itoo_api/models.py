@@ -263,7 +263,7 @@ class EnrollProgram(TimeStampedModel):
 
         enrollment, __ = cls.objects.get_or_create(
             user=user,
-            progrma=program,
+            program=program,
         )
 
         # # If there was an unlinked CEA, it becomes linked now
