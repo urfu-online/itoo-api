@@ -105,19 +105,58 @@ def export_csv_program_entoll(modeladmin, request, queryset):
 
 export_csv_program_entoll.short_description = u"Export CSV"
 
+from django import forms
+from itoo_api.verified_profile.views import enroll_program
+
+
+class EnrollProgramForm(forms.ModelForm):
+
+    def save(self, *args, **kwargs):
+        program_enrollment = super(EnrollProgramForm, self).save(commit=False)
+        user = self.cleaned_data['user']
+        program = self.cleaned_data['program']
+        enrollment = enroll_program(user, program)
+        program_enrollment.id = enrollment.id
+        program_enrollment.created = enrollment.created
+        return program_enrollment
+
+    class Meta:
+        model = EnrollProgram
+        fields = '__all__'
+
 
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
     list_display = ('user', 'program', 'get_program_slug')
     list_filter = ('program__title',)
+    raw_id_fields = ('user', 'program')
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
     search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
+    form = EnrollProgramForm
     actions = [export_csv_program_entoll]
 
     def get_program_slug(self, obj):
         return obj.program.slug
+
+    def get_search_results(self, request, queryset, search_term):
+        qs, use_distinct = super(EnrollProgramAdmin, self).get_search_results(request, queryset, search_term)
+
+        # annotate each enrollment with whether the username was an
+        # exact match for the search term
+        qs = qs.annotate(exact_username_match=models.Case(
+            models.When(user__username=search_term, then=models.Value(True)),
+            default=models.Value(False),
+            output_field=models.BooleanField()))
+
+        # present exact matches first
+        qs = qs.order_by('-exact_username_match', 'user__username')
+
+        return qs, use_distinct
+
+    def queryset(self, request):
+        return super(EnrollProgramAdmin, self).queryset(request).select_related('user')
 
 
 @admin.register(EduProject)
