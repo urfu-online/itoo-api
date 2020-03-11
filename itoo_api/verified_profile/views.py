@@ -35,7 +35,7 @@ def profile_redirect(request):
         program_slug = request.GET.get('program_slug', None)
         if program_slug:
             if program_slug == "IPMG":
-                program_slug = "IPMG_session_2"
+                return redirect('https://courses.openedu.urfu.ru/projects/ipmgproj/IPMG_session_2/')
             return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
 
     raise Http404("Program slug does not exist")
