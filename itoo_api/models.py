@@ -242,6 +242,9 @@ class EnrollProgram(TimeStampedModel):
         else:
             return None
 
+    def __unicode__(self):
+        return self.user.username
+
     def __str__(self):
         return self.user.username
 
