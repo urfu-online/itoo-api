@@ -34,7 +34,7 @@ def profile_redirect(request):
     if url.query != "":
         program_slug = request.GET.get('program_slug', None)
         if program_slug:
-            if program_slug == "IPMG":
+            if program_slug == "IPMG":  # TODO: КОСТЫЛЬ, надо будет убрать
                 return redirect('https://courses.openedu.urfu.ru/projects/ipmgproj/IPMG_session_2/')
             return redirect(reverse('itoo:verified_profile:profile_detail', kwargs={"slug": program_slug}))
 
