@@ -115,7 +115,7 @@ class EnrollProgramForm(forms.ModelForm):
         program_enrollment = super(EnrollProgramForm, self).save(commit=False)
         user = self.cleaned_data['user']
         program = self.cleaned_data['program']
-        enrollment = enroll_program(user, program)
+        enrollment = EnrollProgram.get_or_create_enrollment(user, program)
         program_enrollment.id = enrollment.id
         program_enrollment.created = enrollment.created
         return program_enrollment

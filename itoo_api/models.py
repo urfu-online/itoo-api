@@ -249,3 +249,25 @@ class EnrollProgram(TimeStampedModel):
         """ Meta class for this Django model """
         verbose_name = 'Запись на программу'
         verbose_name_plural = 'Запись на программы'
+
+    @classmethod
+    def get_or_create_enrollment(cls, user, program):
+
+        assert isinstance(program, Program)
+
+        if user is None:
+            user.save()
+
+        enrollment, __ = cls.objects.get_or_create(
+            user=user,
+            progrma=program,
+        )
+
+        # # If there was an unlinked CEA, it becomes linked now
+        # CourseEnrollmentAllowed.objects.filter(
+        #     email=user.email,
+        #     course_id=course_key,
+        #     user__isnull=True
+        # ).update(user=user)
+
+        return enrollment
