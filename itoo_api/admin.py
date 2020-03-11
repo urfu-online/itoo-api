@@ -228,7 +228,7 @@ def export_csv_program(modeladmin, request, queryset):
     from django.utils.encoding import smart_str
     from django.http import HttpResponse
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    response['Content-Disposition'] = 'attachment; filename=profile_grade.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
 
@@ -374,6 +374,7 @@ def export_csv_profile(modeladmin, request, queryset):
         smart_str(u'add_email'),
         smart_str(u'birth_place'),
         smart_str(u'job_address'),
+        smart_str(u'manager')
     ])
     for obj in queryset:
         writer.writerow([
@@ -410,6 +411,7 @@ def export_csv_profile(modeladmin, request, queryset):
             smart_str(obj.add_email),
             smart_str(obj.birth_place),
             smart_str(obj.job_address),
+            smart_str(obj.manager)
         ])
     return response
 
