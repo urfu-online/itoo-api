@@ -374,7 +374,9 @@ def export_csv_profile(modeladmin, request, queryset):
         smart_str(u'add_email'),
         smart_str(u'birth_place'),
         smart_str(u'job_address'),
-        smart_str(u'manager')
+        smart_str(u'Ответственный'),
+        smart_str(u'Номер согласия'),
+        smart_str(u'Диагностики пройдены')
     ])
     for obj in queryset:
         writer.writerow([
@@ -411,7 +413,9 @@ def export_csv_profile(modeladmin, request, queryset):
             smart_str(obj.add_email),
             smart_str(obj.birth_place),
             smart_str(obj.job_address),
-            smart_str(obj.manager)
+            smart_str(obj.manager),
+            smart_str(obj.admin_number),
+            smart_str(obj.admin_diagnostics)
         ])
     return response
 
