@@ -15,10 +15,11 @@ from student.models import CourseEnrollment
 from urlparse import urlparse
 
 from itoo_api.models import EnrollProgram, Program
-from itoo_api.serializers import ProfileSerializer, ProfileUNISerializer
+from itoo_api.serializers import ProfileSerializer
 from itoo_api.verified_profile.permission import IsLoggedInUserOrAdmin, IsAdminUser
 from .forms import ProfileForm, ProfileFormIPMG
 from .models import Profile, ProfileOrganization
+from .serializers import ProfileUNISerializer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
