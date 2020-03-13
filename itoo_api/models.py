@@ -5,14 +5,12 @@ Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
 
-from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
-import uuid
 
 
 @python_2_unicode_compatible
@@ -142,7 +140,7 @@ class Program(TimeStampedModel):
         for enrollment in enrollments:
             students.append(enrollment.user.verified_profile.uni_to_dict())
         query = {
-            "id_unit_program": self.id_unit_program,
+            "id_unit_program": self.id_unit_program.strftime("%Y-%M-%d"),
             "beginDate": self.edu_start_date,
             "endDate": self.edu_end_date,
             "students": students
