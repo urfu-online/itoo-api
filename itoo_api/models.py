@@ -140,7 +140,7 @@ class Program(TimeStampedModel):
         enrollments = EnrollProgram.objects.filter(program=self, success=True)
         students = []
         for enrollment in enrollments:
-            students.append(enrollment.user.profile.uni_to_dict())
+            students.append(enrollment.user.verified_profile.uni_to_dict())
         query = {
             "id_unit_program": self.id_unit_program,
             "beginDate": self.edu_start_date,
