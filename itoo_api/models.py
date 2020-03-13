@@ -136,6 +136,20 @@ class Program(TimeStampedModel):
         else:
             return None
 
+    def uni_get_students(self):
+        enrollments = EnrollProgram.objects.filter(program=self, success=True)
+        students = []
+        for enrollment in enrollments:
+            students.append(enrollment.user.profile.uni_to_dict())
+        query = {
+            "id_unit_program": self.id_unit_program,
+            "beginDate": self.edu_start_date,
+            "endDate": self.edu_end_date,
+            "students": students
+        }
+
+        return query
+
     class Meta:
         verbose_name = "Образовательная программа"
         verbose_name_plural = "Образовательные программы"
@@ -234,6 +248,7 @@ class TextBlock(TimeStampedModel):
 class EnrollProgram(TimeStampedModel):
     user = models.ForeignKey(User, db_index=True, verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
+    success = models.BooleanField("В приказ на зачисление", default=False)
 
     @classmethod
     def get_enroll_program(cls, user, program):

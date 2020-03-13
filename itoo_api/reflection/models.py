@@ -15,6 +15,11 @@ class Reflection(TimeStampedModel):
     description = models.TextField("Описание", null=True, blank=True)
     program = models.ForeignKey(Program, null=True, blank=True, on_delete=models.CASCADE)
 
+    def export_answers(self):
+        raise NotImplementedError(
+            "Not implemented"
+        )  # TODO: implement method
+
     # questions = models.ManyToManyField(Question, verbose_name='Вопросы', on_delete=models.PROTECT)
     # answers = models.ManyToManyField(Answer, verbose_name='Ответы', on_delete=models.PROTECT)
 

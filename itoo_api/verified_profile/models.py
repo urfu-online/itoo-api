@@ -141,7 +141,7 @@ class Profile(models.Model):
         verbose_name = 'анкета для зачисления'
         verbose_name_plural = 'анкеты для зачисления'
 
-    def to_dict_uni(self):
+    def uni_to_dict(self):
         identity_card = {
             "identityCardType": "1",  # Паспорт
             "idncrdSeries": self.series,

@@ -117,9 +117,6 @@ class EnrollProgramForm(forms.ModelForm):
         program_enrollment = super(EnrollProgramForm, self).save(commit=False)
         user = self.cleaned_data['user']
         program = self.cleaned_data['program']
-        logger.warning(type(program))
-        logger.warning(program)
-        logger.warning('!!!!!!!!!!!!!')
         enrollment = EnrollProgram.get_or_create_enrollment(user, program)
         program_enrollment.id = enrollment.id
         program_enrollment.created = enrollment.created
@@ -133,8 +130,8 @@ class EnrollProgramForm(forms.ModelForm):
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user', 'program', 'get_program_slug')
-    list_filter = ('program__title',)
+    list_display = ('user', 'program', 'get_program_slug', 'success')
+    list_filter = ('success', 'program__title',)
     raw_id_fields = ('user', 'program')
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
