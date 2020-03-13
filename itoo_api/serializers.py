@@ -74,6 +74,8 @@ class ProgramSerializer(serializers.ModelSerializer):
     owner_slug = serializers.CharField(source='owner.slug')
     content = serializers.SerializerMethodField()
     direction = serializers.CharField(source='direction.title')
+    edu_start_date = serializers.DateField(format="%d.%m.%Y")
+    edu_end_date = serializers.DateField(format="%d.%m.%Y")
 
     class Meta:  # pylint: disable=missing-docstring
         model = Program
