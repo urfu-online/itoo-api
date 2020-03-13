@@ -30,3 +30,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         profile_data = validated_data.pop('profile')
         profile_org_data = validated_data.pop('profile_org')
         return HttpResponseRedirect(redirect_to='...')
+
+
+class ProfileUNISerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            'last_name',
+            'first_name',
+            'country',
+            "series",
+            'number',
+            'issue_date',
+            'sex',
+            'birth_date',
+            'address_register'
+        )

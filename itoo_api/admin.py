@@ -17,6 +17,8 @@ from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
 
+from celery import shared_task
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -223,6 +225,7 @@ class ProfileOrganizationAdmin(admin.ModelAdmin):
     list_display = ("title", "program")
 
 
+@shared_task
 def export_csv_program(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str

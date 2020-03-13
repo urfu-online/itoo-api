@@ -10,7 +10,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from opaque_keys.edx.keys import CourseKey
 from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
 from student.models import CourseEnrollment
 from urlparse import urlparse
 
@@ -19,9 +19,15 @@ from itoo_api.serializers import ProfileSerializer
 from itoo_api.verified_profile.permission import IsLoggedInUserOrAdmin, IsAdminUser
 from .forms import ProfileForm, ProfileFormIPMG
 from .models import Profile, ProfileOrganization
+from .serializers import ProfileUNISerializer
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
+
+
+class DenyAny(BasePermission):
+    def has_permission(self, request, view):
+        return False
 
 
 def profile_redirect(request):
@@ -60,6 +66,21 @@ class ProfileViewSet(viewsets.ModelViewSet):
         elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
             permission_classes = [IsLoggedInUserOrAdmin]
         elif self.action == 'list' or self.action == 'destroy':
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+
+class ProfileUNIViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileUNISerializer
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = [DenyAny]
+        elif self.action in ('retrieve', 'update', 'partial_update', 'destroy'):
+            permission_classes = [DenyAny]
+        elif self.action == 'list':
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
 
