@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.dateparse import parse_date
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 
@@ -140,9 +141,9 @@ class Program(TimeStampedModel):
         for enrollment in enrollments:
             students.append(enrollment.user.verified_profile.uni_to_dict())
         query = {
-            "id_unit_program": self.id_unit_program.strftime("%Y-%M-%d"),
-            "beginDate": self.edu_start_date,
-            "endDate": self.edu_end_date,
+            "id_unit_program": parse_date(self.id_unit_program).strftime("%Y-%M-%d"),
+            "beginDate": parse_date(self.edu_start_date).strftime("%Y-%M-%d"),
+            "endDate": parse_date(self.edu_end_date).strftime("%Y-%M-%d"),
             "students": students
         }
 
