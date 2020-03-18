@@ -16,7 +16,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 
-from itoo_api.verified_profile.models import Offer, Profile
+# from itoo_api.verified_profile.models import Offer, Profile
 
 
 @python_2_unicode_compatible
