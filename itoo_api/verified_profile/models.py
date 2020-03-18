@@ -7,8 +7,8 @@ from django.db import models
 from django.db.models import Q
 from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
-from ..utils import generate_new_filename
-from ..models import Program
+from itoo_api.utils import generate_new_filename
+from itoo_api.models import Program
 import logging
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType

@@ -13,7 +13,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import User
 
-from verified_profile.models import Offer, Profile
+from itoo_api.verified_profile.models import Offer, Profile
 
 from django.contrib.admin import SimpleListFilter
 from django.contrib.contenttypes import generic
