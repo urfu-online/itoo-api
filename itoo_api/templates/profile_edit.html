@@ -186,10 +186,8 @@
 </div>
 </div>
 <script>
-    $(function () {
-        $(".datepicker").datepicker({
-            altFormat: "dd.mm.yyyy"
-        });
+    document.addEventListener("DOMContentLoaded", () => {
+        flatpickr("#id_birth_date", {});
     });
 </script>
 

@@ -186,10 +186,16 @@
 </div>
 </div>
 <script>
-    $(function () {
-        $(".datepicker").datepicker({
-            altFormat: "dd.mm.yyyy"
-        });
+    document.addEventListener("DOMContentLoaded", () => {
+        flatpickr.localize(flatpickr.l10ns.ru);
+        flatpickr("#id_birth_date", {});
+        flatpickr("#id_issue_date", {});
+
+        var element = document.getElementById('id_phone');
+        var maskOptions = {
+            mask: '+{7}(000)000-00-00'
+        };
+        var mask = IMask(element, maskOptions);
     });
 </script>
 

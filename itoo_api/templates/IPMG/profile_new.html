@@ -16,15 +16,28 @@
         <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
             {{ form.non_field_errors }}
 
-
             <!-- ЛИЧНЫЕ ДАННЫЕ -->
             <div class="subsection">
                 <div class="subsection">
-                    <!--                    <h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
+                    <!--<h2>ЭТО НОВЫЙ ШАБЛОН</h2>-->
                     <h2>Анкета</h2>
                     <h5>Запись на программу {{ program }}</h5>
                 </div>
                 <h2>Личные данные:</h2>
+
+<!--                {{form.prefered_org}}-->
+
+<!--                <p>-->
+
+<!--                <select class="form-control" id="id_customer" name="customer">-->
+<!--                    <option value=""> Организация не присутствует в списке? </option>-->
+<!--                {% for org in profile_organization %}-->
+<!--&lt;!&ndash;                    <option value="{{ x }}"{% if form.fields.customer.value == x %} selected{% endif %}>{{ y }}</option>&ndash;&gt;-->
+<!--                    <option value="{{ org.id }}">{{ org.title }}</option>-->
+<!--                {% endfor %}-->
+<!--                </select>-->
+<!--                </p>-->
+
                 <p><label for="id_last_name">Фамилия<span class="red">*</span>:</label>
                     {{ form.last_name }}</p>
                 <p><label for="id_first_name">Имя<span class="red">*</span>:</label>
@@ -51,6 +64,10 @@
 
                 <p><label for="id_job">Место работы<span class="red">*</span>:</label>
                     {{ form.job }}</p>
+
+                <p><label for="id_prefered_org">Выберите Ваше предприятие из списка, если Вашего предприятия нет в приведенном списке выберите «Другое»:</label>
+                    {{ form.prefered_org }}</p>
+
                 <p><label for="id_job_address">Адрес работы<span class="red">*</span>:</label>
                     {{ form.job_address }}</p>
                 <p><label for="id_position">Должность<span class="red">*</span>:</label>
@@ -130,19 +147,32 @@
             </div>
 
             <div class="subsection" style="text-align: center;height: 63px;">
-                <p>По всем вопросам обращаться: +7 (950) 202-10-69, rachevanatali@gmail.com</p>
+                <p>По всем вопросам обращаться: +7 (922) 149-99-14, olya.vozisova@gmail.com</p>
             </div>
 
         </form>
     </div>
 </div>
-<script>
-    $(function () {
-        $(".datepicker").datepicker({
-            altFormat: "dd.mm.yyyy"
-        });
-    });
-</script>
+
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", () => {-->
+<!--        // flatpickr.localize(flatpickr.l10ns.ru);-->
+<!--        // flatpickr("#id_birth_date", {});-->
+<!--        // flatpickr("#id_issue_date", {});-->
+
+<!--        let id_leader_id_el = document.getElementById('id_leader_id');-->
+<!--        let leader_id_mask = IMask(id_leader_id_el, {mask: '{ID}[0000000000]'});-->
+
+
+<!--        var element = document.getElementById('id_phone');-->
+<!--        var maskOptions = {-->
+<!--            mask: '+{7}(000)000-00-00'-->
+<!--        };-->
+<!--        var mask = IMask(element, maskOptions);-->
+<!--    });-->
+<!--</script>-->
+
+
 
 <style>
     input[type=email], input[type=tel], input[type=text], select, textarea {

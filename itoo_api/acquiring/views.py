@@ -1,15 +1,20 @@
+# -*- coding: utf-8 -*-
 import logging
 import json
-
+import requests
+from datetime import datetime
+import time
 # rest
-from rest_framework.response import Response as RESTResponse, Response
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
+from django.shortcuts import get_object_or_404
 # from rest_framework.renderers import TemplateHTMLRenderer
 
 # django
-# from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 # from django.conf import settings
 from django.contrib.auth.models import User
@@ -22,20 +27,45 @@ from opaque_keys.edx.keys import CourseKey
 # models
 from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from itoo_api.models import PayUrfuData
+from itoo_api.models import PayUrfuData, Program
+from itoo_api.verified_profile.models import Profile
 
 # enroll api
 from enrollment import api
+from .models import Offer, Payment
+
 # from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
 
 # serializers
-from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer
+from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer, \
+    PaymentSerializer
+
+from .permissions import OwnerPermission
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
 # acquiring
+
+class OfferViewSet(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = OfferSerializer
+
+    def get(self, request, program_slug):
+        # launch_params = {
+        #     "program_slug": request.GET.get('program_slug', None),
+        # }
+        # program_slug = launch_params['program_slug']
+        #
+        # logger.warning(program_slug)
+        offer = Offer.objects.filter(program__slug=program_slug, status='0').first()
+        # logger.warning("Found offer: {}".format(offer.title))
+
+        serializer = OfferSerializer(offer)
+
+        return Response(serializer.data)
+
 
 class CourseModesChange(APIView):
     """
@@ -71,7 +101,7 @@ class CourseModesChange(APIView):
         CourseMode.objects.get_or_create(course_id=course_key, mode_slug=mode_slug, mode_display_name=mode_display_name,
                                          min_price=min_price, suggested_prices=suggested_prices, sku=sku)
 
-        return RESTResponse("Mode '{mode_slug}' created for '{course}'.".format(
+        return Response("Mode '{mode_slug}' created for '{course}'.".format(
             mode_slug=launch_params['mode_slug'],
             course=course_key
         ))
@@ -87,7 +117,7 @@ class ChangeModeStateUserViewSet(APIView):
         course_key = request.GET.get('course_key')
         mode = request.GET.get('mode')
         api.update_enrollment(username, course_key, mode)
-        return RESTResponse("Mode '{mode}' on course '{course}' for user {username}.".format(
+        return Response("Mode '{mode}' on course '{course}' for user {username}.".format(
             mode=mode,
             course=course_key,
             username=username
@@ -183,7 +213,7 @@ class ChangeModeStateUserViewSet(APIView):
     # def get(self, request, course_id=None):
     #     course_key = CourseKey.from_string(course_id)
     #     course = get_course_by_id(course_key)
-    #     return RESTResponse({"course": str(course)})
+    #     return Response({"course": str(course)})
 
 
 class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
@@ -209,32 +239,193 @@ class PayUrfuDataViewSet(APIView):
         #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         #         obj = PayUrfuData.objects.create(data=qd)
         #         obj.save()
-        #         return RESTResponse({"Success"})
+        #         return Response({"Success"})
         #     except:
-        #         return RESTResponse({"Failed": "POST get query params"})
+        #         return Response({"Failed": "POST get query params"})
         # else:
         # if not request.GET:
         #     try:
         #         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         #         obj = PayUrfuData.objects.create(data='{0}{1}'.format(qd, request.body))
         #         obj.save()
-        #         return RESTResponse({"Success"})
+        #         return Response({"Success"})
         #     except:
-        #         return RESTResponse({"Failed"})
+        #         return Response({"Failed"})
         # else:
         try:
             # qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
             obj = PayUrfuData.objects.create(data=request.body)
             obj.save()
-            return RESTResponse({"Success"})
+            return Response({"Success"})
         except:
             logger.warning(request.body)
             logger.warning(request.data)
             logger.warning(request.GET)
-            return RESTResponse({"Failed": "POST body params"})
+            return Response({"Failed": "POST body params"})
 
     def get(self, request):
         qd = json.dumps(request.GET, ensure_ascii=False, sort_keys=False)
         obj = PayUrfuData.objects.create(data=qd)
         obj.save()
-        return RESTResponse({"Success"})
+        return Response({"Success"})
+
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PaymentSerializer
+    lookup_field = 'payment_id'
+
+    # @method_decorator(csrf_exempt)
+    # def dispatch(self, *args, **kwargs):
+    #     return super(PaymentViewSet, self).dispatch(*args, **kwargs)
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.action == 'create':
+            permission_classes = IsAuthenticated
+
+        elif self.action == 'retrieve':
+            permission_classes = [OwnerPermission]
+
+        elif self.action == 'list':
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+    def list(self, request):
+        queryset = Payment.objects.all()  # TOD: фильтровать по статусу иои активности
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    # @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        offer_id = request.data.get('offer_id', None)
+        created = None
+        payment = None
+        if offer_id:
+            # TODO get_or_create or create ???
+            # TODO убедиться, что нет активного платежа: user=request.user, offer=Offer.objects.get(pk=offer_id), status != "3"
+            # if Payment.objects.get(user=request.user, offer=Offer.objects.get(pk=offer_id)) or Payment.objects.get(
+            #         user=request.user, offer=Offer.objects.get(pk=offer_id)).status != "3":
+            payment, created = Payment.objects.get_or_create(user=request.user, offer=Offer.objects.get(pk=offer_id))
+
+        if created and payment:
+            logger.warn('''Payment created:
+                    offer_id: {}
+                    payment_id: {}
+                    user: {}'''.format(offer_id, str(payment.payment_id), str(request.user)))
+
+            serializer = PaymentSerializer(payment)
+            profile = Profile.objects.get(user=request.user)
+            offer = Offer.objects.get(pk=offer_id)
+            # TODO get all data for payment data
+            client_name = u"{} {} {}".format(profile.last_name, profile.first_name, profile.second_name)
+            logger.warning(client_name)
+            payment_data = {
+                "method": u"УрФУ_СервисДоговоры.СохранитьДоговорОферты",
+                "params":
+                    {
+                        "НомерДоговора": "",
+                        "ЛСПодразделения": offer.unit_account,
+                        "СтатьяДоходов": offer.income_item,
+                        "Подразделение": offer.unit,
+                        "ИД_Openedurfu": offer.id_urfu,
+                        "ДатаРегистрации": u"{}".format(request.user.date_joined.isoformat()),
+                        "ДатаДоговора": u"{}".format(offer.created_at.isoformat()),
+                        "ДатаНачалаДоговора": u"{}".format(offer.edu_start_date.isoformat()),
+                        "ДатаОкончанияДоговора": u"{}".format(offer.edu_end_date.isoformat()),
+                        "Программа": offer.program.id_unit_program,
+                        "ПрограммаНаименование": offer.program.title,
+                        "ВидОбразовательнойУслуги": offer.edu_service_type,
+                        "Направление": offer.program.direction.title,
+                        "ДатаНачалаПрограммы": u"{}".format(offer.program.edu_start_date.isoformat()),
+                        "ДатаОкончанияПрограммы": u"{}".format(offer.program.edu_end_date.isoformat()),
+                        "ФормаОбучения": offer.training_form,
+                        "СтоимостьОбразовательнойПрограммы": offer.edu_program_cost,
+                        "ДатаУстановкиСтоимости": u"{}".format(offer.edu_program_cost_date.isoformat()),
+                        "КоличествоЧасов": offer.program.number_of_hours,
+                        "ВыдаваемыйДокумент": offer.program.issued_document_name,
+                        "Слушатель": {
+                            "ФИО": client_name,
+                            "ДатаРождения": "1996-07-05",  # profile.birth_date,
+                            "Пол": profile.sex,
+                            "ИНН": "",
+                            "МобильныйТелефон": profile.phone,
+                            "Email": request.user.email
+                        }
+                    }
+            }
+            logger.warning(json.dumps(payment_data))
+            payment_url = 'http://ubu.ustu.ru/buh/hs/ape/rpc'
+            payment_response = requests.post(payment_url, data=json.dumps(payment_data),
+                                             auth=('opened', 'Vra3wb7@'))  # TODO auth ??
+            logger.warning('''Response payment: {}'''.format(payment_response))
+            response_dicts = json.loads(payment_response.text)
+            contract_number = None
+            logger.warning("!!!!!!!!!!!!!")
+            logger.warning(response_dicts.get('result', {}).get(u'НомерДоговора'))
+            if response_dicts.get('result'):
+                contract_number = response_dicts.get('result', {}).get(u'НомерДоговора')
+                payment.payment_number = int(contract_number)
+                payment.status = "1"
+                payment.save()
+
+                time.sleep(10)
+                # TODO : future USED contract_number !!!1
+                return Response({"payment_url":
+                    u"https://ubu.urfu.ru/pay/?contract_number={}&client_name={}&client_phone={}&client_email={}&amount={}".format(
+                        contract_number, client_name, profile.phone, request.user.email, offer.edu_program_cost)
+                })
+                # return Response({"status": "sucess", "payment": serializer.data})
+            else:
+                contract_number = None
+                payment.status = "3"
+                payment.save()
+                return Response({"status": "failed"})
+
+            # TODO if payment_response not status error
+            # TODO arguments for redirect after receiving payment code
+            # TODO payment.status = "1"
+
+        else:
+            return Response({"status": "failed"})
+
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save()
+
+    def retrieve(self, request, *args, **kwargs):
+        if request.user and request.user.is_authenticated():
+            queryset = Payment.objects.filter(user=request.user)
+        else:
+            queryset = Payment.objects.none()
+
+        logger.warning(self.kwargs['payment_id'])
+        payment = get_object_or_404(queryset, payment_id=self.kwargs['payment_id'])
+        serializer = PaymentSerializer(payment)
+        return Response(serializer.data)
+
+
+def check_payment_status(contract_number):
+    payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
+    payment_data = {
+        "method": u"УрФУ_Платежи.ПлатежиДоговора",
+        "params":
+            {
+                u"НомерДоговора": str(contract_number)
+            }
+    }
+    print(payment_data)
+    payment_response = requests.post(payment_url, data=json.dumps(payment_data),
+                                     auth=('opened', 'Vra3wb7@'))
+
+    return payment_response.text

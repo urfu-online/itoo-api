@@ -21,7 +21,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
 # from student.views import send_enrollment_email
-from importlib import import_module
+from django.utils.importlib import import_module
 from django.conf import settings
 from django.contrib.auth import get_user
 from django.contrib.auth.models import AnonymousUser
@@ -93,6 +93,8 @@ class EnrollProgramViewSet(viewsets.ModelViewSet):
 
         try:
             program = Program.get_program(slug=program_slug)
+
+            logger.warning("User: {} enrolled to program {}".format(username, program.slug))
             if program:
                 try:
                     enroll_program = EnrollProgram.get_enroll_program(user=request.user, program=program)

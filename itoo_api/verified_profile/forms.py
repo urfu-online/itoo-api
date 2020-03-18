@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from .models import Profile
 
@@ -6,7 +7,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user', 'diploma_scan']
+        exclude = ['all_valid', 'user', 'diploma_scan', 'manager']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -159,7 +160,7 @@ class ProfileFormIPMG(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['all_valid', 'user']
+        exclude = ['all_valid', 'user', 'manager']
         terms = forms.BooleanField(required=True)
         widgets = {
             'last_name': forms.TextInput(
@@ -186,7 +187,6 @@ class ProfileFormIPMG(forms.ModelForm):
                     'required': 'true'
                 }
             ),
-
             'city': forms.TextInput(
                 attrs={
                     'class': 'form-control',
@@ -203,7 +203,7 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Пример: 04.06.1987'
+                    'placeholder': 'Год-месяц-день'
                 }
             ),
             'birth_place': forms.TextInput(
@@ -224,9 +224,16 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Необходимо указать институт внутри УрФУ'
+                    'placeholder': 'Необходимо указать организацию и подразделение'
                 }
             ),
+
+            'prefered_org': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+
             'position': forms.TextInput(
                 attrs={
                     'class': 'form-control',
@@ -257,14 +264,12 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Пример: ID397190',
                 }
             ),
             'SNILS': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Пример: 123-456-789-123 45'
                 }
             ),
 
@@ -274,14 +279,12 @@ class ProfileFormIPMG(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Пример: 7513'
                 }
             ),
             'number': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'required': 'true',
-                    'placeholder': 'Пример: 123456'
                 }
             ),
             'issued_by': forms.TextInput(

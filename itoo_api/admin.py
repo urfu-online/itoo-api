@@ -1,12 +1,69 @@
+# coding=utf-8
 """ Django admin pages for organization models """
+import logging
+
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
-
-from django_summernote.admin import SummernoteInlineModelAdmin
+from django.forms import Textarea
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.db import models
+from django_summernote.admin import SummernoteInlineModelAdmin
+from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
+from opaque_keys.edx.keys import CourseKey
+from student.models import CourseEnrollment
 
-from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData, Profile
-from itoo_api.models import Program, TextBlock, EnrollProgram
+from itoo_api.acquiring.models import Offer, Payment
+from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, OrganizationCourse, PayUrfuData
+from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
+from itoo_api.reflection.models import Reflection, Question, Answer
+from verified_profile.models import Profile, ProfileOrganization
+
+from celery import shared_task
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    model = Question
+
+
+class QuestionInline(admin.StackedInline):
+    model = Question
+    show_change_link = True
+
+
+@admin.register(Reflection)
+class ReflectionAdmin(admin.ModelAdmin):
+    model = Reflection
+    list_display = ('title', 'description', 'program',)
+    list_filter = ('program',)
+    search_fields = ('title', 'program',)
+    show_change_link = True
+    inlines = [QuestionInline, ]
+
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    model = Answer
+    list_display = ('user', 'question',)
+    search_fields = ('user__email', 'user__username')
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    model = Offer
+    list_display = ("title", 'income_item', 'unit', 'unit_account',)
+    list_filter = ('unit', 'income_item', 'unit_account', 'program')
+    search_fields = ("title", 'income_item', 'unit', 'unit_account',)
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    model = Payment
+    list_display = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
+    list_filter = ('status',)
+    readonly_fields = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
 
 
 class ProgramCourseInline(admin.TabularInline):
@@ -26,7 +83,7 @@ class ProgramInline(admin.TabularInline):
     model = Program
 
 
-def export_csv_program_enroll(modeladmin, request, queryset):
+def export_csv_program_entoll(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
     from django.http import HttpResponse
@@ -48,18 +105,63 @@ def export_csv_program_enroll(modeladmin, request, queryset):
     return response
 
 
-export_csv_program_enroll.short_description = u"Export CSV"
+export_csv_program_entoll.short_description = u"Export CSV"
+
+from django import forms
+from itoo_api.verified_profile.views import enroll_program
+
+
+class EnrollProgramForm(forms.ModelForm):
+
+    def save(self, *args, **kwargs):
+        program_enrollment = super(EnrollProgramForm, self).save(commit=False)
+        user = self.cleaned_data['user']
+        program = self.cleaned_data['program']
+        logger.warning(type(program))
+        logger.warning(program)
+        logger.warning('!!!!!!!!!!!!!')
+        enrollment = EnrollProgram.get_or_create_enrollment(user, program)
+        program_enrollment.id = enrollment.id
+        program_enrollment.created = enrollment.created
+        return program_enrollment
+
+    class Meta:
+        model = EnrollProgram
+        fields = '__all__'
 
 
 @admin.register(EnrollProgram)
 class EnrollProgramAdmin(admin.ModelAdmin):
     model = EnrollProgram
-    list_display = ('user', 'program',)
+    list_display = ('user', 'program', 'get_program_slug')
     list_filter = ('program__title',)
+    raw_id_fields = ('user', 'program')
     ordering = ('user', 'program__title')
     readonly_fields = ('created',)
-    search_fields = ('user__username', 'program__slug', 'program__title')
-    actions = [export_csv_program_enroll]
+    search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
+    form = EnrollProgramForm
+    actions = [export_csv_program_entoll]
+
+    def get_program_slug(self, obj):
+        return obj.program.slug
+
+    def get_search_results(self, request, queryset, search_term):
+        qs, use_distinct = super(EnrollProgramAdmin, self).get_search_results(request, queryset, search_term)
+
+        # annotate each enrollment with whether the username was an
+        # exact match for the search term
+        qs = qs.annotate(exact_username_match=models.Case(
+            models.When(user__username=search_term, then=models.Value(True)),
+            default=models.Value(False),
+            output_field=models.BooleanField()))
+
+        # present exact matches first
+        qs = qs.order_by('-exact_username_match', 'user__username')
+
+        return qs, use_distinct
+
+    def queryset(self, request):
+        return super(EnrollProgramAdmin, self).queryset(request).select_related('user')
 
 
 @admin.register(EduProject)
@@ -92,7 +194,7 @@ def export_csv_program_course_entoll(modeladmin, request, queryset):
     return response
 
 
-export_csv_program_enroll.short_description = u"Export CSV"
+export_csv_program_entoll.short_description = u"Export CSV"
 
 
 @admin.register(ProgramCourse)
@@ -106,16 +208,104 @@ class ProgramCourseAdmin(admin.ModelAdmin):
 # @admin.register(EduProject)
 # class EduProjectAdmin(admin.ModelAdmin):
 #     inlines = [TextBlockInline]
+@admin.register(Direction)
+class DirectionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'identifier')
+    list_filter = ('title',)
+    ordering = ('title',)
+    readonly_fields = ('created',)
+    search_fields = ('title',)
+
+
+# class ProfileOrganizationInline(admin.TabularInline):
+#     model = ProfileOrganization
+
+@admin.register(ProfileOrganization)
+class ProfileOrganizationAdmin(admin.ModelAdmin):
+    list_display = ("title", "program")
+
+
+@shared_task
+def export_csv_program(modeladmin, request, queryset):
+    import csv
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=profile_grade.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+
+    profile_fields = ["last_name", "first_name", "second_name", "sex", "birth_date", "phone", "series", "number",
+                      "issued_by", "unit_code", "issue_date", "address_register", "country", "city", "address_living",
+                      "mail_index", "job", "position", "edu_organization", "education_level", "specialty",
+                      "series_diploma", "number_diploma", "year_of_ending", "leader_id", "SNILS", "add_email",
+                      "birth_place", "job_address"]
+
+    example_program = queryset[0]
+    logger.warning(example_program)
+    program_enrollments = []
+    for e_u in EnrollProgram.objects.filter(program=example_program):
+        # current_profile = Profile.objects.get(user=e_u.user)
+        program_enrollments.append(e_u.user)
+
+    head_row = ["email"]
+    for course in example_program.get_courses():
+        head_row.append(course.course_id)
+        for p_f in profile_fields:
+            head_row.append(p_f)
+    writer.writerow(head_row)
+
+    for enroll in program_enrollments:
+        row = [smart_str(enroll.email)]
+        for course in example_program.get_courses():
+            course_key = CourseKey.from_string(course.course_id)
+            course_enrollments = CourseEnrollment.objects.users_enrolled_in(course_key)
+            for student, course_grade, error in CourseGradeFactory().iter([enroll], course_key=course_key):
+                if student in course_enrollments:
+                    row.append(course_grade.summary['percent'])
+                else:
+                    row.append("Not enrolled")
+
+        try:
+            current_profile = Profile.objects.get(user=enroll)
+        except Profile.DoesNotExist:
+            current_profile = None
+
+        for p_f in profile_fields:
+            if current_profile is not None:
+                row.append(smart_str(current_profile.__dict__[p_f]))
+            else:
+                row.append("-")
+
+        writer.writerow(row)
+
+    #
+    # # writer.writerow("email")
+    #
+
+    #
+    # for enroll in enrollments:
+    #     row = [smart_str(enroll.user.email)]
+    #     # course_key = CourseKey.from_string(course.course_id)
+    #     for course in example_program.get_courses():
+    #
+    #         logger.warning(course)
+    #         logger.warning(CourseGradeFactory().read(enroll.user, course=get_course_by_id(CourseKey.from_string(str(course)))))
+    #         # row.append(.summary)
+    #     logger.warning(row)
+    #     writer.writerow(row)
+    return response
 
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'abbreviation', 'slug', 'logo', 'active', 'owner')
-    list_filter = ('active', 'owner')
-    ordering = ('title', 'abbreviation',)
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed')
+    list_filter = ('active', 'owner', 'enrollment_allowed')
+    ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
+    actions = [export_csv_program]
 
 
 class OrganizationCourseInline(admin.TabularInline):
@@ -187,6 +377,9 @@ def export_csv_profile(modeladmin, request, queryset):
         smart_str(u'add_email'),
         smart_str(u'birth_place'),
         smart_str(u'job_address'),
+        smart_str(u'Ответственный'),
+        smart_str(u'Номер согласия'),
+        smart_str(u'Диагностики пройдены')
     ])
     for obj in queryset:
         writer.writerow([
@@ -223,6 +416,9 @@ def export_csv_profile(modeladmin, request, queryset):
             smart_str(obj.add_email),
             smart_str(obj.birth_place),
             smart_str(obj.job_address),
+            smart_str(obj.manager),
+            smart_str(obj.admin_number),
+            smart_str(obj.admin_diagnostics)
         ])
     return response
 
@@ -230,12 +426,79 @@ def export_csv_profile(modeladmin, request, queryset):
 export_csv_profile.short_description = u"Export CSV"
 
 
+class ProfileByProgramFilter(admin.SimpleListFilter):
+    title = 'Profile by program'
+    parameter_name = 'profile_by_program'
+
+    def lookups(self, request, model_admin):
+        filters_program = []
+        for program in Program.objects.filter(active=True):
+            filters_program.append((program.id, program.title))
+        return filters_program
+
+    def queryset(self, request, queryset):
+        enrollments_list = []
+        if not self.value():
+            return queryset
+        for enrollment in EnrollProgram.objects.filter(program__id=self.value()):
+            enrollments_list.append(enrollment.user)
+        return queryset.filter(user__in=enrollments_list)
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'second_name', 'all_valid', 'manager')
-    search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city')
-    list_filter = ('all_valid', 'education_level', 'manager', 'city',)
+    fieldsets = (
+        (None, {
+            'fields': (
+                ("manager", 'user',),
+                ('terms', 'doc_forwarding'),
+                ("prefered_org",),
+                # ('created_at', 'updated_at'), ? unknown fields
+                ("admin_number", "admin_diagnostics", "all_valid")
+            )
+        }),
+        (None, {
+            'fields': (
+                ('last_name', 'first_name', 'second_name'),
+                ("SNILS", "leader_id", "sex"),
+                ('birth_date', 'birth_place', 'phone'),
+                ('city', 'job', 'position'),
+                ('job_address',),
+                ('add_email',)
+            )
+        }),
+        ("Адрес", {
+            'fields': (
+                ("country", "mail_index"),
+                ("address_living",),
+                ("unit_code", "issue_date")
+            )
+        }),
+        ("Паспортные данные", {
+            'fields': (
+                ("series", "number"),
+                ("issued_by",),
+                ("unit_code", "issue_date")
+            )
+        }),
+        ("Образование", {
+            'fields': (
+                ("education_level",),
+                ("series_diploma", 'number_diploma'),
+                ("edu_organization",),
+                ("specialty", "year_of_ending")
+            )
+        })
+    )
+    list_display = ('user', 'first_name', 'last_name', 'second_name', 'phone', 'leader_id', 'all_valid',
+                    'admin_diagnostics', 'manager', 'admin_number')
+    search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
+    list_filter = ('all_valid', 'admin_diagnostics', ProfileByProgramFilter, 'manager')
     actions = [export_csv_profile]
+    readonly_fields = ["terms"]
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 2})},
+    }
 
 
 @admin.register(TextBlock)

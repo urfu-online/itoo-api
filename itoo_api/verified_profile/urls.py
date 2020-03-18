@@ -10,10 +10,12 @@ from itoo_api.verified_profile.views import *
 
 app_name = 'verified_profile'
 urlpatterns = [
-    url(r'profile/$', profile_detail, name='profile_detail'),
-    url(r'profile/new/$', profile_new, name='profile_new'),
-    url(r'profile/edit/$', profile_edit, name='profile_edit'),
-    url(r'profile/edit_exist/$', profile_edit_exist, name='profile_edit_exist')
+    url(r'profile/(?P<slug>\w+)/$', profile_detail, name='profile_detail'),
+    # url(r'profiles/$', ProfileUNIViewSet.as_view(), name='profiles_list'),
+    url(r'profile/$', profile_redirect, name='profile_redirect'),
+    url(r'profile/new/(?P<slug>\w+)/$', profile_new, name='profile_new'),
+    url(r'profile/edit/(?P<slug>\w+)/$', profile_edit, name='profile_edit'),
+    url(r'profile/edit_exist/(?P<slug>\w+)/$', profile_edit_exist, name='profile_edit_exist')
     # url(r'paid_course_cus/', PaidCoursesCusViewSet, name='paid_course_cus')
     # url(r'^list/', include(router_list.urls)),
 ]

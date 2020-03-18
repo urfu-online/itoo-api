@@ -15,6 +15,10 @@ from django.contrib.auth.models import User
 
 from verified_profile.models import Offer, Profile
 
+from django.contrib.admin import SimpleListFilter
+from django.contrib.contenttypes import generic
+import uuid
+
 
 @python_2_unicode_compatible
 class OrganizationCustom(TimeStampedModel):
@@ -41,10 +45,24 @@ class OrganizationCustom(TimeStampedModel):
     def get_courses(self):
         return self.organizationcourse_set.all()
 
-    class Meta:
+    class Meta(object):
         """ Meta class for this Django model """
         verbose_name = 'Организация'
         verbose_name_plural = 'Организации'
+
+
+@python_2_unicode_compatible
+class Direction(TimeStampedModel):
+    title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
+    identifier = models.CharField('Идентификатор', blank=False, null=False, max_length=64, default="", unique=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta(object):
+        """ Meta class for this Django model """
+        verbose_name = 'Направление подготовки'
+        verbose_name_plural = 'Направления подготовки'
 
 
 @python_2_unicode_compatible
@@ -71,7 +89,7 @@ class EduProject(TimeStampedModel):
     def __str__(self):
         return self.title
 
-    class Meta:
+    class Meta(object):
         verbose_name = 'Образовательный проект'
         verbose_name_plural = 'Образовательные проекты'
 
@@ -81,8 +99,9 @@ class EduProject(TimeStampedModel):
 
 @python_2_unicode_compatible
 class Program(TimeStampedModel):
+    ENROLLMENT_STATUSES = (("0", "Недоступна"), ("1", "Доступна"), ("2", "По датам (в разработке)"))
     title = models.CharField('Наименование', blank=False, null=False, max_length=1024, default="")
-    abbreviation = models.CharField('Abbreviation', blank=False, null=False, max_length=64, default="", unique=True)
+    short_name = models.CharField('Аббревиатура', blank=False, null=False, max_length=64, default="", unique=True)
     slug = models.CharField('Человеко-понятный уникальный идентификатор', blank=False, null=False, max_length=64,
                             default="", unique=True)
     description = models.TextField('Описание', blank=True, null=True)
@@ -101,6 +120,13 @@ class Program(TimeStampedModel):
                               on_delete=models.SET_NULL)
     project = models.ForeignKey(EduProject, related_name="realized_programs", blank=True, null=True,
                                 on_delete=models.SET_NULL)
+    direction = models.ForeignKey(Direction, blank=True, null=True, on_delete=models.SET_NULL)
+    enrollment_allowed = models.CharField("Доступность записи", choices=ENROLLMENT_STATUSES, max_length=1, default="2")
+    id_unit_program = models.CharField("Программа ID", blank=True, null=True, max_length=64)
+    edu_start_date = models.DateField("Дата начала программы", null=True, blank=True)
+    edu_end_date = models.DateField("Дата завершения программы", null=True, blank=True)
+    number_of_hours = models.PositiveSmallIntegerField("Количество часов", null=True, blank=True)
+    issued_document_name = models.CharField("Выдаваемый Документ", null=True, blank=True, max_length=128)
 
     def get_courses(self):
         return self.programcourse_set.all()
@@ -116,11 +142,15 @@ class Program(TimeStampedModel):
             return None
 
     class Meta:
-        verbose_name = "Program"
-        verbose_name_plural = "Programs"
+        verbose_name = "Образовательная программа"
+        verbose_name_plural = "Образовательные программы"
 
     def __str__(self):
         return self.title
+
+    def export_students(self):
+        """TODO: implement method from admin"""
+        return None
 
 
 @python_2_unicode_compatible
@@ -185,7 +215,7 @@ class TextBlock(TimeStampedModel):
         null=True,
     )
 
-    content_object = GenericForeignKey('content_type', 'object_id')
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return "TextBlock"
@@ -217,10 +247,35 @@ class EnrollProgram(TimeStampedModel):
         else:
             return None
 
+    def __unicode__(self):
+        return self.user.username
+
     def __str__(self):
         return self.user.username
 
     class Meta(object):
         """ Meta class for this Django model """
         verbose_name = 'Запись на программу'
-        verbose_name_plural = 'Запись на прграммы'
+        verbose_name_plural = 'Запись на программы'
+
+    @classmethod
+    def get_or_create_enrollment(cls, user, program):
+
+        assert isinstance(program, Program)
+
+        if user is None:
+            user.save()
+
+        enrollment, __ = cls.objects.get_or_create(
+            user=user,
+            program=program,
+        )
+
+        # # If there was an unlinked CEA, it becomes linked now
+        # CourseEnrollmentAllowed.objects.filter(
+        #     email=user.email,
+        #     course_id=course_key,
+        #     user__isnull=True
+        # ).update(user=user)
+
+        return enrollment
