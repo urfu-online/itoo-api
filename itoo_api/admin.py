@@ -7,7 +7,7 @@ from django.forms import Textarea
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
 from django_summernote.admin import SummernoteInlineModelAdmin
-from lms.djangoapps.grades.new.course_grade_factory import CourseGradeFactory
+from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
 
