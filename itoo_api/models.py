@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 import uuid
 from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -214,7 +213,7 @@ class TextBlock(TimeStampedModel):
         null=True,
     )
 
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return "TextBlock"
