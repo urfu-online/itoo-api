@@ -5,19 +5,18 @@ Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
 from __future__ import unicode_literals
-from django.db import models
+
+import uuid
+from django.contrib.admin import SimpleListFilter
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-
+from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
-from django.contrib.auth.models import User
 
 from itoo_api.verified_profile.models import Offer, Profile
-
-from django.contrib.admin import SimpleListFilter
-from django.contrib.contenttypes import generic
-import uuid
 
 
 @python_2_unicode_compatible

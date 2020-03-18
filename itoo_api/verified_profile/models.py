@@ -3,15 +3,15 @@
 Database ORM models for payments prerequisites
 """
 
+import logging
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.utils.encoding import python_2_unicode_compatible
-from django.contrib.auth.models import User
-from itoo_api.utils import generate_new_filename
-import logging
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 
+from itoo_api.utils import generate_new_filename
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
