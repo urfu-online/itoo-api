@@ -13,7 +13,6 @@ import logging
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class ProfileOrganization(models.Model):
     email = models.EmailField("Почта для связи", max_length=254, null=True, blank=True)
     phone = models.CharField("Телефон", max_length=255, null=True, blank=True)
     head = models.CharField("Голова", max_length=255, null=True, blank=True)
-    program = models.CharField("program slug",  max_length=255, null=True, blank=True)
+    program = models.CharField("program slug", max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -111,8 +110,6 @@ class Profile(models.Model):
     admin_number = models.CharField("Номер согласия", max_length=355, null=True, blank=True)
     admin_diagnostics = models.BooleanField("Диагностики пройдены", default=False)
 
-
-
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
@@ -143,3 +140,24 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'анкета для зачисления'
         verbose_name_plural = 'анкеты для зачисления'
+
+    def uni_to_dict(self):
+        identity_card = {
+            "identityCardType": "1",  # Паспорт
+            "idncrdSeries": self.series,
+            "idncrdNumber": self.number,
+            "idncrdDate": self.issue_date,
+            "authority": self.issued_by,
+        }
+        uni_dict = {
+            "lastName": self.last_name,
+            "firstName": self.first_name,
+            "middleName": self.second_name,
+            "citizenship": "0",  # По умолчанию
+            "gender": "female" if self.sex == "f" else "male",
+            "birthDate": self.birth_date,
+            "post": self.position,
+            "placeOfEmployment": self.job,
+            'identityCard': identity_card
+        }
+        return uni_dict

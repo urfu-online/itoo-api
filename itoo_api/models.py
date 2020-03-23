@@ -5,14 +5,13 @@ Please do not integrate directly with these models!!!  This app currently
 offers one programmatic API -- api.py for direct Python integration.
 """
 
-from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.dateparse import parse_date
 from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
-import uuid
 
 
 @python_2_unicode_compatible
@@ -136,6 +135,20 @@ class Program(TimeStampedModel):
         else:
             return None
 
+    def uni_get_students(self):
+        enrollments = EnrollProgram.objects.filter(program=self, success=True)
+        students = []
+        for enrollment in enrollments:
+            students.append(enrollment.user.verified_profile.uni_to_dict())
+        query = {
+            "id_unit_program": parse_date(self.id_unit_program).strftime("%Y-%M-%d"),
+            "beginDate": parse_date(self.edu_start_date).strftime("%Y-%M-%d"),
+            "endDate": parse_date(self.edu_end_date).strftime("%Y-%M-%d"),
+            "students": students
+        }
+
+        return query
+
     class Meta:
         verbose_name = "Образовательная программа"
         verbose_name_plural = "Образовательные программы"
@@ -234,6 +247,7 @@ class TextBlock(TimeStampedModel):
 class EnrollProgram(TimeStampedModel):
     user = models.ForeignKey(User, db_index=True, verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
+    success = models.BooleanField("В приказ на зачисление", default=False)
 
     @classmethod
     def get_enroll_program(cls, user, program):
