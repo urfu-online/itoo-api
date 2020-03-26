@@ -237,6 +237,7 @@ class TextBlock(TimeStampedModel):
 class EnrollProgram(TimeStampedModel):
     user = models.ForeignKey(User, db_index=True, verbose_name="Пользователь", on_delete=models.CASCADE, null=True)
     program = models.ForeignKey(Program, db_index=True)
+    success = models.BooleanField("В приказ на зачисление", default=False)
 
     @classmethod
     def get_enroll_program(cls, user, program):
