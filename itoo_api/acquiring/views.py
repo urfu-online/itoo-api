@@ -286,13 +286,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = []
         if self.action == 'create':
-            permission_classes = IsAuthenticated
+            permission_classes = [IsAuthenticated,]
 
         elif self.action == 'retrieve':
-            permission_classes = [OwnerPermission]
+            permission_classes = [OwnerPermission,]
 
         elif self.action == 'list':
-            permission_classes = [IsAdminUser]
+            permission_classes = [IsAdminUser,]
         return [permission() for permission in permission_classes]
 
     def list(self, request):
