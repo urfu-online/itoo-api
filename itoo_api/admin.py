@@ -432,7 +432,7 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         filters_program = []
-        for program in Program.objects.filter(active=True):
+        for program in Program.objects.all():
             filters_program.append((program.id, program.slug))
         return filters_program
 
@@ -451,7 +451,7 @@ class ProfileByProjectFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         filters_project = []
-        for project in EduProject.objects.filter(active=True):
+        for project in EduProject.objects.all():
             filters_project.append((project.id, project.title))
         return filters_project
 
