@@ -445,6 +445,26 @@ class ProfileByProgramFilter(admin.SimpleListFilter):
         return queryset.filter(user__in=enrollments_list)
 
 
+class ProfileByProjectFilter(admin.SimpleListFilter):
+    title = 'Profile by project'
+    parameter_name = 'profile_by_project'
+
+    def lookups(self, request, model_admin):
+        filters_project = []
+        for project in EduProject.objects.filter(active=True):
+            filters_project.append((project.id, project.title))
+        return filters_project
+
+    def queryset(self, request, queryset):
+        enrollments_list = []
+        if not self.value():
+            return queryset
+        for program in Program.objects.filter(project__id=self.value()):
+            for enrollment in EnrollProgram.objects.filter(program=program):
+                enrollments_list.append(enrollment.user)
+        return queryset.filter(user__in=enrollments_list)
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -493,7 +513,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'second_name', 'phone', 'leader_id', 'all_valid',
                     'admin_diagnostics', 'manager', 'admin_number')
     search_fields = ('user__username', 'first_name', 'last_name', 'second_name', 'city', 'user__email')
-    list_filter = ('all_valid', 'admin_diagnostics', ProfileByProgramFilter, 'manager')
+    list_filter = ('all_valid', 'admin_diagnostics', ProfileByProgramFilter, ProfileByProjectFilter, 'manager')
     actions = [export_csv_profile]
     readonly_fields = ["terms"]
     formfield_overrides = {
