@@ -459,7 +459,7 @@ class ProfileByProjectFilter(admin.SimpleListFilter):
         enrollments_list = []
         if not self.value():
             return queryset
-        for program in Program.objects.filter(project=self.value()):
+        for program in Program.objects.filter(project__id=self.value()):
             for enrollment in EnrollProgram.objects.filter(program=program):
                 enrollments_list.append(enrollment.user)
         return queryset.filter(user__in=enrollments_list)
