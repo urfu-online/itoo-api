@@ -43,14 +43,6 @@ class ReflectionAdmin(admin.ModelAdmin):
     inlines = [QuestionInline, ]
 
 
-@admin.register(Answer)
-class AnswerAdmin(admin.ModelAdmin):
-    model = Answer
-    list_display = ('user', 'question',)
-    search_fields = ('user__email', 'user__username')
-    actions = [export_csv_answer]
-
-
 def export_csv_answer(modeladmin, request, queryset):
     import csv
     from django.utils.encoding import smart_str
@@ -71,6 +63,17 @@ def export_csv_answer(modeladmin, request, queryset):
             smart_str(obj.answer_text),
         ])
     return response
+
+
+export_csv_answer.short_description = u"Export CSV"
+
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    model = Answer
+    list_display = ('user', 'question',)
+    search_fields = ('user__email', 'user__username')
+    actions = [export_csv_answer]
 
 
 @admin.register(Offer)
