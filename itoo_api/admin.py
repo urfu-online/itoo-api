@@ -48,7 +48,7 @@ def export_csv_answer(modeladmin, request, queryset):
     from django.utils.encoding import smart_str
     from django.http import HttpResponse
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    response['Content-Disposition'] = 'attachment; filename=reflection.csv'
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
