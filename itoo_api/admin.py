@@ -48,6 +48,29 @@ class AnswerAdmin(admin.ModelAdmin):
     model = Answer
     list_display = ('user', 'question',)
     search_fields = ('user__email', 'user__username')
+    actions = [export_csv_answer]
+
+
+def export_csv_answer(modeladmin, request, queryset):
+    import csv
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=profile.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"Username"),
+        smart_str(u"Вопрос"),
+        smart_str(u"Ответ"),
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.user),
+            smart_str(obj.question),
+            smart_str(obj.answer_text),
+        ])
+    return response
 
 
 @admin.register(Offer)
