@@ -123,9 +123,9 @@ def profile_new(request, slug):
             # print(CourseEnrollment.is_enrolled(user=user, course_key=course_key), user, course_key)
             # CourseEnrollment.enroll(user=user, course_key=course_key, mode='audit', check_access=True)
             if "IPMG" in slug:
-                return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+                return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
             else:
-                return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+                return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
         else:
             profile_state = False
             context = {
@@ -256,17 +256,14 @@ def profile_edit_exist(request, slug):
             profile.user = request.user
             profile.save()
             program = Program.get_program(slug=slug)
-            logger.warning('!!!!!!!!!!!!!!!')
-            logger.warning(request.scheme)
-            logger.warning(request.META['HTTP_HOST'])
             if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
-                    return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+                    return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
                 else:
-                    return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+                    return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
 
             else:
-                return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+                return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
 
         else:
             context = {
@@ -346,9 +343,9 @@ def profile_detail(request, slug):
         slug = request.session.get("slug", slug)
         program = Program.get_program(slug=slug)
         if enroll_program(user=request.user, program=program):
-            return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+            return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
         else:
-            return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
+            return redirect('{}://{}/projects/{}/{}'.format(request.scheme, request.META['HTTP_HOST'], program.project.slug, program.slug))
 
 
 def enroll_program(user, program):
