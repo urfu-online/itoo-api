@@ -5,7 +5,7 @@ import urllib
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.shortcuts import render, redirect, get_current_site
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from opaque_keys.edx.keys import CourseKey
@@ -258,7 +258,6 @@ def profile_edit_exist(request, slug):
             program = Program.get_program(slug=slug)
             logger.warning('!!!!!')
             logger.warning(request.get_full_path())
-            logger.warning(get_current_site(request).domain)
             if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
                     return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
