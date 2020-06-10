@@ -256,6 +256,8 @@ def profile_edit_exist(request, slug):
             profile.user = request.user
             profile.save()
             program = Program.get_program(slug=slug)
+            logger.warning('!!!!!')
+            logger.warning(url.netloc)
             if "IPMG" in slug:
                 if enroll_program(user=request.user, program=program):
                     return redirect('//{}/projects/{}/{}'.format(url.netloc, program.project.slug, program.slug))
