@@ -384,7 +384,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 contract_number = None
                 payment.status = "3"
                 payment.save()
-                return Response({"status": "failed"})
+                return Response({"status": "failed", "detail": payment_response})
 
             # TODO if payment_response not status error
             # TODO arguments for redirect after receiving payment code
