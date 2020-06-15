@@ -286,13 +286,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = []
         if self.action == 'create':
-            permission_classes = [IsAuthenticated,]
+            permission_classes = [IsAuthenticated, ]
 
         elif self.action == 'retrieve':
-            permission_classes = [OwnerPermission,]
+            permission_classes = [OwnerPermission, ]
 
         elif self.action == 'list':
-            permission_classes = [IsAdminUser,]
+            permission_classes = [IsAdminUser, ]
         return [permission() for permission in permission_classes]
 
     def list(self, request):
@@ -429,3 +429,13 @@ def check_payment_status(contract_number):
                                      auth=('opened', 'Vra3wb7@'))
 
     return payment_response.text
+
+
+def get_uni_programs(request):
+    programs_url = 'http://10.74.225.206:9085/programs'
+    programs_response = requests.get(programs_url,
+                                     auth=('openedu', 'openedu'))
+    print(programs_response.json())
+    # programs_data = programs_response..t
+
+    return programs_response.json()
