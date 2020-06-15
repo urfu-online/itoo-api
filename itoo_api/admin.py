@@ -130,7 +130,7 @@ def export_csv_program_entoll(modeladmin, request, queryset):
     return response
 
 
-def update_programs_uuids(modeladmin, request):
+def update_programs_uuids(modeladmin, request, queryset):
     import csv, requests, json
     from django.utils.encoding import smart_str
     from django.http import HttpResponse
@@ -167,6 +167,7 @@ def update_programs_uuids(modeladmin, request):
 
 export_csv_program_entoll.short_description = u"Export CSV"
 update_programs_uuids.short_description = u"Update uuids from UNI"
+update_programs_uuids.acts_on_all = True
 
 from django import forms
 
