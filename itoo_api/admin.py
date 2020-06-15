@@ -200,7 +200,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
     search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
     form = EnrollProgramForm
-    actions = [export_csv_program_entoll, update_programs_uuids]
+    actions = [export_csv_program_entoll]
 
     def get_program_slug(self, obj):
         return obj.program.slug
@@ -365,7 +365,7 @@ class ProgramAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
-    actions = [export_csv_program]
+    actions = [export_csv_program, update_programs_uuids]
 
 
 class OrganizationCourseInline(admin.TabularInline):
