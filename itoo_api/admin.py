@@ -161,7 +161,7 @@ def update_programs_uuids(modeladmin, request, queryset):
         for p in _progs:
             p.id_unit_program = uni_program["uuid"]
             p.save()
-            result.append([p.pk, p.slug, p.title, p.uuid])
+            result.append([p.pk, p.slug, p.title, p.id_unit_program])
 
     for p in result:
         writer.writerow([
