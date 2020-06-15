@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'course_mode_change/', CourseModesChange.as_view(), name='course_mode_change'),
     url(r'pay_urfu/', PayUrfuDataViewSet.as_view(), name='pay_urfu'),
     url(r'check_session/', CheckSessionID.as_view(), name='check_session'),
+    url(r'get_uni_programs/', get_uni_programs, name='get_uni_programs'),
     # url(r'pay_redirect_view/', pay_redirect_view, name='pay_redirect_view'),
     url(r'offer/(?P<program_slug>\w+)', OfferViewSet.as_view(), name='view_offer'),
     # url(r'paid_course_cus/', PaidCoursesCusViewSet, name='paid_course_cus')
