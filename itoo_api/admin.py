@@ -159,7 +159,8 @@ def update_programs_uuids(modeladmin, request, queryset):
     for uni_program in uni_programs:
         _progs = Program.objects.filter(title=uni_program["title"])
         for p in _progs:
-            p.update(id_unit_program=uni_program["uuid"])
+            p.id_unit_program = uni_program["uuid"]
+            p.save()
             result.append([p.pk, p.slug, p.title, p.uuid])
 
     for p in result:
