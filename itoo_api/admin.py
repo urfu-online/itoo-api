@@ -367,7 +367,7 @@ def export_csv_program(modeladmin, request, queryset):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed')
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed', 'id_unit_program')
     list_filter = ('active', 'owner', 'enrollment_allowed')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
