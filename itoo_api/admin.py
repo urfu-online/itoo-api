@@ -130,6 +130,9 @@ def export_csv_program_entoll(modeladmin, request, queryset):
     return response
 
 
+from django.contrib import messages
+
+
 def update_programs_uuids(modeladmin, request, queryset):
     import csv, requests, json
     from django.utils.encoding import smart_str
@@ -145,7 +148,11 @@ def update_programs_uuids(modeladmin, request, queryset):
         smart_str(u"UUID"),
     ])
     programs_url = 'http://10.74.225.206:9085/programs'
-    programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    try:
+        programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    except:
+        messages.error(request, "UNI read error. Check connection.")
+        return response
     uni_programs = json.loads(programs_response.text)
     result = list()
 
