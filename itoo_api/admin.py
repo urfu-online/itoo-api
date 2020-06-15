@@ -165,10 +165,10 @@ def update_programs_uuids(modeladmin, request, queryset):
 
     for p in result:
         writer.writerow([
-            smart_str(p.pk),
-            smart_str(p.slug),
-            smart_str(p.title),
-            smart_str(p.uuid),
+            smart_str(p[0]),
+            smart_str(p[1]),
+            smart_str(p[2]),
+            smart_str(p[3]),
         ])
     return response
 
