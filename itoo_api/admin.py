@@ -2,10 +2,11 @@
 """ Django admin pages for organization models """
 import logging
 
+from celery import shared_task
 from django.contrib import admin
-from django.forms import Textarea
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
+from django.forms import Textarea
 from django_summernote.admin import SummernoteInlineModelAdmin
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
@@ -16,8 +17,6 @@ from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, Organ
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
-
-from celery import shared_task
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -131,10 +130,45 @@ def export_csv_program_entoll(modeladmin, request, queryset):
     return response
 
 
+def update_programs_uuids(modeladmin, request):
+    import csv, requests, json
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Slug"),
+        smart_str(u"Title"),
+        smart_str(u"UUID"),
+    ])
+    programs_url = 'http://10.74.225.206:9085/programs'
+    programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    uni_programs = json.loads(programs_response.text)
+    result = list()
+
+    for uni_program in uni_programs:
+        _progs = Program.objects.filter(title=uni_program["title"])
+        for p in _progs:
+            p.update(id_unit_program=uni_program["uuid"])
+            result.append([p.pk, p.slug, p.title, p.uuid])
+
+    for p in result:
+        writer.writerow([
+            smart_str(p.pk),
+            smart_str(p.slug),
+            smart_str(p.title),
+            smart_str(p.uuid),
+        ])
+    return response
+
+
 export_csv_program_entoll.short_description = u"Export CSV"
+update_programs_uuids.short_description = u"Update uuids from UNI"
 
 from django import forms
-from itoo_api.verified_profile.views import enroll_program
 
 
 class EnrollProgramForm(forms.ModelForm):
