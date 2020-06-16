@@ -258,9 +258,9 @@ def put_students_uni(modeladmin, request, queryset):
             },
         )
     data = {
-        "program": queryset[0].program.uuid,
-        "beginDate": queryset[0].program.edu_start_date.strftime("%Y-%m-%d"),
-        "endDate": queryset[0].program.edu_end_date.strftime("%Y-%m-%d"),
+        "program": queryset[0].program.id_unit_program,
+        "beginDate": queryset[0].program.edu_start_date,
+        "endDate": queryset[0].program.edu_end_date,
         "students": students
     }
 
