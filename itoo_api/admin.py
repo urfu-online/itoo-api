@@ -177,6 +177,107 @@ export_csv_program_entoll.short_description = u"Export CSV"
 update_programs_uuids.short_description = u"Update uuids from UNI"
 update_programs_uuids.acts_on_all = True
 
+
+def update_programs_uuids(modeladmin, request, queryset):
+    import csv, requests, json
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Slug"),
+        smart_str(u"Title"),
+        smart_str(u"UUID"),
+    ])
+    programs_url = 'http://10.74.225.206:9085/programs'
+    try:
+        programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    except:
+        messages.error(request, "UNI read error. Check connection.")
+        return response
+    uni_programs = json.loads(programs_response.text)
+    result = list()
+
+    for uni_program in uni_programs:
+        _progs = Program.objects.filter(title=uni_program["title"])
+        for p in _progs:
+            p.id_unit_program = uni_program["uuid"]
+            p.save()
+            result.append([p.pk, p.slug, p.title, p.id_unit_program])
+
+    for p in result:
+        writer.writerow([
+            smart_str(p[0]),
+            smart_str(p[1]),
+            smart_str(p[2]),
+            smart_str(p[3]),
+        ])
+    return response
+
+
+def put_students_uni(modeladmin, request, queryset):
+    import csv, requests, json
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Slug"),
+        smart_str(u"Title"),
+        smart_str(u"UUID"),
+    ])
+    processing_url = 'http://10.74.225.206:9085/processing'
+
+    students = list()
+    for s in queryset:
+        students.append(
+            {
+                "lastName": s.user.last_name,
+                "firstName": s.user.first_name,
+                "middleName": s.user.second_name,
+                "citizenship": "0",
+                "gender": s.user.sex,
+                "birthDate": s.user.birth_date.strftime("%Y-%m-%d"),
+                "post": s.user.position,
+                "placeOfEmployment": s.user.job,
+                "identityCard": {
+                    "identityCardType": "1",
+                    "idncrdSeries": s.user.series,
+                    "idncrdNumber": s.user.number,
+                    "idncrdDate": s.user.issue_date,
+                    "authority": s.user.issued_by,
+                }
+            },
+        )
+    data = {
+        "program": queryset[0].program.uuid,
+        "beginDate": queryset[0].program.edu_start_date.strftime("%Y-%m-%d"),
+        "endDate": queryset[0].program.edu_end_date.strftime("%Y-%m-%d"),
+        "students": students
+    }
+
+    try:
+        processing_response = requests.get(processing_url, json=data, auth=('openedu', 'openedu'))
+    except:
+        messages.error(request, "UNI read error. Check connection.")
+        return response
+    result = str(json.loads(processing_response.text))
+
+    writer.writerow([
+        smart_str(result),
+    ])
+    return response
+
+
+put_students_uni.short_description = u"Put students to  UNI"
+put_students_uni.acts_on_all = True
+
 from django import forms
 
 
