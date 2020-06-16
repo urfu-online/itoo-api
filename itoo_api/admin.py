@@ -270,10 +270,10 @@ def put_students_uni(modeladmin, request, queryset):
         messages.error(request, "UNI read error. Check connection.")
         return response
     result = str(json.loads(processing_response.text))
-    print("!!!!!", result)
 
     writer.writerow([
-        smart_str(result),
+        smart_str(processing_response.text),
+        smart_str(str(data))
     ])
     return response
 
