@@ -234,24 +234,26 @@ def put_students_uni(modeladmin, request, queryset):
     ])
     processing_url = 'http://10.74.225.206:9085/processing'
 
+
     students = list()
     for s in queryset:
+        profile = Profile.get_profile(user=s.user)[0]
         students.append(
             {
-                "lastName": s.user.last_name,
-                "firstName": s.user.first_name,
-                "middleName": s.user.second_name,
+                "lastName": profile.last_name,
+                "firstName": profile.first_name,
+                "middleName": profile.second_name,
                 "citizenship": "0",
-                "gender": s.user.sex,
-                "birthDate": s.user.birth_date.strftime("%Y-%m-%d"),
-                "post": s.user.position,
-                "placeOfEmployment": s.user.job,
+                "gender": profile.sex,
+                "birthDate": profile.birth_date.strftime("%Y-%m-%d"),
+                "post": profile.position,
+                "placeOfEmployment": profile.job,
                 "identityCard": {
                     "identityCardType": "1",
-                    "idncrdSeries": s.user.series,
-                    "idncrdNumber": s.user.number,
-                    "idncrdDate": s.user.issue_date,
-                    "authority": s.user.issued_by,
+                    "idncrdSeries": profile.series,
+                    "idncrdNumber": profile.number,
+                    "idncrdDate": profile.issue_date,
+                    "authority": profile.issued_by,
                 }
             },
         )
