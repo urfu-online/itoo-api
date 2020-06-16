@@ -310,7 +310,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
     search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
     form = EnrollProgramForm
-    actions = [export_csv_program_entoll]
+    actions = [export_csv_program_entoll, put_students_uni]
 
     def get_program_slug(self, obj):
         return obj.program.slug
