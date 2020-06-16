@@ -245,7 +245,7 @@ def put_students_uni(modeladmin, request, queryset):
                 "middleName": profile.second_name,
                 "citizenship": "0",
                 "gender": profile.sex,
-                "birthDate": profile.birth_date.strftime("%Y-%m-%d"),
+                "birthDate": profile.birth_date,
                 "post": profile.position,
                 "placeOfEmployment": profile.job,
                 "identityCard": {
