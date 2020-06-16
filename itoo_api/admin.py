@@ -264,6 +264,8 @@ def put_students_uni(modeladmin, request, queryset):
         "students": students
     }
 
+    print(json.dumps(data))
+
     processing_response = requests.post(processing_url, json=data, auth=('openedu', 'openedu'))
     result = str(json.loads(processing_response.text))
 
