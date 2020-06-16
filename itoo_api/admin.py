@@ -264,11 +264,7 @@ def put_students_uni(modeladmin, request, queryset):
         "students": students
     }
 
-    try:
-        processing_response = requests.get(processing_url, json=data, auth=('openedu', 'openedu'))
-    except:
-        messages.error(request, "UNI read error. Check connection.")
-        return response
+    processing_response = requests.post(processing_url, json=data, auth=('openedu', 'openedu'))
     result = str(json.loads(processing_response.text))
 
     writer.writerow([
