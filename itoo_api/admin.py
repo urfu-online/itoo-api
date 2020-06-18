@@ -86,9 +86,13 @@ class OfferAdmin(admin.ModelAdmin):
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     model = Payment
-    list_display = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
+    list_display = (
+        "payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "document", "sum", "status"
+    )
     list_filter = ('status',)
-    readonly_fields = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
+    readonly_fields = (
+        "payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "document", "sum", "status"
+    )
 
 
 class ProgramCourseInline(admin.TabularInline):
@@ -233,7 +237,6 @@ def put_students_uni(modeladmin, request, queryset):
         smart_str(u"UUID"),
     ])
     processing_url = 'http://10.74.225.206:9085/processing'
-
 
     students = list()
     for s in queryset:

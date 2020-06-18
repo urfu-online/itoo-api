@@ -64,6 +64,9 @@ class Payment(TimeStampedModel):
     offer = models.ForeignKey(Offer, verbose_name="Оферта", on_delete=models.SET_NULL, null=True)
     status = models.CharField("Статус платежа", choices=PAYMENT_STATUSES, max_length=1, default="0")
 
+    document = models.CharField("Документ", max_length=256, blank=True, null=True)
+    sum = models.CharField("Сумма", max_length=32, blank=True, null=True)
+
     class Meta:
         verbose_name = "Плетёж"
         verbose_name_plural = "Платежи"
