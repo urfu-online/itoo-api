@@ -182,46 +182,6 @@ update_programs_uuids.short_description = u"Update uuids from UNI"
 update_programs_uuids.acts_on_all = True
 
 
-def update_programs_uuids(modeladmin, request, queryset):
-    import csv, requests, json
-    from django.utils.encoding import smart_str
-    from django.http import HttpResponse
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
-    writer = csv.writer(response, csv.excel)
-    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
-    writer.writerow([
-        smart_str(u"ID"),
-        smart_str(u"Slug"),
-        smart_str(u"Title"),
-        smart_str(u"UUID"),
-    ])
-    programs_url = 'http://10.74.225.206:9085/programs'
-    try:
-        programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
-    except:
-        messages.error(request, "UNI read error. Check connection.")
-        return response
-    uni_programs = json.loads(programs_response.text)
-    result = list()
-
-    for uni_program in uni_programs:
-        _progs = Program.objects.filter(title=uni_program["title"])
-        for p in _progs:
-            p.id_unit_program = uni_program["uuid"]
-            p.save()
-            result.append([p.pk, p.slug, p.title, p.id_unit_program])
-
-    for p in result:
-        writer.writerow([
-            smart_str(p[0]),
-            smart_str(p[1]),
-            smart_str(p[2]),
-            smart_str(p[3]),
-        ])
-    return response
-
-
 def put_students_uni(modeladmin, request, queryset):
     import csv, requests, json
     from django.utils.encoding import smart_str
