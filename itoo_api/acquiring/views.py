@@ -403,6 +403,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 def check_payment_status():
     payment = Payment.objects.filter(status="1").first()
+    if not payment:
+        return "Empty Payments Queue"
     payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
     payment_data = {
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
