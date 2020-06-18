@@ -3,6 +3,8 @@ import json
 import logging
 import time
 
+from celery import shared_task
+
 import requests
 # models
 from course_modes.models import CourseMode
@@ -398,13 +400,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-def check_payment_status(contract_number):
+@shared_task
+def check_payment_status():
+    payment = Payment.objects.filter(status="1").first()
     payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
     payment_data = {
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
             {
-                u"НомерДоговора": str(contract_number)
+                u"НомерДоговора": str(payment.payment_number)
             }
     }
     print(payment_data)
