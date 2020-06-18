@@ -400,7 +400,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-@shared_task
+
 def check_payment_status():
     payment = Payment.objects.filter(status="1").first()
     payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
