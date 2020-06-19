@@ -410,7 +410,7 @@ def check_payment_status():
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
             {
-                u"НомерДоговора": str(payment.payment_number)
+                u"НомерДоговора": "0" + str(payment.payment_number)
             }
     }
     print("Payment data", payment_data)
