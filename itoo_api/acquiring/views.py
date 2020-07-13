@@ -425,6 +425,7 @@ def check_payment_status():
             payment.sum = result[u"Сумма"]
             payment.document = result[u"Документ"]
             payment.verify_date = parse_date(result[u"Дата"])
+
             # payment.status = 2
             payment.save()
 
@@ -438,7 +439,7 @@ def check_payment_status():
                                               status="approved")
             verification.save()
 
-            return payment, program_enrollment
+            return payment, parse_date(result[u"Дата"]), result[u"Дата"]
 
 
 """
