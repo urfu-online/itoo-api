@@ -434,7 +434,7 @@ def check_payment_status():
                     CourseKey.from_string(course.course_id)))
                 enrollment.update_enrollment(is_active=True, mode='verified')
 
-            verification = ManualVerification(user=payment.user, reason="Payment_id: {}".format(payment.id),
+            verification = ManualVerification(user=payment.user, reason="Payment_id: {}".format(payment.payment_id),
                                               status="approved")
             verification.save()
 
