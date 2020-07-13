@@ -402,7 +402,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
 from ..models import EnrollProgram
 from student.models import CourseEnrollment
 from lms.djangoapps.verify_student.models import ManualVerification
-
+from datetime import datetime
 
 def check_payment_status():
     payment = Payment.objects.filter(status="1").first()
@@ -424,9 +424,8 @@ def check_payment_status():
         if u"Квитанция" in result[u"Документ"]:
             payment.sum = result[u"Сумма"]
             payment.document = result[u"Документ"]
-            payment.verify_date = parse_date(result[u"Дата"])
-
-            # payment.status = 2
+            payment.verify_date = datetime.strptime(result[u"Дата"], "%d.%m.%Y").date()
+            payment.status = 2
             payment.save()
 
             program_enrollment = EnrollProgram.objects.get_or_create(user=payment.user, program=payment.offer.program)
@@ -438,7 +437,6 @@ def check_payment_status():
             verification = ManualVerification(user=payment.user, reason="Payment_id: {}".format(payment.payment_id),
                                               status="approved")
             verification.save()
-
             return payment, parse_date(result[u"Дата"]), result[u"Дата"]
 
 
