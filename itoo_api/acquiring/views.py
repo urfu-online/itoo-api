@@ -419,19 +419,20 @@ def check_payment_status():
                                      auth=('opened', 'Vra3wb7@'))
 
     result = payment_response.json()[u'result'][0]
-    if u"Квитанция" in result[u"Документ"]:
-        payment.sum = result[u"Сумма"]
-        payment.document = result[u"Документ"]
-        payment.verify_date = parse_date(result[u"Дата"])
-        payment.status = 2
-        payment.save()
+    if result[u"Документ"]:
+        if u"Квитанция" in result[u"Документ"]:
+            payment.sum = result[u"Сумма"]
+            payment.document = result[u"Документ"]
+            payment.verify_date = parse_date(result[u"Дата"])
+            # payment.status = 2
+            payment.save()
 
-        program_enrollment = EnrollProgram.objects.get_or_create(user=payment.user, program=payment.offer.program)
-        for course in payment.offer.program.get_courses():
-            enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=course)
-            enrollment.update_enrollment(is_active=True, mode='verified')
+            program_enrollment = EnrollProgram.objects.get_or_create(user=payment.user, program=payment.offer.program)
+            for course in payment.offer.program.get_courses():
+                enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=course)
+                enrollment.update_enrollment(is_active=True, mode='verified')
 
-        return payment, program_enrollment
+            return payment, program_enrollment
 
 
 """
