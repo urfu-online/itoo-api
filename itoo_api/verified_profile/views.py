@@ -188,7 +188,7 @@ def profile_new(request, slug):
 def profile_edit(request, slug):
     # launch = dict()
     user = request.user
-    # profile = Profile.get_profile(user=user)[0]
+    # gea
     if user.is_anonymous():
         return redirect('/login?next={}'.format(request.get_full_path()))
 

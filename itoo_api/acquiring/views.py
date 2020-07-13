@@ -413,11 +413,10 @@ def check_payment_status():
                 u"НомерДоговора": "0" + str(payment.payment_number)
             }
     }
-    print("Payment data", payment_data)
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                      auth=('opened', 'Vra3wb7@'))
 
-    return payment_response.text
+    return payment_response.json
 
 
 from ..models import Program
