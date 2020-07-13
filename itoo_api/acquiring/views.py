@@ -401,6 +401,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 from ..models import EnrollProgram
 from student.models import CourseEnrollment
+from lms.djangoapps.verify_student.models import ManualVerification
 
 
 def check_payment_status():
@@ -432,6 +433,10 @@ def check_payment_status():
                 enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=CourseOverview.get_from_id(
                     CourseKey.from_string(course.course_id)))
                 enrollment.update_enrollment(is_active=True, mode='verified')
+
+            verification = ManualVerification(user=payment.user, reason="Payment_id: {}".format(payment.id),
+                                              status="approved")
+            verification.save()
 
             return payment, program_enrollment
 
