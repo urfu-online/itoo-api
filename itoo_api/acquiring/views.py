@@ -416,17 +416,22 @@ def check_payment_status():
                                      auth=('opened', 'Vra3wb7@'))
 
     result = payment_response.json()
-    if u"Квитанция" in result[u"Документ"]:
-        payment.sum = result[u"Сумма"]
-        payment.document = result[u"Документ"]
-        payment.verify_date = result[u"Дата"]
-        payment.status = 2
-        payment.save()
+    return result
+    # print(result.keys)
+    # if u"Квитанция" in result[u"Документ"]:
+    #     payment.sum = result[u"Сумма"]
+    #     payment.document = result[u"Документ"]
+    #     payment.verify_date = result[u"Дата"]
+    #     payment.status = 2
+    #     payment.save()
+    #
+    #     return payment.offer.program.get_courses()
 
-        return payment.offer.program.get_courses()
 
-
-
+"""
+from itoo_api.acquiring.views import check_payment_status
+check_payment_status()
+"""
 
 from ..models import Program
 
