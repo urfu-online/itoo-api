@@ -415,7 +415,7 @@ def check_payment_status():
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                      auth=('opened', 'Vra3wb7@'))
 
-    result = json.loads(payment_response.json())
+    result = payment_response.json()
     if u"Квитанция" in result[u"Документ"]:
         payment.sum = result[u"Сумма"]
         payment.document = result[u"Документ"]
