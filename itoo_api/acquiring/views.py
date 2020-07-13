@@ -429,7 +429,8 @@ def check_payment_status():
 
             program_enrollment = EnrollProgram.objects.get_or_create(user=payment.user, program=payment.offer.program)
             for course in payment.offer.program.get_courses():
-                enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=course)
+                enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=CourseOverview.get_from_id(
+                    CourseKey.from_string(course)))
                 enrollment.update_enrollment(is_active=True, mode='verified')
 
             return payment, program_enrollment
