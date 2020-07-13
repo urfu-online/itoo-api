@@ -402,7 +402,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
 
 def check_payment_status():
     payment = Payment.objects.filter(status="1").first()
-    print("Payment:", payment)
     if not payment:
         return "Empty Payments Queue"
     payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
@@ -416,7 +415,7 @@ def check_payment_status():
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                      auth=('opened', 'Vra3wb7@'))
 
-    return payment_response.json
+    return payment_response.json()
 
 
 from ..models import Program
