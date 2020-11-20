@@ -41,6 +41,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
     acceptable_modes = (
         'verified',
         'professional'
+        'no-id-professional'
     )
 
     def _check_user():
