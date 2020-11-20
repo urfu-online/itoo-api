@@ -61,6 +61,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
             if mode.mode_slug == mode_slug:
                 update_enrollment(user.username, course_id, mode_slug)
                 return True
+        print(mode_slug, available_verified_modes)
         return False
 
         #
