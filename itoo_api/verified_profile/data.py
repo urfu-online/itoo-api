@@ -52,7 +52,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
         return user.is_active
 
     def _check_verified_course_mode():
-        course_modes = CourseMode.objects.filter(course_id=course_key, mode_slug__in=acceptable_modes)
+        course_modes = CourseMode.objects.filter(course_id=course_key)  # , mode_slug__in=acceptable_modes)
         return course_modes
 
     def _set_user_mode():
