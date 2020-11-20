@@ -38,11 +38,11 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
     course_key = CourseKey.from_string(course_id)
     user = User.objects.get(email=userlike_str)
     course = get_course_by_id(course_key)
-    acceptable_modes = (
-        'verified',
-        'professional'
-        'no-id-professional'
-    )
+    acceptable_modes = [
+        u'verified',
+        u'professional'
+        u'no-id-professional'
+    ]
 
     def _check_user():
         """
