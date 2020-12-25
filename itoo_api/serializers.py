@@ -108,7 +108,7 @@ class EduProjectSerializer(serializers.ModelSerializer):
         model = EduProject
         fields = (
             'id', 'title', 'owner_slug', 'short_name', 'slug', 'description', 'logo', 'image_background', 'active',
-            'content', 'program')
+            'content', 'program', 'hide_menu')
 
     # def get_program(self, obj):
     #     program_serializer = ProgramForProjectSerializer(obj.content(), many=True)
