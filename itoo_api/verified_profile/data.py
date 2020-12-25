@@ -5,7 +5,7 @@ from itoo_api.models import EnrollProgram, Program
 from django.contrib.auth.models import User
 from opaque_keys.edx.keys import CourseKey
 from student.models import CourseEnrollment
-from lms.djangoapps.verify_student.models import SoftwareSecurePhotoVerification
+from lms.djangoapps.verify_student.models import SoftwareSecurePhotoVerification, ManualVerification
 import datetime
 
 # paid track
@@ -34,14 +34,15 @@ logger = logging.getLogger(__name__)
 cohorted = True  # Включать когорты
 
 def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", default_cohort_name="default",
-                  mode_slug="verified"):
+                  mode_slug="verified", reason="manual"):
     course_key = CourseKey.from_string(course_id)
     user = User.objects.get(email=userlike_str)
     course = get_course_by_id(course_key)
-    acceptable_modes = (
-        'verified',
-        'professional'
-    )
+    acceptable_modes = [
+        u'verified',
+        u'professional'
+        u'no-id-professional'
+    ]
 
     def _check_user():
         """
@@ -51,7 +52,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
         return user.is_active
 
     def _check_verified_course_mode():
-        course_modes = CourseMode.objects.filter(course_id=course_key, mode_slug__in=acceptable_modes)
+        course_modes = CourseMode.objects.filter(course_id=course_key)  # , mode_slug__in=acceptable_modes)
         return course_modes
 
     def _set_user_mode():
@@ -60,6 +61,7 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
             if mode.mode_slug == mode_slug:
                 update_enrollment(user.username, course_id, mode_slug)
                 return True
+        print(mode_slug, available_verified_modes)
         return False
 
         #
@@ -104,12 +106,10 @@ def to_paid_track(userlike_str, course_id, verified_cohort_name="verified", defa
             pass
 
     def _verify_user():
-        if not SoftwareSecurePhotoVerification.user_is_verified(user):
-            obj = SoftwareSecurePhotoVerification(user=user, photo_id_key="dummy_photo_id_key")
-            obj.status = 'approved'
-            obj.submitted_at = datetime.datetime.now()
-            obj.reviewing_user = User.objects.get(username='SoftwareSecure')
-            obj.save()
+        # if not SoftwareSecurePhotoVerification.user_is_verified(user):
+        obj = ManualVerification(user=user, reason=reason)
+        obj.status = 'approved'
+        obj.save()
 
     enrollment = None
     try:

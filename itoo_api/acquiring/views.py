@@ -1,46 +1,39 @@
 # -*- coding: utf-8 -*-
-import logging
 import json
-import requests
-from datetime import datetime
+import logging
 import time
-# rest
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from rest_framework.views import APIView
-from rest_framework import viewsets, status
-from django.shortcuts import get_object_or_404
-# from rest_framework.renderers import TemplateHTMLRenderer
 
-# django
-from django.shortcuts import redirect, render
-from django.http import HttpResponseRedirect
-from django.core.exceptions import ObjectDoesNotExist
+import requests
+# models
+from course_modes.models import CourseMode
 # from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
-
+# django
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
+from django.utils.dateparse import parse_date
+# enroll api
+from enrollment import api
 # keys course
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
-
-# models
-from course_modes.models import CourseMode
 from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
-from itoo_api.models import PayUrfuData, Program
-from itoo_api.verified_profile.models import Profile
-
-# enroll api
-from enrollment import api
-from .models import Offer, Payment
-
-# from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
+from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+# rest
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # serializers
 from itoo_api.acquiring.serializers import CourseModeSerializer, ChangeModeStateUserSerializer, OfferSerializer, \
     PaymentSerializer
-
+from itoo_api.models import PayUrfuData
+from itoo_api.verified_profile.models import Profile
+from .models import Offer, Payment
 from .permissions import OwnerPermission
+
+# from rest_framework.renderers import TemplateHTMLRenderer
+# from enrollment.errors import CourseEnrollmentError, CourseEnrollmentExistsError, CourseModeNotFoundError
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -225,11 +218,6 @@ class CourseModeListAllViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'id'
 
 
-from django.core import serializers
-from django.utils import timezone
-from django.utils import six
-
-
 class PayUrfuDataViewSet(APIView):
     permission_classes = (AllowAny,)
 
@@ -270,10 +258,6 @@ class PayUrfuDataViewSet(APIView):
         return Response({"Success"})
 
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-
-
 class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PaymentSerializer
@@ -286,13 +270,13 @@ class PaymentViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permission_classes = []
         if self.action == 'create':
-            permission_classes = [IsAuthenticated,]
+            permission_classes = [IsAuthenticated, ]
 
         elif self.action == 'retrieve':
-            permission_classes = [OwnerPermission,]
+            permission_classes = [OwnerPermission, ]
 
         elif self.action == 'list':
-            permission_classes = [IsAdminUser,]
+            permission_classes = [IsAdminUser, ]
         return [permission() for permission in permission_classes]
 
     def list(self, request):
@@ -415,17 +399,61 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-def check_payment_status(contract_number):
+from ..models import EnrollProgram
+from student.models import CourseEnrollment
+from lms.djangoapps.verify_student.models import ManualVerification
+from datetime import datetime
+
+def check_payment_status():
+    payment = Payment.objects.filter(status="1").first()
+    if not payment:
+        return "Empty Payments Queue"
     payment_url = 'https://ubu.ustu.ru/buh/hs/OpenEDU/RPC'
     payment_data = {
         "method": u"УрФУ_Платежи.ПлатежиДоговора",
         "params":
             {
-                u"НомерДоговора": str(contract_number)
+                u"НомерДоговора": "0" + str(payment.payment_number)
             }
     }
-    print(payment_data)
     payment_response = requests.post(payment_url, data=json.dumps(payment_data),
                                      auth=('opened', 'Vra3wb7@'))
 
-    return payment_response.text
+    result = payment_response.json()[u'result'][0]
+    if result[u"Документ"]:
+        if u"Квитанция" in result[u"Документ"]:
+            payment.sum = result[u"Сумма"]
+            payment.document = result[u"Документ"]
+            payment.verify_date = datetime.strptime(result[u"Дата"], "%d.%m.%Y").date()
+            payment.status = 2
+            payment.save()
+
+            program_enrollment = EnrollProgram.objects.get_or_create(user=payment.user, program=payment.offer.program)
+            for course in payment.offer.program.get_courses():
+                enrollment = CourseEnrollment.objects.get(user=payment.user, course_id=CourseOverview.get_from_id(
+                    CourseKey.from_string(course.course_id)))
+                enrollment.update_enrollment(is_active=True, mode='verified')
+
+            verification = ManualVerification(user=payment.user, reason="Payment_id: {}".format(payment.payment_id),
+                                              status="approved")
+            verification.save()
+            return payment, parse_date(result[u"Дата"]), result[u"Дата"]
+
+
+"""
+from itoo_api.acquiring.views import check_payment_status
+check_payment_status()
+"""
+
+from ..models import Program
+
+
+def get_uni_programs(request):
+    programs_url = 'http://10.74.225.206:9085/programs'
+    programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    uni_programs = json.loads(programs_response.text)
+
+    for uni_program in uni_programs:
+        Program.objects.filter(title=uni_program["title"]).update(id_unit_program=uni_program["uuid"])
+
+    return True

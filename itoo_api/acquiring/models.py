@@ -59,10 +59,13 @@ class Payment(TimeStampedModel):
     payment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
     payment_number = models.CharField("Код платежа", max_length=32, blank=True, null=True)
     payment_date = models.DateTimeField("Дата платежа", auto_now_add=True)
-    verify_date = models.DateTimeField("Дата подтверждения платежа", blank=True, null=True)
+    verify_date = models.DateField("Дата подтверждения платежа", blank=True, null=True)
     user = models.ForeignKey(get_user_model(), null=False)
     offer = models.ForeignKey(Offer, verbose_name="Оферта", on_delete=models.SET_NULL, null=True)
     status = models.CharField("Статус платежа", choices=PAYMENT_STATUSES, max_length=1, default="0")
+
+    document = models.CharField("Документ", max_length=256, blank=True, null=True)
+    sum = models.CharField("Сумма", max_length=32, blank=True, null=True)
 
     class Meta:
         verbose_name = "Плетёж"

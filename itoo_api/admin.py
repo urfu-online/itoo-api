@@ -2,10 +2,11 @@
 """ Django admin pages for organization models """
 import logging
 
+from celery import shared_task
 from django.contrib import admin
-from django.forms import Textarea
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
+from django.forms import Textarea
 from django_summernote.admin import SummernoteInlineModelAdmin
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from opaque_keys.edx.keys import CourseKey
@@ -16,8 +17,6 @@ from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, Organ
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
-
-from celery import shared_task
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -87,9 +86,13 @@ class OfferAdmin(admin.ModelAdmin):
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     model = Payment
-    list_display = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
+    list_display = (
+        "payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "document", "sum", "status"
+    )
     list_filter = ('status',)
-    readonly_fields = ("payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "status")
+    readonly_fields = (
+        "payment_id", "payment_number", 'payment_date', 'verify_date', 'user', "offer", "document", "sum", "status"
+    )
 
 
 class ProgramCourseInline(admin.TabularInline):
@@ -131,10 +134,115 @@ def export_csv_program_entoll(modeladmin, request, queryset):
     return response
 
 
+from django.contrib import messages
+
+
+def update_programs_uuids(modeladmin, request, queryset):
+    import csv, requests, json
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Slug"),
+        smart_str(u"Title"),
+        smart_str(u"UUID"),
+    ])
+    programs_url = 'http://10.74.225.206:9085/programs'
+    try:
+        programs_response = requests.get(programs_url, json={}, auth=('openedu', 'openedu'))
+    except:
+        messages.error(request, "UNI read error. Check connection.")
+        return response
+    uni_programs = json.loads(programs_response.text)
+    result = list()
+
+    for uni_program in uni_programs:
+        _progs = Program.objects.filter(title=uni_program["title"])
+        for p in _progs:
+            p.id_unit_program = uni_program["uuid"]
+            p.save()
+            result.append([p.pk, p.slug, p.title, p.id_unit_program])
+
+    for p in result:
+        writer.writerow([
+            smart_str(p[0]),
+            smart_str(p[1]),
+            smart_str(p[2]),
+            smart_str(p[3]),
+        ])
+    return response
+
+
 export_csv_program_entoll.short_description = u"Export CSV"
+update_programs_uuids.short_description = u"Update uuids from UNI"
+update_programs_uuids.acts_on_all = True
+
+
+def put_students_uni(modeladmin, request, queryset):
+    import csv, requests, json
+    from django.utils.encoding import smart_str
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=uni_programs.csv'
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Slug"),
+        smart_str(u"Title"),
+        smart_str(u"UUID"),
+    ])
+    processing_url = 'http://10.74.225.206:9085/processing'
+
+    students = list()
+    for s in queryset:
+        profile = Profile.get_profile(user=s.user)[0]
+        students.append(
+            {
+                "lastName": profile.last_name,
+                "firstName": profile.first_name,
+                "middleName": profile.second_name,
+                "citizenship": "0",
+                "gender": profile.sex,
+                "birthDate": profile.birth_date,
+                "post": profile.position,
+                "placeOfEmployment": profile.job,
+                "identityCard": {
+                    "identityCardType": "1",
+                    "idncrdSeries": profile.series,
+                    "idncrdNumber": profile.number,
+                    "idncrdDate": profile.issue_date,
+                    "authority": profile.issued_by,
+                }
+            },
+        )
+    data = {
+        "program": queryset[0].program.id_unit_program,
+        "beginDate": queryset[0].program.edu_start_date.strftime("%Y-%m-%d"),
+        "endDate": queryset[0].program.edu_end_date.strftime("%Y-%m-%d"),
+        "students": students
+    }
+
+    print(json.dumps(data))
+
+    processing_response = requests.post(processing_url, json=[data], auth=('openedu', 'openedu'))
+    result = str(json.loads(processing_response.text))
+
+    writer.writerow([
+        smart_str(processing_response.text),
+        smart_str(str(data))
+    ])
+    return response
+
+
+put_students_uni.short_description = u"Put students to  UNI"
+put_students_uni.acts_on_all = True
 
 from django import forms
-from itoo_api.verified_profile.views import enroll_program
 
 
 class EnrollProgramForm(forms.ModelForm):
@@ -166,7 +274,7 @@ class EnrollProgramAdmin(admin.ModelAdmin):
     readonly_fields = ('created',)
     search_fields = ('user__username', 'program__slug', 'program__title', 'user__email')
     form = EnrollProgramForm
-    actions = [export_csv_program_entoll]
+    actions = [export_csv_program_entoll, put_students_uni]
 
     def get_program_slug(self, obj):
         return obj.program.slug
@@ -325,13 +433,13 @@ def export_csv_program(modeladmin, request, queryset):
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed')
+    list_display = ('title', 'short_name', 'slug', 'logo', 'active', 'owner', 'enrollment_allowed', 'id_unit_program')
     list_filter = ('active', 'owner', 'enrollment_allowed')
     ordering = ('title', 'short_name',)
     readonly_fields = ('created',)
     search_fields = ('title', 'short_name', 'slug')
     inlines = [ProgramCourseInline, TextBlockInline]
-    actions = [export_csv_program]
+    actions = [export_csv_program, update_programs_uuids]
 
 
 class OrganizationCourseInline(admin.TabularInline):
