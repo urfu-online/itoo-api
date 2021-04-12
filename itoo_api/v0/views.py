@@ -27,6 +27,7 @@ from django.contrib.auth import get_user
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
 import json
+
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
@@ -39,11 +40,12 @@ class CheckSessionID(APIView):
         session = engine.SessionStore(my_key)
         # try:
         logger.warning(my_key)
-        logger.warning(request.session.session_key)
+        logger.warning(request.session['_auth_user_id'])
         _auth_user_id = session[SESSION_KEY]
         backend_path = session[BACKEND_SESSION_KEY]
         backend = load_backend(backend_path)
         user = backend.get_user(_auth_user_id) or AnonymousUser()
+        # if not request.session.exists(request.session.session_key):
         # except KeyError:
         #     user = AnonymousUser()
 
