@@ -40,9 +40,11 @@ class CheckSessionID(APIView):
 
         try:
             user_id = session[SESSION_KEY]
+            logger.warning(str(user_id))
             backend_path = session[BACKEND_SESSION_KEY]
             backend = load_backend(backend_path)
             user = backend.get_user(user_id) or AnonymousUser()
+            logger.warning(str(backend.get_user(user_id)))
         except KeyError:
             user = AnonymousUser()
 
