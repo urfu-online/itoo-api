@@ -38,6 +38,8 @@ class CheckSessionID(APIView):
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
         # try:
+        logger.warning(my_key)
+        logger.warning(request.session.session_key)
         _auth_user_id = session[SESSION_KEY]
         backend_path = session[BACKEND_SESSION_KEY]
         backend = load_backend(backend_path)
