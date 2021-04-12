@@ -43,7 +43,7 @@ class CheckSessionID(APIView):
         # backend_path = session[BACKEND_SESSION_KEY]
         # backend = load_backend(backend_path)
         # user = backend.get_user(_auth_user_id)
-        if request.session.exists(request.session.session_key) & request.user.is_authenticated:
+        if request.session.exists(request.session.session_key):
             return Response({'detail': True})
         else:
             return Response({'detail': False})
