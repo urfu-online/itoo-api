@@ -1,6 +1,7 @@
 XDG_CACHE_HOME
 
 vscode
+.idea
 
 
 # Byte-compiled / optimized / DLL files
