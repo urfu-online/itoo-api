@@ -38,15 +38,10 @@ class CheckSessionID(APIView):
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
         # try:
-        user_id = session[SESSION_KEY]
-        logger.warning(str(user_id))
+        _auth_user_id = session[SESSION_KEY]
         backend_path = session[BACKEND_SESSION_KEY]
-        logger.warning(str(backend_path))
         backend = load_backend(backend_path)
-        logger.warning(str(backend))
-        user = backend.get_user(user_id) or AnonymousUser()
-        logger.warning(str(user))
-        logger.warning(str(backend.get_user(user_id)))
+        user = backend.get_user(_auth_user_id) or AnonymousUser()
         # except KeyError:
         #     user = AnonymousUser()
 
