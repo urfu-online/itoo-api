@@ -35,19 +35,20 @@ class CheckSessionID(APIView):
 
     def post(self, request):
         my_key = request.COOKIES.get('sessionid', None)
-        logger.warning(my_key)
         engine = import_module(settings.SESSION_ENGINE)
         session = engine.SessionStore(my_key)
-        logger.warning(session)
-        try:
-            user_id = session[SESSION_KEY]
-            logger.warning(str(user_id))
-            backend_path = session[BACKEND_SESSION_KEY]
-            backend = load_backend(backend_path)
-            user = backend.get_user(user_id) or AnonymousUser()
-            logger.warning(str(backend.get_user(user_id)))
-        except KeyError:
-            user = AnonymousUser()
+        # try:
+        user_id = session[SESSION_KEY]
+        logger.warning(str(user_id))
+        backend_path = session[BACKEND_SESSION_KEY]
+        logger.warning(str(backend_path))
+        backend = load_backend(backend_path)
+        logger.warning(str(backend))
+        user = backend.get_user(user_id) or AnonymousUser()
+        logger.warning(str(user))
+        logger.warning(str(backend.get_user(user_id)))
+        # except KeyError:
+        #     user = AnonymousUser()
 
         if user.is_authenticated():
             return Response({'detail': True})
