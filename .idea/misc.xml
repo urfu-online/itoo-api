@@ -6,7 +6,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 2.7.12 (sftp://ignatchenkonv@courses.openedu.urfu.ru:22/edx/bin/python.edxapp)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 2.7.12 (sftp://developer@93.88.177.51:22/edx/bin/python.edxapp)" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
   </component>
