@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from openedx.core.djangoapps.course_groups.models import CourseUserGroup
 from student.models import CourseEnrollment
+from opaque_keys.edx.keys import CourseKey  # Для работы с course_id <button class="citation-flag" data-index="1">
 import codecs
 
 class Command(BaseCommand):
@@ -37,8 +38,6 @@ class Command(BaseCommand):
         cohort_name = options["cohort_name"].decode('utf-8')  # Декодируем в Unicode
         email_domain = options["email_domain"]
 
-        # Нормализация имени когорты (убираем лишние пробелы)
-
         # Получаем список course_ids
         if options["course_ids"]:
             course_ids = [cid.decode('utf-8') for cid in options["course_ids"]]  # Декодируем в Unicode
@@ -54,13 +53,20 @@ class Command(BaseCommand):
             self.stderr.write(u"Список course_ids пуст. Пожалуйста, укажите course_ids или корректный файл.")
             return
 
-        for course_id in course_ids:
-            self.stdout.write(u"Обработка курса: {}".format(course_id))
+        for course_id_str in course_ids:
+            try:
+                # Преобразуем строку course_id в объект CourseKey
+                course_key = CourseKey.from_string(course_id_str)  # Преобразование строки в CourseKey <button class="citation-flag" data-index="1">
+            except Exception as e:
+                self.stderr.write(u"Ошибка при обработке course_id '{}': {}".format(course_id_str, str(e)))
+                continue
+
+            self.stdout.write(u"Обработка курса: {}".format(course_id_str))
 
             # Получаем список студентов, записанных на курс
-            enrollments = CourseEnrollment.objects.filter(course_id=course_id, is_active=True)
+            enrollments = CourseEnrollment.objects.filter(course_id=course_key, is_active=True)
             students = [enrollment.user for enrollment in enrollments]
-            self.stdout.write(u"Найдено {} студентов для курса {}.".format(len(students), course_id))
+            self.stdout.write(u"Найдено {} студентов для курса {}.".format(len(students), course_id_str))
 
             # Фильтруем студентов по домену email
             filtered_students = [student for student in students if student.email.endswith(email_domain)]
@@ -68,9 +74,9 @@ class Command(BaseCommand):
 
             # Находим когорту по имени
             try:
-                cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_id)
+                cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_key)
             except CourseUserGroup.DoesNotExist:
-                self.stderr.write(u"Когорта '{}' не найдена для курса {}. Пропускаем.".format(cohort_name, course_id))
+                self.stderr.write(u"Когорта '{}' не найдена для курса {}. Пропускаем.".format(cohort_name, course_id_str))
                 continue
 
             # Добавляем отфильтрованных студентов в когорту
