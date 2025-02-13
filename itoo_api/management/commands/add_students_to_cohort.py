@@ -46,11 +46,11 @@ class Command(BaseCommand):
                 with codecs.open(options["file"], "r", encoding="utf-8") as f:
                     course_ids = [line.strip() for line in f if line.strip()]
             except IOError:
-                self.stderr.write(u"Файл {} не найден.".format(options['file']))
+                self.stderr.write(u"Файл {} не найден.".format(options['file']).encode('utf-8'))
                 return
 
         if not course_ids:
-            self.stderr.write(u"Список course_ids пуст. Пожалуйста, укажите course_ids или корректный файл.")
+            self.stderr.write(u"Список course_ids пуст. Пожалуйста, укажите course_ids или корректный файл.".encode('utf-8'))
             return
 
         for course_id_str in course_ids:
@@ -58,33 +58,33 @@ class Command(BaseCommand):
                 # Преобразуем строку course_id в объект CourseKey
                 course_key = CourseKey.from_string(course_id_str)  # Преобразование строки в CourseKey <button class="citation-flag" data-index="1">
             except Exception as e:
-                self.stderr.write(u"Ошибка при обработке course_id '{}': {}".format(course_id_str, str(e)))
+                self.stderr.write(u"Ошибка при обработке course_id '{}': {}".format(course_id_str, str(e)).encode('utf-8'))
                 continue
 
-            self.stdout.write(u"Обработка курса: {}".format(course_id_str))
+            self.stdout.write(u"Обработка курса: {}".format(course_id_str).encode('utf-8'))
 
             # Получаем список студентов, записанных на курс
             enrollments = CourseEnrollment.objects.filter(course_id=course_key, is_active=True)
             students = [enrollment.user for enrollment in enrollments]
-            self.stdout.write(u"Найдено {} студентов для курса {}.".format(len(students), course_id_str))
+            self.stdout.write(u"Найдено {} студентов для курса {}.".format(len(students), course_id_str).encode('utf-8'))
 
             # Фильтруем студентов по домену email
             filtered_students = [student for student in students if student.email.endswith(email_domain)]
-            self.stdout.write(u"Отфильтровано {} студентов с доменом {}.".format(len(filtered_students), email_domain))
+            self.stdout.write(u"Отфильтровано {} студентов с доменом {}.".format(len(filtered_students), email_domain).encode('utf-8'))
 
             # Находим когорту по имени
             try:
                 cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_key)
             except CourseUserGroup.DoesNotExist:
-                self.stderr.write(u"Когорта '{}' не найдена для курса {}. Пропускаем.".format(cohort_name, course_id_str))
+                self.stderr.write(u"Когорта '{}' не найдена для курса {}. Пропускаем.".format(cohort_name, course_id_str).encode('utf-8'))
                 continue
 
             # Добавляем отфильтрованных студентов в когорту
             for student in filtered_students:
                 if student not in cohort.users.all():
                     cohort.users.add(student)
-                    self.stdout.write(u"Студент {} успешно добавлен в когорту '{}'.".format(student.username, cohort_name))
+                    self.stdout.write(u"Студент {} успешно добавлен в когорту '{}'.".format(student.username, cohort_name).encode('utf-8'))
                 else:
-                    self.stdout.write(u"Студент {} уже состоит в когорте '{}'.".format(student.username, cohort_name))
+                    self.stdout.write(u"Студент {} уже состоит в когорте '{}'.".format(student.username, cohort_name).encode('utf-8'))
 
-        self.stdout.write(u"Завершено.")
+        self.stdout.write(u"Завершено.".encode('utf-8'))
