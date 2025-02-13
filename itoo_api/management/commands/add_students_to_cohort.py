@@ -79,18 +79,25 @@ class Command(BaseCommand):
             filtered_students = [student for student in students if student.email.endswith(email_domain)]
             logger.info("Filtered {} students with domain {}.".format(len(filtered_students), email_domain))
 
-            cohort, created = CourseUserGroup.objects.get_or_create(name=cohort_name, course_id=course_key)
-
-            if created:
+            try:
+                cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_key)
+            except CourseUserGroup.DoesNotExist:
+                cohort = CourseUserGroup(name=cohort_name, course_id=course_key, group_type="cohort")
+                cohort.save()
                 logger.info("Created new cohort '{}' for course {}.".format(cohort_name, course_id_str))
 
             existing_students = set(cohort.users.values_list("id", flat=True))
             new_students = [student for student in filtered_students if student.id not in existing_students]
 
             if new_students:
-                cohort.users.add(*new_students)
-                logger.info("Added {} students to cohort '{}'.".format(len(new_students), cohort_name))
+                from openedx.core.djangoapps.course_groups.models import CourseCohortMembership
+
+                for student in new_students:
+                    CourseCohortMembership.objects.filter(user=student, course_user_group__course_id=course_key).delete()
+                    cohort.users.add(student)
+                    logger.info("Moved student {} to cohort '{}'.".format(student.username, cohort_name))
+
+                cohort.save()
             else:
                 logger.info("All students are already in the cohort '{}'.".format(cohort_name))
-
         logger.info("Process completed.")
