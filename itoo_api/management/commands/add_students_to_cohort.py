@@ -2,8 +2,14 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from openedx.core.djangoapps.course_groups.models import CourseUserGroup
 from student.models import CourseEnrollment
-from opaque_keys.edx.keys import CourseKey  # Для работы с course_id <button class="citation-flag" data-index="1">
+from opaque_keys.edx.keys import CourseKey
 import codecs
+import logging
+import os
+
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = u"Добавляет студентов с email-доменом @urfu.me в когорту."
@@ -35,56 +41,56 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         course_ids = []
-        cohort_name = options["cohort_name"].decode('utf-8')  # Декодируем в Unicode
+        cohort_name = options["cohort_name"]
         email_domain = options["email_domain"]
 
         # Получаем список course_ids
         if options["course_ids"]:
-            course_ids = [cid.decode('utf-8') for cid in options["course_ids"]]  # Декодируем в Unicode
+            course_ids = options["course_ids"]
         elif options["file"]:
+            if not os.path.exists(options["file"]):
+                logger.error(u"Файл {} не найден.".format(options["file"]))
+                return
             try:
                 with codecs.open(options["file"], "r", encoding="utf-8") as f:
                     course_ids = [line.strip() for line in f if line.strip()]
-            except IOError:
-                self.stderr.write(u"Файл {} не найден.".format(options['file']).encode('utf-8'))
+            except (IOError, OSError) as e:
+                logger.error(u"Ошибка при чтении файла {}: {}".format(options["file"], str(e)))
                 return
 
         if not course_ids:
-            self.stderr.write(u"Список course_ids пуст. Пожалуйста, укажите course_ids или корректный файл.".encode('utf-8'))
+            logger.error(u"Список course_ids пуст. Пожалуйста, укажите course_ids или корректный файл.")
             return
 
         for course_id_str in course_ids:
             try:
-                # Преобразуем строку course_id в объект CourseKey
-                course_key = CourseKey.from_string(course_id_str)  # Преобразование строки в CourseKey <button class="citation-flag" data-index="1">
+                course_key = CourseKey.from_string(course_id_str)
             except Exception as e:
-                self.stderr.write(u"Ошибка при обработке course_id '{}': {}".format(course_id_str, str(e)).encode('utf-8'))
+                logger.error(u"Ошибка при обработке course_id '{}': {}".format(course_id_str, str(e)))
                 continue
 
-            self.stdout.write(u"Обработка курса: {}".format(course_id_str).encode('utf-8'))
+            logger.info(u"Обработка курса: {}".format(course_id_str))
 
-            # Получаем список студентов, записанных на курс
             enrollments = CourseEnrollment.objects.filter(course_id=course_key, is_active=True)
             students = [enrollment.user for enrollment in enrollments]
-            self.stdout.write(u"Найдено {} студентов для курса {}.".format(len(students), course_id_str).encode('utf-8'))
 
-            # Фильтруем студентов по домену email
+            logger.info(u"Найдено {} студентов для курса {}.".format(len(students), course_id_str))
+
             filtered_students = [student for student in students if student.email.endswith(email_domain)]
-            self.stdout.write(u"Отфильтровано {} студентов с доменом {}.".format(len(filtered_students), email_domain).encode('utf-8'))
+            logger.info(u"Отфильтровано {} студентов с доменом {}.".format(len(filtered_students), email_domain))
 
-            # Находим когорту по имени
-            try:
-                cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_key)
-            except CourseUserGroup.DoesNotExist:
-                self.stderr.write(u"Когорта '{}' не найдена для курса {}. Пропускаем.".format(cohort_name, course_id_str).encode('utf-8'))
-                continue
+            cohort, created = CourseUserGroup.objects.get_or_create(name=cohort_name, course_id=course_key)
 
-            # Добавляем отфильтрованных студентов в когорту
-            for student in filtered_students:
-                if student not in cohort.users.all():
-                    cohort.users.add(student)
-                    self.stdout.write(u"Студент {} успешно добавлен в когорту '{}'.".format(student.username, cohort_name).encode('utf-8'))
-                else:
-                    self.stdout.write(u"Студент {} уже состоит в когорте '{}'.".format(student.username, cohort_name).encode('utf-8'))
+            if created:
+                logger.info(u"Создана новая когорта '{}' для курса {}.".format(cohort_name, course_id_str))
 
-        self.stdout.write(u"Завершено.".encode('utf-8'))
+            existing_students = set(cohort.users.values_list("id", flat=True))
+            new_students = [student for student in filtered_students if student.id not in existing_students]
+
+            if new_students:
+                cohort.users.add(*new_students)
+                logger.info(u"Добавлено {} студентов в когорту '{}'.".format(len(new_students), cohort_name))
+            else:
+                logger.info(u"Все студенты уже находятся в когорте '{}'.".format(cohort_name))
+
+        logger.info(u"Завершено.")
