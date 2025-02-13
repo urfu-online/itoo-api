@@ -8,7 +8,7 @@ import logging
 import os
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
@@ -70,10 +70,8 @@ class Command(BaseCommand):
                 continue
 
             logger.info("Processing course: {}".format(course_id_str))
-
             enrollments = CourseEnrollment.objects.filter(course_id=course_key, is_active=True)
             students = [enrollment.user for enrollment in enrollments]
-
             logger.info("Found {} students for course {}.".format(len(students), course_id_str))
 
             filtered_students = [student for student in students if student.email.endswith(email_domain)]
@@ -90,14 +88,14 @@ class Command(BaseCommand):
             new_students = [student for student in filtered_students if student.id not in existing_students]
 
             if new_students:
-                from openedx.core.djangoapps.course_groups.models import CourseCohortMembership
-
+                from openedx.core.djangoapps.course_groups.cohorts import add_user_to_cohort  # Используем API для управления когортами <button class="citation-flag" data-index="4">
                 for student in new_students:
-                    CourseCohortMembership.objects.filter(user=student, course_user_group__course_id=course_key).delete()
-                    cohort.users.add(student)
-                    logger.info("Moved student {} to cohort '{}'.".format(student.username, cohort_name))
-
-                cohort.save()
+                    try:
+                        add_user_to_cohort(cohort, student.username)
+                        logger.info("Moved student {} to cohort '{}'.".format(student.username, cohort_name))
+                    except Exception as e:
+                        logger.error("Failed to move student {} to cohort '{}': {}".format(student.username, cohort_name, str(e)))
             else:
                 logger.info("All students are already in the cohort '{}'.".format(cohort_name))
+
         logger.info("Process completed.")
