@@ -6,7 +6,7 @@ from openedx.core.djangoapps.course_groups.cohorts import (
     is_cohort_exists,
     add_cohort,
     bulk_cache_cohorts,
-    set_course_cohorted,  # Функция для включения когорт
+    set_course_cohorted,
 )
 from student.models import CourseEnrollment
 import codecs
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = "Moves students with the @urfu.me email domain from one cohort to another."
+    help = "Moves students with the @urfu.me email domain from any cohort to the target cohort."
 
     def add_arguments(self, parser):
         group = parser.add_mutually_exclusive_group(required=True)
@@ -31,12 +31,6 @@ class Command(BaseCommand):
             "--file",
             type=str,
             help="Path to a file containing a list of course_id (one per line)."
-        )
-        parser.add_argument(
-            "--source_cohort_name",
-            type=str,
-            required=True,
-            help="Name of the source cohort (e.g., 'OldCohort')."
         )
         parser.add_argument(
             "--target_cohort_name",
@@ -53,7 +47,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         course_ids = []
-        source_cohort_name = options["source_cohort_name"]
         target_cohort_name = options["target_cohort_name"]
         email_domain = options["email_domain"]
 
@@ -92,12 +85,11 @@ class Command(BaseCommand):
                 logger.error("Failed to enable cohorts for course {}: {}".format(course_id_str, str(e)))
                 continue
 
-            # Check if source and target cohorts exist
+            # Check if the target cohort exists
             try:
-                source_cohort = get_cohort_by_name(course_key, source_cohort_name)
                 if not is_cohort_exists(course_key, target_cohort_name):
                     add_cohort(course_key, target_cohort_name, assignment_type="manual")
-                    logger.info("Created new cohort '{}' for course {}.".format(target_cohort_name, course_id_str))
+                    logger.info("Created cohort '{}' for course {}.".format(target_cohort_name, course_id_str))
                 target_cohort = get_cohort_by_name(course_key, target_cohort_name)
             except Exception as e:
                 logger.error("Error working with cohorts: {}".format(str(e)))
@@ -110,25 +102,27 @@ class Command(BaseCommand):
             # Cache cohort data for students
             bulk_cache_cohorts(course_key, students)
 
-            # Filter students in the source cohort
-            students_in_source_cohort = [
+            # Filter students by email domain
+            students_to_move = [
                 student for student in students
-                if student.email.endswith(email_domain) and get_cohort(student, course_key) == source_cohort
+                if student.email.endswith(email_domain)
             ]
-            logger.info("Found {} students with domain {} in cohort '{}'.".format(
-                len(students_in_source_cohort), email_domain, source_cohort_name
-            ))
 
-            # Move students from the source cohort to the target cohort
-            for student in students_in_source_cohort:
+            logger.info("Found {} students with domain {} to move.".format(len(students_to_move), email_domain))
+
+            # Move students to the target cohort
+            for student in students_to_move:
+                source_cohort = get_cohort(student, course_key)
                 try:
-                    remove_user_from_cohort(source_cohort, student.username)
+                    if source_cohort:
+                        remove_user_from_cohort(source_cohort, student.username)
+                        logger.info("Removed student {} from cohort '{}'.".format(student.username, source_cohort.name))
                     add_user_to_cohort(target_cohort, student)
-                    logger.info("Moved student {} from cohort '{}' to cohort '{}'.".format(
-                        student.username, source_cohort_name, target_cohort_name
-                    ))
-                except Exception as e:
-                    logger.error("Failed to move student {}: {}".format(student.username, str(e)))
+                    logger.info("Moved student {} to cohort '{}'.".format(student.username, target_cohort_name))
+                except ValueError as e:
+                    logger.error("ValueError moving student {}: {}".format(student.username, str(e)))
+                except IntegrityError as e:
+                    logger.error("IntegrityError moving student {}: {}".format(student.username, str(e)))
 
         logger.info("Process completed.")
 
