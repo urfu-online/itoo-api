@@ -37,7 +37,7 @@ class Command(BaseCommand):
             "--source_cohort_name",
             type=str,
             required=True,
-            default=DEFAULT_COHORT_NAME
+            default=DEFAULT_COHORT_NAME,
             help="Name of the source cohort (e.g., 'OldCohort')."
         )
         parser.add_argument(
