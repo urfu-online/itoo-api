@@ -6,16 +6,15 @@ from openedx.core.djangoapps.course_groups.cohorts import (
     is_cohort_exists,
     add_cohort,
     bulk_cache_cohorts,
+    set_course_cohorted,  # Функция для включения когорт
 )
 from student.models import CourseEnrollment
 import codecs
 import logging
 import os
-from django.utils.translation import ugettext as _
 
-DEFAULT_COHORT_NAME = _("Default Group")
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(message)s")
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
@@ -36,7 +35,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--source_cohort_name",
             type=str,
-            default=DEFAULT_COHORT_NAME,
+            required=True,
             help="Name of the source cohort (e.g., 'OldCohort')."
         )
         parser.add_argument(
@@ -84,6 +83,14 @@ class Command(BaseCommand):
                 continue
 
             logger.info("Processing course: {}".format(course_id_str))
+
+            # Ensure cohorts are enabled for the course
+            try:
+                set_course_cohorted(course_key, cohorted=True)
+                logger.info("Enabled cohorts for course {}.".format(course_id_str))
+            except ValueError as e:
+                logger.error("Failed to enable cohorts for course {}: {}".format(course_id_str, str(e)))
+                continue
 
             # Check if source and target cohorts exist
             try:
