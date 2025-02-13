@@ -1,47 +1,62 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
-from openedx.core.djangoapps.course_groups.models import CourseUserGroup
-from student.models import CourseEnrollment
 from opaque_keys.edx.keys import CourseKey
+from openedx.core.djangoapps.course_groups.cohorts import (
+    add_user_to_cohort,
+    remove_user_from_cohort,
+    is_cohort_exists,
+    add_cohort,
+    bulk_cache_cohorts,
+)
+from student.models import CourseEnrollment
 import codecs
 import logging
 import os
+from django.utils.translation import ugettext as _
 
+DEFAULT_COHORT_NAME = _("Default Group")
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
-    help = u"Adds students with the @urfu.me email domain to a cohort."
+    help = "Moves students with the @urfu.me email domain from one cohort to another."
 
     def add_arguments(self, parser):
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument(
             "--course_ids",
             nargs="+",
-            help=u"List of course_id (e.g., course-v1:YourOrg+Course1+Run1)."
+            help="List of course_id (e.g., course-v1:YourOrg+Course1+Run1)."
         )
         group.add_argument(
             "--file",
             type=str,
-            help=u"Path to a file containing a list of course_id (one per line)."
+            help="Path to a file containing a list of course_id (one per line)."
         )
         parser.add_argument(
-            "--cohort_name",
+            "--source_cohort_name",
             type=str,
-            default="Stud",
-            help=u"Cohort name (default: 'Stud')."
+            required=True,
+            default=DEFAULT_COHORT_NAME
+            help="Name of the source cohort (e.g., 'OldCohort')."
+        )
+        parser.add_argument(
+            "--target_cohort_name",
+            type=str,
+            required=True,
+            help="Name of the target cohort (e.g., 'Stud')."
         )
         parser.add_argument(
             "--email_domain",
             type=str,
             default="@urfu.me",
-            help=u"Email domain to filter students (default: '@urfu.me')."
+            help="Email domain to filter students (default: '@urfu.me')."
         )
 
     def handle(self, *args, **options):
         course_ids = []
-        cohort_name = options["cohort_name"]
+        source_cohort_name = options["source_cohort_name"]
+        target_cohort_name = options["target_cohort_name"]
         email_domain = options["email_domain"]
 
         # Get the list of course_ids
@@ -70,32 +85,61 @@ class Command(BaseCommand):
                 continue
 
             logger.info("Processing course: {}".format(course_id_str))
+
+            # Check if source and target cohorts exist
+            try:
+                source_cohort = get_cohort_by_name(course_key, source_cohort_name)
+                if not is_cohort_exists(course_key, target_cohort_name):
+                    add_cohort(course_key, target_cohort_name, assignment_type="manual")
+                    logger.info("Created new cohort '{}' for course {}.".format(target_cohort_name, course_id_str))
+                target_cohort = get_cohort_by_name(course_key, target_cohort_name)
+            except Exception as e:
+                logger.error("Error working with cohorts: {}".format(str(e)))
+                continue
+
+            # Find all active students in the course
             enrollments = CourseEnrollment.objects.filter(course_id=course_key, is_active=True)
             students = [enrollment.user for enrollment in enrollments]
-            logger.info("Found {} students for course {}.".format(len(students), course_id_str))
 
-            filtered_students = [student for student in students if student.email.endswith(email_domain)]
-            logger.info("Filtered {} students with domain {}.".format(len(filtered_students), email_domain))
+            # Cache cohort data for students
+            bulk_cache_cohorts(course_key, students)
 
-            try:
-                cohort = CourseUserGroup.objects.get(name=cohort_name, course_id=course_key)
-            except CourseUserGroup.DoesNotExist:
-                cohort = CourseUserGroup(name=cohort_name, course_id=course_key, group_type="cohort")
-                cohort.save()
-                logger.info("Created new cohort '{}' for course {}.".format(cohort_name, course_id_str))
+            # Filter students in the source cohort
+            students_in_source_cohort = [
+                student for student in students
+                if student.email.endswith(email_domain) and get_cohort(student, course_key) == source_cohort
+            ]
+            logger.info("Found {} students with domain {} in cohort '{}'.".format(
+                len(students_in_source_cohort), email_domain, source_cohort_name
+            ))
 
-            existing_students = set(cohort.users.values_list("id", flat=True))
-            new_students = [student for student in filtered_students if student.id not in existing_students]
-
-            if new_students:
-                from openedx.core.djangoapps.course_groups.cohorts import add_user_to_cohort  # Используем API для управления когортами <button class="citation-flag" data-index="4">
-                for student in new_students:
-                    try:
-                        add_user_to_cohort(cohort, student.username)
-                        logger.info("Moved student {} to cohort '{}'.".format(student.username, cohort_name))
-                    except Exception as e:
-                        logger.error("Failed to move student {} to cohort '{}': {}".format(student.username, cohort_name, str(e)))
-            else:
-                logger.info("All students are already in the cohort '{}'.".format(cohort_name))
+            # Move students from the source cohort to the target cohort
+            for student in students_in_source_cohort:
+                try:
+                    remove_user_from_cohort(source_cohort, student.username)
+                    add_user_to_cohort(target_cohort, student)
+                    logger.info("Moved student {} from cohort '{}' to cohort '{}'.".format(
+                        student.username, source_cohort_name, target_cohort_name
+                    ))
+                except Exception as e:
+                    logger.error("Failed to move student {}: {}".format(student.username, str(e)))
 
         logger.info("Process completed.")
+
+def get_cohort(user, course_key):
+    """
+    Returns the cohort to which the user belongs.
+    """
+    from openedx.core.djangoapps.course_groups.cohorts import get_cohort as get_cohort_func
+    return get_cohort_func(user, course_key, assign=False, use_cached=True)
+
+def get_cohort_by_name(course_key, name):
+    """
+    Returns the cohort object by name.
+    """
+    from openedx.core.djangoapps.course_groups.models import CourseUserGroup
+    return CourseUserGroup.objects.get(
+        course_id=course_key,
+        group_type=CourseUserGroup.COHORT,
+        name=name
+    )
