@@ -112,6 +112,15 @@ class Command(BaseCommand):
 
             # Move students to the target cohort
             for student in students_to_move:
+                try:
+                    current_cohort = get_cohort(student, course_key)
+                    if current_cohort and current_cohort.name == "Студенты УрФУ долг":
+                        logger.info("Skipping student {} as they are in the cohort .".format(student.username))
+                        continue  
+                except Exception as e:
+                    logger.error("Error checking cohort for student {}: {}".format(student.username, str(e)))
+                    continue
+                                
                 source_cohort = get_cohort(student, course_key)
                 try:
                     if source_cohort:
