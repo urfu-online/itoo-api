@@ -12,6 +12,7 @@ from student.models import CourseEnrollment
 import codecs
 import logging
 import os
+from social_django.models import UserSocialAuth
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -43,6 +44,13 @@ class Command(BaseCommand):
             type=str,
             default="@urfu.me",
             help="Email domain to filter students (default: '@urfu.me')."
+        )
+        parser.add_argument(
+            "--provider",
+            type=str,
+            required=True,
+            default="keycloak",
+            help="Идентификатор стороннего провайдера аутентификации (например, 'keycloak')."
         )
 
     def handle(self, *args, **options):
@@ -103,10 +111,13 @@ class Command(BaseCommand):
             bulk_cache_cohorts(course_key, students)
 
             # Filter students by email domain
-            students_to_move = [
-                student for student in students
-                if student.email.endswith(email_domain)
-            ]
+            provider = options["provider"]
+            students_to_move = []
+            for student in students:
+                email_matches = student.email.endswith(email_domain)
+                is_linked = UserSocialAuth.objects.filter(user=student, provider=provider).exists()
+                if email_matches or is_linked:
+                    students_to_move.append(student)
 
             logger.info("Found {} students with domain {} to move.".format(len(students_to_move), email_domain))
 
