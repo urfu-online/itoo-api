@@ -36,7 +36,7 @@ class CohortRule(models.Model):
     )
 
     def __str__(self):
-        return f"{self.course_id} → {self.target_cohort_name}"
+        return "{} → {}".format(self.course_id, self.target_cohort_name)
 
     class Meta:
         verbose_name = "Правило когорты"
