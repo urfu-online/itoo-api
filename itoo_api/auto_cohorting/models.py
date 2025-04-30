@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 import json
 from django.utils.encoding import python_2_unicode_compatible

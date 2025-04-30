@@ -1,4 +1,4 @@
-# your_app/signals.py
+# -*- coding: utf-8 -*-
 from django.dispatch import receiver
 from student.models import CourseEnrollment
 from openedx.core.djangoapps.course_groups.cohorts import (
