@@ -48,7 +48,6 @@ class Command(BaseCommand):
         parser.add_argument(
             "--provider",
             type=str,
-            
             default="keycloak",
             help="Идентификатор стороннего провайдера аутентификации (например, 'keycloak')."
         )
