@@ -1,6 +1,8 @@
 from django.db import models
 import json
+from django.utils.encoding import python_2_unicode_compatible
 
+@python_2_unicode_compatible
 class CohortRule(models.Model):
     course_id = models.CharField(
         max_length=255,
