@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from student.models import CourseEnrollment
 from openedx.core.djangoapps.course_groups.cohorts import (
     add_user_to_cohort,
+    remove_user_from_cohort,
     is_cohort_exists,
     add_cohort,
     set_course_cohorted,
@@ -49,6 +50,7 @@ def clear_cache_on_rule_update(sender, instance, **kwargs):
 
 @receiver(post_save, sender='student.CourseEnrollment')
 def handle_course_enrollment(sender, instance, created, **kwargs):
+    logger.info(f"User {user.email} checking conditions: email={email_match}, provider={linked_with_provider}")
     if not created or not instance.is_active:
         return
 
@@ -119,11 +121,11 @@ def _move_to_cohort(user, course_key, rule):
 
         # Удаляем из текущей когорты
         if current_cohort:
-            current_cohort.users.remove(user)
+            remove_user_from_cohort(current_cohort, user.username)
             logger.info(f"Removed {user.username} from cohort '{current_cohort.name}'")
 
         # Добавляем в целевую
-        target_cohort.users.add(user)
+        add_user_to_cohort(target_cohort, user)
         logger.info(f"Moved {user.username} to cohort '{target_cohort_name}'")
 
     except Exception as e:
