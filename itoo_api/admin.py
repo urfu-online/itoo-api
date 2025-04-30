@@ -17,6 +17,7 @@ from itoo_api.models import EduProject, ProgramCourse, OrganizationCustom, Organ
 from itoo_api.models import Program, TextBlock, EnrollProgram, Direction
 from itoo_api.reflection.models import Reflection, Question, Answer
 from verified_profile.models import Profile, ProfileOrganization
+from itoo_api.auto_cohorting.models import CohortRule
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -658,3 +659,24 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(TextBlock)
 class TextBlockAdmin(admin.ModelAdmin):
     list_display = ["type_slug", "content"]
+
+
+@admin.register(CohortRule)
+class CohortRuleAdmin(admin.ModelAdmin):
+    list_display = (
+        "course_id", 
+        "target_cohort_name", 
+        "email_domain", 
+        "provider", 
+        "is_active"
+    )
+    search_fields = ("course_id", "target_cohort_name")
+    list_filter = ("is_active", "provider")
+    fieldsets = (
+        (None, {
+            "fields": ("course_id", "is_active")
+        }),
+        ("Настройки когорты", {
+            "fields": ("target_cohort_name", "email_domain", "provider", "forbidden_cohorts")
+        }),
+    )
