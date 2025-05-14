@@ -124,7 +124,7 @@ class Command(BaseCommand):
             for student in students_to_move:
                 try:
                     current_cohort = get_cohort(student, course_key)
-                    if current_cohort and current_cohort.name == "Студенты УрФУ долг" and current_cohort.name == "Студенты УрФУ контрольный проект":
+                    if current_cohort and (current_cohort.name == "Студенты УрФУ долг" or current_cohort.name == "Студенты УрФУ контрольный проект"):
                         logger.info("Skipping student {} as they are in the cohort .".format(student.username))
                         continue
                 except Exception as e:
